@@ -1,6 +1,6 @@
 
 const scene = new THREE.Scene();
-scene.background= new THREE.Color(0xdddddd);
+// scene.background= new THREE.Color(0xdddddd);
 const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
@@ -17,7 +17,7 @@ scene.add(hemiLight);
 
 
 // { alpha: true }
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer( { alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
@@ -89,7 +89,7 @@ const animate = function () {
 
 animate();
 
-
+gsap.from("canvas",{opacity:0, duration:1})
 //changes size of canvas when browser window is resized
 
 window.addEventListener('resize', ()=>{
@@ -104,16 +104,51 @@ window.addEventListener('resize', ()=>{
 })
 
 let scrollBefore = window.scrollY
-
+let cameraPos = camera.position.y
 window.addEventListener('mousewheel',function(event){
     console.log(event.originalEvent)
     if (event.deltaY >= 0) {
         console.log('Scroll up');
-        camera.position.y += 2.5;
+        // camera.position.y += 2.5;
+        if(cameraPos<10){
+            cameraPos+=5;
+        }
+        const goingUp= gsap.to(camera.position,{ duration:0.5,y:cameraPos,onUpdate:function(){
+            camera.updateProjectionMatrix();
+            console.log("play");
+          },onComplete:function(){
+              cameraPos = camera.position.y;
+            console.log("complete");
+          },ease:"ease"
+          });
         camera.updateProjectionMatrix()
     }
     else {
         console.log('Scroll down');
-        camera.position.y -= 2.5;
+        // camera.position.y -= 2.5;
+        if(cameraPos>-20){
+            cameraPos-=5;
+        }
+        gsap.to(camera.position,{ duration:0.5,y:cameraPos,onUpdate:function(){
+            camera.updateProjectionMatrix();
+            console.log("play");
+          },onComplete:function(){
+            cameraPos = camera.position.y;
+            console.log("complete");
+          },ease:"ease"
+          });
     }
     });
+//ToDo Make this smooth
+    window.addEventListener('click', ()=>{
+         camera.position.set(5,camera.position.y,10)
+         camera.lookAt(5,camera.position.y,0)
+       
+         camera.updateProjectionMatrix();
+    })
+    window.addEventListener('keydown', ()=>{
+        camera.position.set(3,camera.position.y,10)
+        camera.lookAt(0,camera.position.y,0)
+      
+        camera.updateProjectionMatrix();
+   })
