@@ -33,14 +33,14 @@ scene.add(spotlight);
 // const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
 
 
-camera.position.set(0,2,5)
-camera.lookAt(0,0,0);
+camera.position.set(0,0.75,2)
+camera.lookAt(0,0.5,0);
 
 
 
 
 
-controls = new THREE.OrbitControls(camera, renderer.domElement);
+ controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 
  scene.add(new THREE.AxesHelper(500))
