@@ -1,0 +1,20 @@
+{
+  "name": "testingthreejs",
+  "version": "1.0.0",
+  "description": "testing out three.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pudderz/TestingThreeJS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pudderz/TestingThreeJS/issues"
+  },
+  "homepage": "https://github.com/Pudderz/TestingThreeJS#readme",
+  "dependencies": {}
+}
