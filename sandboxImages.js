@@ -26,10 +26,10 @@ renderer.toneMappingExposure = 2.3;
 renderer.shadowMap.enabled= true;
 
 // const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
-
+camera.lookAt(0,0,0);
 
 camera.position.set(3,0,10)
-camera.lookAt(0,0,0);
+
 
 var loader = new THREE.TextureLoader();
 
@@ -78,13 +78,16 @@ scene.add(light)
  scene.add(new THREE.AxesHelper(500))
 
 
-
+  var tilt = Math.PI / 30;
+  camera.rotation.order = 'YXZ';
 const animate = function () {
   requestAnimationFrame(animate);
 
   const time = Date.now()*0.0005;
-
+  // controls.update();
+    camera.rotation.z = 0.02;
   renderer.render(scene, camera);
+  
 };
 
 animate();
@@ -92,6 +95,9 @@ animate();
 gsap.from("canvas",{opacity:0, duration:1})
 //changes size of canvas when browser window is resized
 
+
+
+camera.updateProjectionMatrix()
 window.addEventListener('resize', ()=>{
     let width = window.innerWidth;
     let height = window.innerHeight;
@@ -105,6 +111,7 @@ window.addEventListener('resize', ()=>{
 
 let scrollBefore = window.scrollY
 let cameraPos = camera.position.y
+
 window.addEventListener('mousewheel',function(event){
     console.log(event.originalEvent)
     if (event.deltaY >= 0) {
@@ -139,16 +146,16 @@ window.addEventListener('mousewheel',function(event){
           });
     }
     });
-//ToDo Make this smooth
-    window.addEventListener('click', ()=>{
-         camera.position.set(5,camera.position.y,10)
-         camera.lookAt(5,camera.position.y,0)
+// ToDo Make this smooth
+//     window.addEventListener('click', ()=>{
+//          camera.position.set(5,camera.position.y,10)
+//          camera.lookAt(5,camera.position.y,0)
        
-         camera.updateProjectionMatrix();
-    })
-    window.addEventListener('keydown', ()=>{
-        camera.position.set(3,camera.position.y,10)
-        camera.lookAt(0,camera.position.y,0)
+//          camera.updateProjectionMatrix();
+//     })
+//     window.addEventListener('keydown', ()=>{
+//         camera.position.set(3,camera.position.y,10)
+//         camera.lookAt(0,camera.position.y,0)
       
-        camera.updateProjectionMatrix();
-   })
+//         camera.updateProjectionMatrix();
+//    })
