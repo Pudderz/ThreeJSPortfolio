@@ -62,23 +62,7 @@
     <script src="js/three.js"></script>
     <script src="js/OrbitControls.js"></script>
     <script src="js/GLTFLoader.js"></script>
-    
-    <script id="vertexShader" type="x-shader/x-vertex">   
-        void main(){
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x+10.0, position.y, position.z+5.0, 1.0);
-        }
-    </script>
-    <script id="fragmentShader" type="x-shader/x-fragment">
-        uniform sampler2D texture1;
-        uniform vec4 resolution;
-        varying vec2 vUv;
-        varying vec3 vPosition;
-        void main(){
-            vec4 t = texture2D(texture1, vUv)
-            gl_FragColor = t;
-        }
-    </script>
-    
+
     
     
     <script src="templateApp.js"></script>
