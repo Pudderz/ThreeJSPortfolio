@@ -28,7 +28,7 @@ const raf=()=>{
     })
     let diff = rounded - position;
     position += Math.sign(diff)*Math.pow(Math.abs(diff),0.7)*0.05;
-    console.log(position)
+    // console.log(position)
     // block.style.transform =`translate(0,${position*100}px)`
     wrapper.style.transform=`translate(0,${-position*100+50}px)`
     window.requestAnimationFrame(raf)

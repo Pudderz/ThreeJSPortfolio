@@ -7,6 +7,7 @@
     <style>
         body { margin: 0; 
             overflow: hidden;
+            /* overscroll-behavior: none; */
         }
         canvas { display: block; }
         #block{
@@ -23,16 +24,35 @@
         .n2{top:300px;}
         .n3{top:400px;}
         .n4{top:500px;}
+        #container{
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+        }
+        *{
+            margin: 0;;
+        }
     </style>
     
 </head>
 <body>
+    <div id="container"></div>
     <div class="wrap">
-        <div class="n n0"></div>
-        <div class="n n1 "></div>
-        <div class="n n2"></div>
-        <div class="n n3"></div>
-        <div class="n n4"></div>
+        <div class="n n0">
+            <img src="/images/elite.png" width="60" alt="">
+        </div>
+        <div class="n n1 ">
+            <img src="/images/elite.png" width="60" alt="">
+        </div>
+        <div class="n n2">
+            <img src="/images/elite.png" width="60" alt="">
+        </div>
+        <div class="n n3">
+            <img src="/images/elite.png" width="60" alt="">
+        </div>
+        <div class="n n4">
+            <img src="/images/elite.png" width="60" alt="">
+        </div>
     </div>
    
     <div id="block"></div>
@@ -42,8 +62,27 @@
     <script src="js/three.js"></script>
     <script src="js/OrbitControls.js"></script>
     <script src="js/GLTFLoader.js"></script>
-    <script src="app.js">
-
+    
+    <script id="vertexShader" type="x-shader/x-vertex">   
+        void main(){
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x+10.0, position.y, position.z+5.0, 1.0);
+        }
+    </script>
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        uniform sampler2D texture1;
+        uniform vec4 resolution;
+        varying vec2 vUv;
+        varying vec3 vPosition;
+        void main(){
+            vec4 t = texture2D(texture1, vUv)
+            gl_FragColor = t;
+        }
+    </script>
+    
+    
+    
+    <script src="templateApp.js"></script>
+    <script src="app.js"></script><img src="/images/elite.png" width="60" alt="">
     </script>
 </body>
 </html>
