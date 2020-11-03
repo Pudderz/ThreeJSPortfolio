@@ -11,7 +11,8 @@ window.addEventListener("wheel", (e) => {
 var sketch = new Sketch();
 
 let objs = Array(5).fill({ dist: 0 });
-
+let attractMode = false;
+let attractTo = 0;
 const raf = () => {
   position += speed;
   speed *= 0.8;
@@ -26,17 +27,51 @@ const raf = () => {
     sketch.meshes[i].material.uniforms.distanceFromCenter.value = o.dist;
   });
   let diff = rounded - position;
-  position += Math.sign(diff) * Math.pow(Math.abs(diff), 0.7) * 0.05;
-  // console.log(position)
-  // block.style.transform =`translate(0,${position*100}px)`
-  wrapper.style.transform = `translate(0,${-position * 100 + 50}px)`;
-  console.log
-//   sketch.meshes.forEach((mesh, i) => {
-//     mesh.position.y = i * 1.2 + position * 1.2;
-    
-//   });
+  
+    if(attractMode){
+      position += -(position- attractTo)*0.05;
+      console.log(position)
+    }else{
+      position += Math.sign(diff) * Math.pow(Math.abs(diff), 0.7) * 0.05;
+
+        wrapper.style.transform = `translate(0,${-position * 100 + 50}px)`;
+
+
+    }
   window.requestAnimationFrame(raf);
   
 };
 
 raf();
+
+
+let navs = [...document.querySelectorAll('.nav li')]
+let nav= document.querySelector('.nav');
+let rots = sketch.groups.map(e=>e.rotation)
+nav.addEventListener('mouseenter',()=>{
+  attractMode = true;
+  gsap.to(rots,{
+    duration:0.3,
+    x:-0.7,
+    y:0,
+    z:0,
+  })
+})
+nav.addEventListener('mouseleave',()=>{
+  attractMode=false;
+  gsap.to(rots,{
+    duration:0.3,
+    x:-0.3,
+    y:-0.5,
+    z:-0.1,
+  })
+})
+navs.forEach((el)=>{
+  el.addEventListener('mouseover', e=>{
+    console.log(e.target);
+   
+    attractTo= Number(e.target.getAttribute('data-nav'));
+     console.log(attractTo)
+  })
+
+})
