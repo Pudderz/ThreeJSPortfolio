@@ -1,7 +1,6 @@
 // alert('test')
-
 function vertexShader() {
-    return `
+  return `
         uniform float time;
         uniform float distanceFromCenter;
       varying vec2 vUv; 
@@ -16,10 +15,10 @@ function vertexShader() {
         vUv.y += sin(time*0.3)*0.02;
         gl_Position = projectionMatrix * modelViewMatrix* vec4(pos,1.0); 
       }
-    `
-  }
-function fragmentShader(){
-    return `
+    `;
+}
+function fragmentShader() {
+  return `
     uniform float time;
     uniform float distanceFromCenter;
     uniform sampler2D texture1;
@@ -35,114 +34,106 @@ function fragmentShader(){
         gl_FragColor.a = clamp(distanceFromCenter, 0.6, 1.);
     }
         
-    `
-    
+    `;
 }
 
-class Sketch{
-    constructor(){
+class Sketch {
+  constructor() {
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById("container").appendChild(this.renderer.domElement);
 
-        this.renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
-        this.renderer.setSize( window.innerWidth, window.innerHeight );
-        document.getElementById('container').appendChild( this.renderer.domElement );
-    
-        this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
-        this.camera.position.z = 1;
-        this.scene = new THREE.Scene();
-        this.addMesh();
-        this.time= 0;
-        this.materials=[];
-        this.meshes=[];
-        this.groups=[];
-        this.render()
-        this.addResize()
-        this.handleImages();
+    this.camera = new THREE.PerspectiveCamera(
+      70,
+      window.innerWidth / window.innerHeight,
+      0.01,
+      10
+    );
+    this.camera.position.z = 1;
+    this.scene = new THREE.Scene();
+    this.addMesh();
+    this.time = 0;
+    this.materials = [];
+    this.meshes = [];
+    this.groups = [];
+    this.render();
+    this.addResize();
+    this.handleImages();
+  }
+
+  render() {
+    this.time += 0.05;
+    // this.mesh.rotation.x += 0.01;
+    // this.mesh.rotation.y += 0.02;
+    this.camera.lookAt(0, 0, 0);
+    if (this.materials) {
+      this.materials.forEach((mat) => {
+        mat.uniforms.time.value = this.time;
+      });
     }
 
+    this.camera.position.set(0, 0, 2);
+    this.renderer.render(this.scene, this.camera);
+    window.requestAnimationFrame(this.render.bind(this));
+  }
 
-    render(){
-        this.time+=0.05;
-        // this.mesh.rotation.x += 0.01;
-        // this.mesh.rotation.y += 0.02;
-        this.camera.lookAt(0,0,0);
-        if(this.materials){
-            this.materials.forEach((mat)=>{
-            mat.uniforms.time.value = this.time;
-        })
-        }
-        
-        this.camera.position.set(0,0,2)
-        this.renderer.render( this.scene, this.camera );
-        window.requestAnimationFrame(this.render.bind(this))
+  addMesh() {
+    this.geometry = new THREE.PlaneBufferGeometry(0.2, 0.2, 0.2);
+    // this.material = new THREE.MeshNormalMaterial({side: THREE.DoubleSide});
+    this.material = new THREE.ShaderMaterial({
+      side: THREE.DoubleSide,
+      uniforms: {
+        distanceFromCenter: { type: "f", value: 0 },
+        time: { type: "f", value: 0 },
+        texture1: { type: "t", value: null },
+        resolution: { type: "v4", value: new THREE.Vector4() },
+        uvRate1: {
+          value: new THREE.Vector2(1, 1),
+        },
+      },
+      transparent: true,
+      fragmentShader: fragmentShader(),
+      vertexShader: vertexShader(),
+    });
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    // this.scene.add( this.mesh );
+  }
+
+  addResize() {
+    window.addEventListener("resize", () => {
+      console.log("resizing");
+      this.width = window.innerWidth;
+      this.height = window.innerHeight;
+      this.renderer.setSize(this.width, this.height);
+      this.camera.aspect = this.width / this.height;
+      this.camera.updateProjectionMatrix();
+    });
+  }
+  handleImages() {
+    for (let i = 0; i < 5; i++) {
+      const group = new THREE.Group();
+      let mat = this.material.clone();
+      let image = document.createElement("img");
+      image.setAttribute("src", "./images/elite.png");
+      mat.uniforms.texture1.value = new THREE.Texture(image);
+      mat.uniforms.texture1.value.needsUpdate = true;
+      this.materials.push(mat);
+      // mat.wireframe= true;
+      let geo = new THREE.PlaneBufferGeometry(1.5, 1, 20, 20);
+      let mesh = new THREE.Mesh(geo, mat);
+
+      console.log(mesh);
+      group.add(mesh);
+      this.groups.push(group);
+      this.scene.add(group);
+
+      this.meshes.push(mesh);
+      mesh.position.y = i * 1.2;
+      group.rotation.y = -0.3;
+      group.rotation.x = -0.3;
+      group.rotation.z = -0.1;
     }
-
-    addMesh(){
-        this.geometry = new THREE.PlaneBufferGeometry( 0.2, 0.2, 0.2 );
-        // this.material = new THREE.MeshNormalMaterial({side: THREE.DoubleSide});
-        this.material = new THREE.ShaderMaterial({
-            
-            side: THREE.DoubleSide,
-            uniforms:{
-                distanceFromCenter:{type:'f', value:0},
-                time:{type: 'f',value: 0},
-                texture1:{type:'t', value:null},
-                resolution: {type:'v4',value: new THREE.Vector4()},
-                uvRate1:{
-                    value: new THREE.Vector2(1,1)
-                },
-            },
-            transparent:true,
-            fragmentShader: fragmentShader(),
-            vertexShader: vertexShader(),
-        });
-        this.mesh = new THREE.Mesh( this.geometry, this.material );
-	    // this.scene.add( this.mesh );
-    }
-
-
-    
-    addResize(){
-        window.addEventListener('resize', ()=>{
-            console.log('resizing')
-        this.width = window.innerWidth;
-        this.height = window.innerHeight;
-        this.renderer.setSize(this.width, this.height)
-        this.camera.aspect = this.width/this.height;
-        this.camera.updateProjectionMatrix()
-    })}
-    handleImages(){
-        
-        let images = [...document.querySelectorAll('img')];
-       
-      images.forEach((img, i)=>{
-        const group = new THREE.Group();
-        let mat = this.material.clone();
-        mat.uniforms.texture1.value = new THREE.Texture(img);
-         mat.uniforms.texture1.value.needsUpdate = true;
-        this.materials.push(mat);
-        // mat.wireframe= true;
-        let geo = new THREE.PlaneBufferGeometry(1.5,1,20,20)
-        let mesh = new THREE.Mesh(geo,mat)
-        
-        console.log(mesh);
-         group.add(mesh);
-         this.groups.push(group);
-         this.scene.add(group); 
-        
-         
-        this.meshes.push(mesh);
-        mesh.position.y = i*1.2;
-        group.rotation.y= -0.3;
-        group.rotation.x= -0.3;
-        group.rotation.z= -0.1;
-      })
-      }
-      
-    
-
+    let rots = this.groups.map(e=>e.position)
+    gsap.from(rots,{duration:1, y:-10})
 }
-
-
-
-
-
+}

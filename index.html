@@ -17,13 +17,6 @@
             background: red;
             
         }
-        .n{position: absolute; height: 5px; width:200px;background: #000;}
-        .n0{top:100px;}
-        
-        .n1{top:200px;}
-        .n2{top:300px;}
-        .n3{top:400px;}
-        .n4{top:500px;}
         #container{
             width: 100vw;
             height: 100vh;
@@ -31,6 +24,13 @@
         }
         *{
             margin: 0;;
+        }
+        h1{
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 2em;
+            margin: 20px;
         }
         .nav{
             position: fixed;
@@ -47,24 +47,8 @@
     
 </head>
 <body>
+    <h1>Matthew Pudney</h1>
     <div id="container"></div>
-    <div class="wrap">
-        <div class="n n0">
-            <img src="/images/elite.png" width="60" alt="">
-        </div>
-        <div class="n n1 ">
-            <img src="/images/elite.png" width="60" alt="">
-        </div>
-        <div class="n n2">
-            <img src="/images/elite.png" width="60" alt="">
-        </div>
-        <div class="n n3">
-            <img src="/images/elite.png" width="60" alt="">
-        </div>
-        <div class="n n4">
-            <img src="/images/elite.png" width="60" alt="">
-        </div>
-    </div>
     <ul class="nav">
         <li data-nav="4">1</li>
         <li data-nav="3">2</li>
@@ -72,7 +56,7 @@
         <li data-nav="1">4</li>
         <li data-nav="0">5</li>
     </ul>
-    <div id="block"></div>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/ScrollToPlugin.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/ScrollTrigger.min.js"></script> -->
@@ -83,7 +67,7 @@
     
     
     <script src="templateApp.js"></script>
-    <script src="app.js"></script><img src="/images/elite.png" width="60" alt="">
+    <script src="app.js"></script>
     </script>
 </body>
 </html>
