@@ -72,7 +72,7 @@ class Sketch {
       });
     }
 
-    this.camera.position.set(0, 0, 2);
+    this.camera.position.set(0, 0, 1.5);
     this.renderer.render(this.scene, this.camera);
     window.requestAnimationFrame(this.render.bind(this));
   }
@@ -129,7 +129,7 @@ class Sketch {
 
       this.meshes.push(mesh);
       mesh.position.y = i * 1.2;
-      group.rotation.y = -0.3;
+      group.rotation.y = -0.5;
       group.rotation.x = -0.3;
       group.rotation.z = -0.1;
     }

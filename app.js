@@ -51,6 +51,10 @@ let nav= document.querySelector('.nav');
 let rots = sketch.groups.map(e=>e.rotation)
 nav.addEventListener('mouseenter',()=>{
   attractMode = true;
+  gsap.to(document.body,{
+    duration:0.3,
+    background: '#1b1f25'
+  })
   gsap.to(rots,{
     duration:0.3,
     x:-0.7,
@@ -66,6 +70,10 @@ nav.addEventListener('mouseleave',()=>{
     y:-0.5,
     z:-0.1,
   })
+  gsap.to(document.body,{
+    duration:0.3,
+    background: '#ffffff'
+  })
 })
 navs.forEach((el)=>{
   el.addEventListener('mouseover', e=>{
@@ -77,4 +85,5 @@ navs.forEach((el)=>{
 
 })
 
-gsap.from(document.querySelector('h1'), {duration:1, opacity:0, y:30})
+// gsap.from(document.querySelector('h1'), {duration:1, height:0,})
+// gsap.fromTo(document.querySelector('h1.outline'), 1, {fill:"none"}, {fill:"green"});
