@@ -125,7 +125,7 @@ export function Test() {
     >
       <Canvas
         style={{ height: "100vh", width: "100vw", position:"absolute" }}
-        camera={{ fov: 75, position: [0, 0, 1.5] }}
+        camera={{ fov: 45, position: [0, 0, 4] }}
       >
         <ambientLight intensity={0.5} style={{ height: "100vh" }} />
         {/* <Group/> */}

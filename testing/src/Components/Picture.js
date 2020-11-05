@@ -4,25 +4,10 @@ import { Canvas, useFrame, useLoader } from "react-three-fiber";
 import ReactDOM from "react-dom";
 import picture from "../images/elite.png";
 import { TweenMax } from "gsap/gsap-core";
-const vertexShader = `
-        uniform float time;
-        uniform float distanceFromCenter;
-      varying vec2 vUv; 
-      varying vec3 vPosition;
-      varying vec2 pixels;
-      float PI = 3.141592653589793238; 
-      void main() {
-        vUv = (uv-vec2(0.5))*(0.8-0.2*distanceFromCenter*(2. - distanceFromCenter))+ vec2(0.5); 
-        vec3 pos = position;
-        pos.y+= sin(PI*uv.x)*0.01;
-        pos.y += sin(time*0.3)*0.02;
-        vUv.y += sin(time*0.3)*0.02;
-        gl_Position = projectionMatrix * modelViewMatrix* vec4(pos,1.0); 
-      }
-    `;
 
 const fragmentShader = `
-    uniform float time;
+    uniform float isMiddle;
+    uniform float uTime;
     uniform float distanceFromCenter;
     uniform sampler2D texture1;
     uniform vec4 resolution;
@@ -30,14 +15,87 @@ const fragmentShader = `
     varying vec3 vPosition;
     float PI = 3.141592653589793238;
     void main(){
-        vec4 t = texture2D(texture1, vUv);
-        float bw = (t.r + t.b + t.g )/3.;
-        vec4 another = vec4(bw,bw,bw,1);
-        gl_FragColor = mix(another,t,distanceFromCenter);
-        gl_FragColor.a = clamp(distanceFromCenter, 0.8, 1.);
+        if(isMiddle == 0.)
+        {
+          vec4 t = texture2D(texture1, vUv);
+          float bw = (t.r + t.b + t.g )/3.;
+          vec4 another = vec4(bw,bw,bw,1);
+           gl_FragColor = mix(another,t,distanceFromCenter);
+           gl_FragColor.a = clamp(distanceFromCenter, 0.8, 1.);
+        }
+        else
+        {
+          vec4 t = texture2D(texture1, vUv);
+          gl_FragColor = t;
+        }
+        
+        
+       
+  
     }
         
     `;
+
+
+    const vertexShader = `
+    uniform float uTime;
+    uniform float uAspectRatio;
+    uniform float uFrameRotation;
+    uniform float uFrameScale;
+    uniform float uBend;
+    uniform float uFloating;
+    varying vec2 vUv;
+    const float PI = 3.141592653589793;
+    mat2 scale(vec2 value) {
+        return mat2(value.x, 0.0, 0.0, value.y);
+    }
+    vec2 scaleUv(vec2 uv, float scaleFactor) {
+        float parsedScaleFactor = 1.0 - (scaleFactor - 1.0);
+        return uv * scale(vec2(parsedScaleFactor)) + vec2((1.0 - parsedScaleFactor) * 0.5);
+    }
+    mat2 rotate(float angle) {
+        return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+    }
+    vec2 rotateUv(vec2 uv, float angle) {
+        uv -= 0.5;
+        uv.y *= uAspectRatio;
+        uv *= rotate(angle);
+        uv.y /= uAspectRatio;
+        uv += 0.5;
+        return uv;
+    }
+    void main() {
+        vec3 pos = position;
+        vUv = uv;
+        /**
+        * bend
+        */
+        pos.y -= uBend * (1.0 - sin(uv.x * PI));
+        pos.x += uBend * (uv.y * 2.0 - 1.0) * (uv.x * 2.0 - 1.0) * 0.5;
+        /**
+        * scaling
+        */
+        vUv = scaleUv(vUv, 1.0 + (1.0 - uFrameScale));
+        /**
+        * rotation
+        */
+        vUv = rotateUv(vUv, uFrameRotation);
+        /**
+        * floating
+        */
+        float reducedTime = uTime * 0.35;
+        float floatingWave = sin(reducedTime * PI) * uFloating;
+        float yShift = 0.028;
+        float xShift = -0.007;
+        pos.y += floatingWave * yShift;
+        pos.x += floatingWave * xShift;
+        vUv.y += floatingWave * yShift;
+        vUv.x += floatingWave * xShift;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    }
+  `;
+
+    
 
 export default function Picture(props) {
   const speed = useRef(0);
@@ -49,10 +107,17 @@ export default function Picture(props) {
   const group = useRef();
   const texture1 = new THREE.TextureLoader().load(picture);
   const material = useRef();
-  const size = useRef(window.innerWidth/1900);
+  const value = window.innerWidth/1000;
+  const size = useRef( (value>1)? 1: value);
   const uniforms = useRef({
-    distanceFromCenter: { type: "f", value: 1 },
-    time: { type: "f", value: 0 },
+    uFrameRotation: {type:"f", value: 0},
+    uFrameScale: {type:"f", value:1.},
+    uBend: {type: "f", value: 0.0210},
+    uAspectRatio: {type:"f", value:1.7},
+    uFloating: {type:"f", value:1.},
+    isMiddle:{type:"f", value:0.},
+    distanceFromCenter: { type: "f", value: 1. },
+    uTime: { type: "f", value: 0. },
     texture1: { type: "t", value: texture1 },
     resolution: { type: "v4", value: new THREE.Vector4() },
     uvRate1: {
@@ -69,7 +134,8 @@ export default function Picture(props) {
       console.log(speed.current);
     });
     window.addEventListener('resize', ()=>{
-      size.current = window.innerWidth/2000;
+      const value = window.innerWidth/1000;
+        size.current= (value>1)? 1: value;
 
     })
 
@@ -81,7 +147,7 @@ export default function Picture(props) {
         console.log(speed.current);
       });
       window.removeEventListener('resize', ()=>{
-        const value = window.innerWidth/1900;
+        const value = window.innerWidth/700;
         size.current= (value>1)? 1: value;
       })
     };
@@ -90,7 +156,7 @@ export default function Picture(props) {
     if(props.rotating=== 'middle'){
       TweenMax.to(group.current.rotation,1,{
         duration:1,
-        x:-0.7,
+        x:-0.5,
         y: 0,
         z: 0,
       })
@@ -98,8 +164,8 @@ export default function Picture(props) {
       TweenMax.to(group.current.rotation,{
         duration:1,
         x:-0.3,
-        y: -0.5,
-        z: 0,
+        y: -0.35,
+        z: -0.12,
       })
     }
 
@@ -110,18 +176,20 @@ export default function Picture(props) {
   }, [props.rotating]);
   useEffect(() => {
     if(props.positioning=== 'middle'){
+      uniforms.current.isMiddle.value=-1;
       TweenMax.to(group.current.position,1,{
         duration:1,
         x:0,
-        y: 0,
+        y: 0.3,
         z: 0,
       })
     }else{
+      uniforms.current.isMiddle.value=0;
       TweenMax.to(group.current.position,{
         duration:1,
-        x:0.4,
+        x:0.5,
         y: 0,
-        z: 0,
+        z: 0.1,
       })
     }
     group.current.position.x = props.positioning.x;
@@ -132,7 +200,7 @@ export default function Picture(props) {
   useFrame(() => {
     const startRound = rounded.current;
     if(speed.current!==0 || props.attractTo.shouldJump){
-      uniforms.current.time.value += 0.05;
+      uniforms.current.uTime.value += 0.01;
       position.current = speed.current + position.current;
       speed.current = speed.current * 0.8;
       rounded.current = Math.round(position.current);
@@ -142,7 +210,8 @@ export default function Picture(props) {
 
       mesh.current.position.y = props.index * 1.2 - position.current * 1.2;
       const sizing = (props.attractMode)?size.current: size.current;
-      let scale = (1+ 0.2 * distance.current)* sizing;
+      const fromCenter= (props.attractMode)?1: distance.current;
+      let scale = (1+ 0.08 * fromCenter)* sizing*1.5;
       group.current.scale.set(scale, scale, scale);
       uniforms.current.distanceFromCenter.value = distance.current;
  

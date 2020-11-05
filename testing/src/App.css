@@ -79,7 +79,7 @@ a{
 
   .Home, .Contact {
     height: 100vh;
-    background-color: #161616;
+    /* background-color: #161616; */
     width: 100%;
     position: absolute;
     left: 50%;
