@@ -202,3 +202,50 @@ canvas{
     transition: 0.5s;
 }
 
+.textContainer{
+  margin: 50px auto 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  font-size: 20px;
+  line-height: 1.6em;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.textContainer h3{
+  font-size: 80px;
+  margin: 20px 20px 20px 0px;
+  line-height: normal;
+  color: #191C1D;
+}
+.textContainer h4{
+  color: #191C1D;
+}
+.textContainer div{
+  padding: 20px;
+}
+.textContainer ul{
+  padding: 20px;
+}
+.textContainer a{
+  display: block;
+}
+.flex{
+  display: flex;
+  justify-content: space-between;
+}
+
+.imageDescription{
+  color: #484b4c;
+  font-size: 15px;
+  padding: 0;
+  margin: auto;
+  width: fit-content;
+}
+
+.about{
+  background-color: #191C1D;
+  color: white;
+}
+
+
