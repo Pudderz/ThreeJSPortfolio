@@ -4,7 +4,7 @@ import { Canvas, useFrame, useLoader } from "react-three-fiber";
 import ReactDOM from "react-dom";
 import picture from "../images/elite.png";
 import { TweenMax } from "gsap/gsap-core";
-
+import { TimelineMax, Power3, Power4 } from "gsap";
 const fragmentShader = `
     uniform float isMiddle;
     uniform float uTime;
@@ -15,21 +15,13 @@ const fragmentShader = `
     varying vec3 vPosition;
     float PI = 3.141592653589793238;
     void main(){
-        if(isMiddle == 0.)
-        {
+
           vec4 t = texture2D(texture1, vUv);
           float bw = (t.r + t.b + t.g )/3.;
           vec4 another = vec4(bw,bw,bw,1);
            gl_FragColor = mix(another,t,distanceFromCenter);
            gl_FragColor.a = clamp(distanceFromCenter, 0.8, 1.);
-        }
-        else
-        {
-          vec4 t = texture2D(texture1, vUv);
-          gl_FragColor = t;
-        }
-        
-        
+  
        
   
     }
@@ -102,12 +94,13 @@ export default function Picture(props) {
   const rounded = useRef(0);
   const position = useRef(0);
   const distance = useRef(0);
+  const firstTime = useRef(0)
 
   const mesh = useRef();
   const group = useRef();
   const texture1 = new THREE.TextureLoader().load(picture);
   const material = useRef();
-  const value = window.innerWidth/1000;
+  const value = window.innerWidth/1900;
   const size = useRef( (value>1)? 1: value);
   const uniforms = useRef({
     uFrameRotation: {type:"f", value: 0},
@@ -134,15 +127,21 @@ export default function Picture(props) {
       console.log(speed.current);
     });
     window.addEventListener('resize', ()=>{
-      const value = window.innerWidth/1000;
+      const value = window.innerWidth/1900;
         size.current= (value>1)? 1: value;
 
     })
-
+    TweenMax.from(group.current.position,{
+      duration:2,
+    x:0,
+    z:0,
+      y:-10,
+      ease: Power4.easeInOut      
+    }).delay(1.5)
     // }
     return () => {
       window.removeEventListener("wheel", (e) => {
-        speed.current += e.deltaY * 0.0003;
+        speed.current -= e.deltaY * 0.0003;
         console.log("scroll");
         console.log(speed.current);
       });
@@ -151,6 +150,9 @@ export default function Picture(props) {
         size.current= (value>1)? 1: value;
       })
     };
+
+
+    
   }, []);
   useEffect(() => {
     if(props.rotating=== 'middle'){
@@ -169,9 +171,7 @@ export default function Picture(props) {
       })
     }
 
-    // group.current.rotation.x = props.rotating.x;
-    // group.current.rotation.y = props.rotating.y;
-    // group.current.rotation.z = props.rotating.z;
+
     return () => {};
   }, [props.rotating]);
   useEffect(() => {
@@ -187,7 +187,7 @@ export default function Picture(props) {
       uniforms.current.isMiddle.value=0;
       TweenMax.to(group.current.position,{
         duration:1,
-        x:0.5,
+        x:0.8,
         y: 0,
         z: 0.1,
       })
@@ -199,6 +199,7 @@ export default function Picture(props) {
 
   useFrame(() => {
     const startRound = rounded.current;
+
     if(speed.current!==0 || props.attractTo.shouldJump){
       uniforms.current.uTime.value += 0.01;
       position.current = speed.current + position.current;
@@ -211,21 +212,25 @@ export default function Picture(props) {
       mesh.current.position.y = props.index * 1.2 - position.current * 1.2;
       const sizing = (props.attractMode)?size.current: size.current;
       const fromCenter= (props.attractMode)?1: distance.current;
-      let scale = (1+ 0.08 * fromCenter)* sizing*1.5;
+      let scale = (1+ 0.08 * fromCenter)* sizing*1.3;
       group.current.scale.set(scale, scale, scale);
       uniforms.current.distanceFromCenter.value = distance.current;
  
 
   
     if (props.index == 0 && startRound !== rounded.current) {
+
+
       props.displayDom(rounded.current);
     }
     let diff = rounded.current - position.current;
 
     if (props.attractMode || props.attractTo.shouldJump) {
       position.current += -(position.current - props.attractTo.goTo) * 0.05;
+      console.log(position.current)
 
       if(props.attractTo.shouldJump && Math.round(position.current*2)/2== props.attractTo.goTo){
+       console.log(props.attractTo.shouldJump, Math.round(position.current*2)/2, props.attractTo.goTo)
         console.log('cancelJump')
         props.jumpComplete();
       }
@@ -240,15 +245,40 @@ export default function Picture(props) {
   
 
   const goToPicture = () =>{
+    
+    if(props.displayNumber == props.index){
+      let tl = new TimelineMax({onComplete:()=>props.linkTo() });
+      TweenMax.to(group.current.position,{
+        duration:1,
+        x:-0,
+        y: 0,
+        z: -0.,
+      })
+      TweenMax.to(group.current.rotation,{
+        duration:1,
+        x:0,
+        y: 0,
+        z: 0,
+      })
+      
+    }
+    
     props.goTo(props.index)
   }
-
+const onPointerEnter=()=>{
+  document.body.style.cursor = "pointer"
+}
+const onPointerLeave=()=>{
+  document.body.style.cursor = "default"
+}
   return (
     <group {...props} ref={group}>
       <mesh
         ref={mesh}
         //  scale={active ? [1.5, 1.5, 1.5] : [1, 1, 1]}
         onClick={goToPicture}
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={onPointerLeave}
       >
         <planeBufferGeometry args={[1.5, 1, 20, 20]} />
         <shaderMaterial
