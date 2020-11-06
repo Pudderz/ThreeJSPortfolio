@@ -7,6 +7,9 @@ import { useSpring, animated } from "react-spring";
 import AnimatedCirle from "./AnimatedCircle";
 import Title from "./Title";
 import SpaceImage from '../spaceWebsite/Gallery.png'
+import { Canvas } from "react-three-fiber";
+import Test from "./canvas";
+import HtmlText from "./HtmlText";
 
 export default function BlogPage() {
   const history = useHistory();
@@ -57,19 +60,19 @@ export default function BlogPage() {
           ease: Power4.easeInOut,
         },
       });
-      let height = 50-values.current*10;
-      // if(height > 100){
-      //   height = 100;
-      // }else 
-      if(height<20){
-        height=20;
-      }
-      TweenMax.to(title, 0.2, {
-        css: {
-          top: `${height}%`,
-          ease: Power4.easeInOut,
-        },
-      });
+      // let height = 50-values.current*10;
+      // // if(height > 100){
+      // //   height = 100;
+      // // }else 
+      // if(height<20){
+      //   height=20;
+      // }
+      // TweenMax.to(title, 0.2, {
+      //   css: {
+      //     top: `${height}%`,
+      //     ease: Power4.easeInOut,
+      //   },
+      // });
     });
     return () => {
       
@@ -86,7 +89,17 @@ export default function BlogPage() {
        
 <Title/>
         <div ref={(el) => (body = el)} className="Headd Contact noOpacity" >
-          
+        {/* <Test
+            style={{ height: "100vh", width: "100vw", position: "absolute" }}
+            camera={{ fov: 45, position: [0, 0, 4] }}
+          > */}
+
+          <HtmlText
+            number={1}
+            attractMode={false}
+            linkTo={()=>{console.log('test')}}
+          />
+          {/* </Test> */}
            <div style={{
             position:'absolute',
             top:'50%',
@@ -97,7 +110,7 @@ export default function BlogPage() {
           }}>
           <img src={picture} alt="picture" height="300px"></img>
         </div>
-          <div ref={(el) => (title = el)}
+          {/* <div ref={(el) => (title = el)}
           style={{
             position:'absolute',
             top:'50%',
@@ -106,15 +119,15 @@ export default function BlogPage() {
             zIndex: 1,
           }}>
             <h1>Project 1</h1>
-          </div>
+          </div> */}
           <div style={{
             position:'absolute',
-            top:'40%',
-            right:'40%',
+            bottom:'3%',
+            right:'48%',
 
             zIndex: 1,
           }}>
-            <button>
+            <button className="button">
               scrollDown
             </button>
           </div>
