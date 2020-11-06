@@ -1,11 +1,11 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link } from 'next/link'
 
 export default function Title() {
     return (
         <div className="top">
             <h2 >Matthew Pudney</h2>
-            <NavLink  to="/about">About</NavLink>
+            <Link  to="/about">About</Link>
         </div>
     )
 }

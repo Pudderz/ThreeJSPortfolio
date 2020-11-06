@@ -3,13 +3,16 @@ import Test from './Components/canvas';
 import BlogPage from './Components/BlogPage'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import About from './Components/About';
-
+import { GlobalProvider  } from "./contexts/GlobalContext";
 
 
 
 function App() {
 
+
+  
   return (
+    <GlobalProvider>
     <div className="App" data-barba="container">
     <Router>
       <Switch>
@@ -19,6 +22,7 @@ function App() {
       </Switch>
     </Router>
   </div>
+  </GlobalProvider>
   );
 }
 

@@ -1,18 +1,18 @@
 import React, { Component, useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "react-three-fiber";
-import ReactDOM from "react-dom";
-import Picture from "./Picture";
+import Picture from "../components/Picture";
+import { useRouter } from 'next/router'
+import HtmlText from "../components/HtmlText";
+import List from "../components/List";
+import { TweenMax} from "gsap";
+import { TimelineMax} from "gsap";
+import {  Power3, Power4 } from "gsap";
+import { HomeContext } from "../components/HomeContext";
+import Title from "../components/Title";
 
-import HtmlText from "./HtmlText";
-import List from "./List";
-import { NavLink, useHistory } from "react-router-dom";
-import { TweenMax, TimelineMax, Power3, Power4 } from "gsap";
-import { HomeContext } from "./HomeContext";
-import Title from "./Title";
-
-export function Test() {
-  const history = useHistory();
+export function Index() {
+  const router = useRouter();
   let screen = useRef(null);
   let body = useRef(null);
   useEffect(() => {
@@ -65,17 +65,7 @@ export function Test() {
     setAttractMode(boolean);
     if (boolean) {
       setPosition("middle");
-      // setPosition({
-      //   x: -0.7,
-      //   y: -0,
-      //   z: -0,
-      // });
       setPositioning("middle");
-      // setPositioning({
-      //   x: 0,
-      //   y: 0,
-      //   z: 0,
-      // })
     } else {
       setAttractTo({
         ...attractTo,
@@ -108,7 +98,7 @@ export function Test() {
     });
   };
   const linkTo = () => {
-    var tl = new TimelineMax({ onComplete: () => history.push("/Contact") });
+    var tl = new TimelineMax({ onComplete: () => router.push("/Contact") });
 
     tl.to(body, {
       duration: 0.5,
@@ -211,4 +201,4 @@ export function Test() {
   );
 }
 
-export default Test;
+export default Index;

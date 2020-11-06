@@ -1,25 +1,24 @@
 import React from "react";
-import { NavLink, useHistory } from "react-router-dom";
+// import {Link} from 'next/link'
+import { useRouter } from "next/router";
 import { TweenMax, TimelineMax, Power3, Power4 } from "gsap";
 import { useRef, useEffect } from "react";
-import picture from "../images/elite.png";
-import { useSpring, animated } from "react-spring";
-import AnimatedCirle from "./AnimatedCircle";
-import Title from "./Title";
-import SpaceImage from '../spaceWebsite/Gallery.png'
+// import { useSpring, animated } from "react-spring";
+import AnimatedCirle from "../components/AnimatedCircle";
+// import Title from "../components/Title";
 import { Canvas } from "react-three-fiber";
-import Test from "./canvas";
-import HtmlText from "./HtmlText";
 
-export default function BlogPage() {
-  const history = useHistory();
+import HtmlText from "../components/HtmlText";
+
+export default function ProjectPage() {
+  const router = useRouter();
   let screen = useRef(null);
   let body = useRef(null);
   let title = useRef(null);
   let information = useRef(null);
   const values = useRef(1)
   const linkTo = () => {
-    var tl = new TimelineMax({ onComplete: () => history.push("/") });
+    var tl = new TimelineMax({ onComplete: () => router.push("/") });
 
     tl.to(body, {
       duration: 0.5,
@@ -87,7 +86,7 @@ export default function BlogPage() {
       </div>
       <div  >
        
-<Title/>
+{/* <Title/> */}
         <div ref={(el) => (body = el)} className="Headd Contact noOpacity" >
         {/* <Test
             style={{ height: "100vh", width: "100vw", position: "absolute" }}
@@ -108,7 +107,7 @@ export default function BlogPage() {
 
             transform: 'translate(-50, -50%)',
           }}>
-          <img src={picture} alt="picture" height="300px"></img>
+          <img src='/images/elite.png' alt="picture" height="300px"></img>
         </div>
           {/* <div ref={(el) => (title = el)}
           style={{
@@ -132,9 +131,9 @@ export default function BlogPage() {
             </button>
           </div>
 
-          <NavLink to="/" onClick={linkTo} className="button">
+          {/* <Link to="/" onClick={linkTo} className="button">
             Home
-          </NavLink>
+          </Link> */}
         </div>
         {/* <AnimatedCirle percent={percent.value} /> */}
       </div>
@@ -184,7 +183,7 @@ export default function BlogPage() {
 <a href="">Learn more at Github repo</a></div> 
         </div>
           <div className="textContainer">
-    <img src={SpaceImage} alt="gallery of the space website" width="100%" style={{maxWidth:'1200px', margin:'auto'}} />
+    <img src='images/Gallery.png' alt="gallery of the space website" width="100%" style={{maxWidth:'1200px', margin:'auto'}} />
           <p className="imageDescription"> This is the image gallery</p>
           </div>
       

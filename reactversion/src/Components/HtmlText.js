@@ -1,8 +1,20 @@
 import { TimelineMax } from "gsap/gsap-core";
 import { TweenMax } from "gsap/gsap-core";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import {GlobalContext} from "../contexts/GlobalContext";
 export default function HtmlText(props) {
+  const {
+    active,
+    setActive,
+    currentLocation,
+    PreviousLocation,
+    setPreviousLocation,
+    previousPageColour,
+    setPreviousColour,
+  } = useContext(GlobalContext);
+
+  const firstCount = useRef(0)
   console.log(props.number);
   const [state, setState] = useState({
     title: "Project 1",
@@ -14,36 +26,6 @@ export default function HtmlText(props) {
   const [colours, setColours] = useState({
     primaryColor: "black",
   });
-  const information = {
-    1: {
-      title: "Project 1",
-      descripttion: "Description 3",
-      primaryColor: "white",
-      secondaryColor: "#1b1f25",
-      textColor: "white",
-    },
-    0: {
-      title: "Project 2",
-      descripttion: "Description 2",
-      primaryColor: "#978d58",
-      secondaryColor: "#0b5269",
-      textColor: "white",
-    },
-    2: {
-      title: "Project 3",
-      descripttion: "Description 3",
-      primaryColor: "#FCBC3E",
-      secondaryColor: "#778899",
-      textColor: "white",
-    },
-    3: {
-      title: "Project 4",
-      descripttion: "Description 4",
-      primaryColor: "white",
-      secondaryColor: "#1e7753",
-      textColor: "white",
-    },
-  };
 
   const linkToContacts = (e) => {
     e.preventDefault();
@@ -65,6 +47,7 @@ export default function HtmlText(props) {
   };
 
   useEffect(() => {
+    
     let tl = new TimelineMax();
     tl.to(backgroundRef, {
       duration: 1,
@@ -76,18 +59,21 @@ export default function HtmlText(props) {
     });
     tl.to(sideBarRef, {
       duration: 1,
-      height:'100%',
+      height: "100%",
     }).delay(1);
-    return()=>{
+    console.log(PreviousLocation)
+    setPreviousLocation("home");
+    console.log(PreviousLocation)
+    return () => {
       TweenMax.to(backgroundRef, {
-      duration: 1,
-      height: "0%",
-    })
-    }
-    
+        duration: 1,
+        height: "0%",
+      });
+    };
   }, []);
 
   useEffect(() => {
+    
     if (!props.attractMode) {
       let tl = new TimelineMax();
       tl.to(ref, {
@@ -96,12 +82,12 @@ export default function HtmlText(props) {
       });
       tl.add(() => {
         setState({
-          title: information[props.number].title,
-          description: information[props.number].descripttion,
+          title: props.information[props.number].title,
+          description: props.information[props.number].descripttion,
         });
         setColours({
-          primaryColor: information[props.number].primaryColor,
-          textColor: information[props.number].textColor,
+          primaryColor: props.information[props.number].primaryColor,
+          textColor: props.information[props.number].textColor,
           // secondaryColor: information[props.number].secondaryColor,
         });
       });
@@ -111,22 +97,31 @@ export default function HtmlText(props) {
       });
       TweenMax.to(backgroundRef, {
         duration: 1,
-        backgroundColor: information[props.number].secondaryColor,
+        backgroundColor: props.information[props.number].secondaryColor,
       });
     } else {
       setState({
-        title: information[props.number].title,
-        description: information[props.number].descripttion,
+        title: props.information[props.number].title,
+        description: props.information[props.number].descripttion,
       });
       setColours({
-        primaryColor: information[props.number].primaryColor,
-        textColor: information[props.number].textColor,
+        primaryColor: props.information[props.number].primaryColor,
+        textColor: props.information[props.number].textColor,
       });
       TweenMax.to(backgroundRef, {
         duration: 1,
-        backgroundColor: information[props.number].secondaryColor,
+        backgroundColor: props.information[props.number].secondaryColor,
       });
     }
+    console.log(previousPageColour)
+
+    //sets the colour for the next page so we can have the correct colour transition.
+    if(firstCount.current> 1){
+      setPreviousColour(props.information[props.number].primaryColor)
+    }else{
+      firstCount.current++;
+    }
+    
   }, [props.number]);
 
   useEffect(() => {
@@ -148,7 +143,6 @@ export default function HtmlText(props) {
         opacity: "1",
       });
     } else {
-
       TweenMax.to(ref, {
         duration: 0.1,
         opacity: "0",
@@ -184,9 +178,8 @@ export default function HtmlText(props) {
           // backgroundColor: colours.secondaryColor,
           position: "absolute",
           bottom: 0,
-          zIndex:'-1',
-          height:0,
-          
+          zIndex: "-1",
+          height: 0,
         }}
       ></div>
       <div
@@ -216,7 +209,7 @@ export default function HtmlText(props) {
           onPointerOver={() => sideBarSize("big")}
           onPointerLeave={() => sideBarSize("small")}
         >
-          More Details 
+          More Details
         </Link>
       </div>
     </>

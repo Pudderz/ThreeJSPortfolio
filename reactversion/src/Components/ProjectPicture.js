@@ -90,14 +90,10 @@ const fragmentShader = `
     
 
 export default function Picture(props) {
-  const speed = useRef(0);
-  const rounded = useRef(0);
-  const position = useRef(0);
-  const distance = useRef(0);
-  const firstTime = useRef(0)
-
+ const lastScrollHeight = useRef(0)
   const mesh = useRef();
   const group = useRef();
+
   const texture1 = new THREE.TextureLoader().load(picture);
   const material = useRef();
   const value = window.innerWidth/1900;
@@ -105,9 +101,9 @@ export default function Picture(props) {
   const uniforms = useRef({
     uFrameRotation: {type:"f", value: 0},
     uFrameScale: {type:"f", value:1.},
-    uBend: {type: "f", value: 0.0210},
+    uBend: {type: "f", value: 0},
     uAspectRatio: {type:"f", value:1.7},
-    uFloating: {type:"f", value:1.},
+    uFloating: {type:"f", value:2},
     isMiddle:{type:"f", value:0.},
     distanceFromCenter: { type: "f", value: 1. },
     uTime: { type: "f", value: 0. },
@@ -116,136 +112,67 @@ export default function Picture(props) {
     uvRate1: {
       value: new THREE.Vector2(1, 1),
     },
+    
   });
 
   useEffect(() => {
-    uniforms.current.distanceFromCenter.value = 1;
-    // return () => {
-    window.addEventListener("wheel", (e) => {
-      speed.current += e.deltaY * 0.0003;
-      console.log("scroll");
-      console.log(speed.current);
-    });
     window.addEventListener('resize', ()=>{
-      const value = window.innerWidth/1900;
+      const value = window.innerWidth/1500;
         size.current= (value>1)? 1: value;
-
     })
-    TweenMax.from(group.current.position,{
-      duration:2,
-    x:0,
-    z:0,
-      y:-10,
-      ease: Power4.easeInOut      
-    }).delay(1.5)
-    // }
+
+    window.addEventListener('scroll',(e)=>{
+        console.log(e)
+        console.log(e.target)
+        const difference = lastScrollHeight.current -window.scrollY
+        console.log(typeof group)
+        console.log(typeof group.current)
+        if(group.current != null && difference!= 0){
+            group.current.rotation.z+= (difference/document.documentElement.scrollHeight)
+            group.current.position.y+= (difference/document.documentElement.scrollHeight)*10
+            size.current+= (difference/document.documentElement.scrollHeight)
+            console.log(document.documentElement.scrollHeight)
+            lastScrollHeight.current =  window.scrollY
+        }
+        
+        
+    })
+
     return () => {
-      window.removeEventListener("wheel", (e) => {
-        speed.current -= e.deltaY * 0.0003;
-        console.log("scroll");
-        console.log(speed.current);
-      });
       window.removeEventListener('resize', ()=>{
         const value = window.innerWidth/700;
         size.current= (value>1)? 1: value;
       })
+      window.removeEventListener('scroll',(e)=>{
+        console.log(e)
+        console.log(e.target)
+        const difference = lastScrollHeight.current -window.scrollY
+        if(group.current != null && difference!= 0){
+            group.current.rotation.z+= (difference/document.documentElement.scrollHeight)
+            group.current.position.y+= (difference/document.documentElement.scrollHeight)*10
+            size.current+= (difference/document.documentElement.scrollHeight)
+            console.log(document.documentElement.scrollHeight)
+            lastScrollHeight.current =  window.scrollY
+        }
+        
+        
+    })
     };
 
 
     
   }, []);
-  useEffect(() => {
-    if(props.rotating=== 'middle'){
-      TweenMax.to(group.current.rotation,1,{
-        duration:1,
-        x:-0.5,
-        y: 0,
-        z: 0,
-      })
-    }else{
-      TweenMax.to(group.current.rotation,{
-        duration:1,
-        x:-0.3,
-        y: -0.35,
-        z: -0.12,
-      })
-    }
-
-
-    return () => {};
-  }, [props.rotating]);
-  useEffect(() => {
-    if(props.positioning=== 'middle'){
-      uniforms.current.isMiddle.value=-1;
-      TweenMax.to(group.current.position,1,{
-        duration:1,
-        x:0,
-        y: 0.3,
-        z: 0,
-      })
-    }else{
-      uniforms.current.isMiddle.value=0;
-      TweenMax.to(group.current.position,{
-        duration:1,
-        x:0.8,
-        y: 0,
-        z: 0.1,
-      })
-    }
-    group.current.position.x = props.positioning.x;
-
-    return () => {};
-  }, [props.positioning]);
 
   useFrame(() => {
-    const startRound = rounded.current;
+    let scale = 4.5*size.current;
 
-    if(speed.current!==0 || props.attractTo.shouldJump){
-      uniforms.current.uTime.value += 0.01;
-      position.current = speed.current + position.current;
-      speed.current = speed.current * 0.8;
-      rounded.current = Math.round(position.current);
- }   
-      distance.current = Math.min(Math.abs(position.current - props.index), 1);
-      distance.current = 1 - distance.current ** 2;
-
-      mesh.current.position.y = props.index * 1.2 - position.current * 1.2;
-      const sizing = (props.attractMode)?size.current: size.current;
-      const fromCenter= (props.attractMode)?1: distance.current;
-      let scale = (1+ 0.08 * fromCenter)* sizing*1.3;
-      group.current.scale.set(scale, scale, scale);
-      uniforms.current.distanceFromCenter.value = distance.current;
- 
-
-  
-    if (props.index == 0 && startRound !== rounded.current) {
-
-
-      props.displayDom(rounded.current);
-    }
-    let diff = rounded.current - position.current;
-
-    if (props.attractMode || props.attractTo.shouldJump) {
-      position.current += -(position.current - props.attractTo.goTo) * 0.05;
-      console.log(position.current)
-
-      if(props.attractTo.shouldJump && Math.round(position.current*2)/2== props.attractTo.goTo){
-       console.log(props.attractTo.shouldJump, Math.round(position.current*2)/2, props.attractTo.goTo)
-        console.log('cancelJump')
-        props.jumpComplete();
-      }
-    } else {
-      position.current =
-        position.current +
-        Math.sign(diff) * Math.pow(Math.abs(diff), 0.7) * 0.05;
-    }
+    group.current.scale.set(scale, scale, scale);
  
     // }
   });
   
 
   const goToPicture = () =>{
-    
     if(props.displayNumber == props.index){
       let tl = new TimelineMax({onComplete:()=>props.linkTo() });
       TweenMax.to(group.current.position,{
@@ -254,16 +181,8 @@ export default function Picture(props) {
         y: 0,
         z: -0.,
       })
-      TweenMax.to(group.current.rotation,{
-        duration:1,
-        x:0,
-        y: 0,
-        z: 0,
-      })
-      
     }
     
-    props.goTo(props.index)
   }
 const onPointerEnter=()=>{
   document.body.style.cursor = "pointer"
@@ -272,13 +191,14 @@ const onPointerLeave=()=>{
   document.body.style.cursor = "default"
 }
   return (
-    <group {...props} ref={group}>
+    <group {...props} ref={el=>group.current=el}>
       <mesh
         ref={mesh}
         //  scale={active ? [1.5, 1.5, 1.5] : [1, 1, 1]}
         onClick={goToPicture}
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
+        // doubleSided = {true}
       >
         <planeBufferGeometry args={[1.5, 1, 20, 20]} />
         <shaderMaterial
@@ -287,6 +207,7 @@ const onPointerLeave=()=>{
           uniforms={uniforms.current}
           vertexShader={vertexShader}
           fragmentShader={fragmentShader}
+          side= {THREE.DoubleSide}
         />
       </mesh>
     </group>
