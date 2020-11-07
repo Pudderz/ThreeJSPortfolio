@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { TimelineMax } from "gsap/gsap-core";
 import ListItem from "./ListItem";
@@ -6,72 +6,50 @@ import ListItem from "./ListItem";
 export default function List(props) {
   const openRef = useRef(false);
   const goToNumber = useRef(props.number);
+  const animationRef = useRef();
+
+  useEffect(()=>{
+    animationRef.current = new TimelineMax({
+      onComplete: () => {
+        //Start scolling once animation is complete
+        openRef.current = true;
+      },
+      paused:true
+    });
+    animationRef.current.to(".marker", {
+      duration: 0.3,
+      width: "100px",
+    });
+    animationRef.current.to(".visHide", {
+      duration: 0,
+      visibility: "visible",
+    });
+    animationRef.current.to(".marker", {
+      duration: 0.3,
+      width: "0%",
+    });
+  },[])
 
   const pointerOver = () => {
+    
     props.attractMode(true);
     props.goTo(props.number);
     gsap.to(document.body, {
       duration: 1,
       background: "#1b1f25",
     });
-
-    let tl = new TimelineMax({
-      onComplete: () => {
-        openRef.current = true;
-        //Start scolling once animation is complete
-        console.log(goToNumber.current);
-        props.goTo(goToNumber.current);
-      },
-    });
-    tl.to(".nav", {
-      duration: 0,
-      width: "fit-content",
-    });
-    tl.to(".marker", {
-      duration: 0.3,
-      width: "100px",
-    });
-    tl.to(".visHide", {
-      duration: 0,
-      visibility: "visible",
-    });
-    tl.to(".marker", {
-      duration: 0.3,
-      width: "0%",
-    });
+    animationRef.current.play()
   };
   const pointerLeave = () => {
     props.attractMode(false);
-    console.log(openRef);
-    if (openRef.current) {
-      let tl = new TimelineMax();
+    animationRef.current.reverse()
+    openRef.current = false;
 
-      tl.to(".marker", {
-        duration: 0.3,
-        width: "100px",
-      });
-      tl.to(".visHide", {
-        duration: 0,
-        visibility: "hidden",
-      });
-      tl.to(".marker", {
-        duration: 0.3,
-        width: "0%",
-      });
-      // tl.to(".nav",{
-      //   duration: 1,
-      //   width: '35px',
-      // })
-      openRef.current = false;
-    }
   };
   const select = (number) => {
     console.log(openRef);
     goToNumber.current = number;
-    // console.log(e.target.getAttribute("data-nav"))
-    // props.goTo(Number(e.target.getAttribute("data-nav")));
     if (openRef.current) {
-      console.log("goingto");
       props.goTo(goToNumber.current);
     }
   };
@@ -82,6 +60,7 @@ export default function List(props) {
         className="nav"
         onPointerEnter={pointerOver}
         onPointerLeave={pointerLeave}
+        style={{width:'fit-content'}}
       >
         <ListItem
         display={props.displayNumber}

@@ -2,25 +2,25 @@ import { TimelineMax } from "gsap/gsap-core";
 import { TweenMax } from "gsap/gsap-core";
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import {GlobalContext} from "../contexts/GlobalContext";
+import { GlobalContext } from "../contexts/GlobalContext";
 export default function HtmlText(props) {
-  const {
-    active,
-    setActive,
-    currentLocation,
-    PreviousLocation,
-    setPreviousLocation,
-    previousPageColour,
-    setPreviousColour,
-  } = useContext(GlobalContext);
+  const { setPreviousLocation, setPreviousColour } = useContext(GlobalContext);
 
-  const firstCount = useRef(0)
-  console.log(props.number);
+  const backgroundAnimationRef = useRef();
+  const sideBarAnimationRef = useRef();
+  const textAnimationRef = useRef();
+
+  //ref for making sure certain useEffects do not fire on mount
+  const firstCount = useRef(0);
+
+
   const [state, setState] = useState({
     title: "Project 1",
     descripttion: "description",
   });
-  let ref = useRef();
+
+  
+  let textRef = useRef();
   let sideBarRef = useRef();
   let backgroundRef = useRef();
   const [colours, setColours] = useState({
@@ -47,7 +47,39 @@ export default function HtmlText(props) {
   };
 
   useEffect(() => {
-    
+    sideBarAnimationRef.current = TweenMax.fromTo(
+      sideBarRef,
+      {
+        width: "0px",
+      },
+      {
+        width: "10px",
+        duration: 0.4,
+        paused: true,
+      }
+    );
+    backgroundAnimationRef.current = TweenMax.fromTo(
+      backgroundRef,
+      {
+        opacity: "0",
+      },
+      {
+        duration: 0.4,
+        opacity: "1",
+        paused: true,
+      }
+    );
+    textAnimationRef.current = TweenMax.fromTo(
+      textRef,
+      {
+        opacity: "0",
+      },
+      {
+        duration: 0.4,
+        opacity: "1",
+        paused: true,
+      }
+    );
     let tl = new TimelineMax();
     tl.to(backgroundRef, {
       duration: 1,
@@ -61,9 +93,9 @@ export default function HtmlText(props) {
       duration: 1,
       height: "100%",
     }).delay(1);
-    console.log(PreviousLocation)
+
     setPreviousLocation("home");
-    console.log(PreviousLocation)
+
     return () => {
       TweenMax.to(backgroundRef, {
         duration: 1,
@@ -73,10 +105,9 @@ export default function HtmlText(props) {
   }, []);
 
   useEffect(() => {
-    
     if (!props.attractMode) {
       let tl = new TimelineMax();
-      tl.to(ref, {
+      tl.to(textRef, {
         duration: 0.2,
         opacity: "0",
       });
@@ -90,8 +121,8 @@ export default function HtmlText(props) {
           textColor: props.information[props.number].textColor,
           // secondaryColor: information[props.number].secondaryColor,
         });
-      });
-      tl.to(ref, {
+      }).delay(0.2);
+      tl.to(textRef, {
         duration: 0.4,
         opacity: "1",
       });
@@ -99,7 +130,9 @@ export default function HtmlText(props) {
         duration: 1,
         backgroundColor: props.information[props.number].secondaryColor,
       });
+
     } else {
+
       setState({
         title: props.information[props.number].title,
         description: props.information[props.number].descripttion,
@@ -112,49 +145,26 @@ export default function HtmlText(props) {
         duration: 1,
         backgroundColor: props.information[props.number].secondaryColor,
       });
+
     }
-    console.log(previousPageColour)
 
     //sets the colour for the next page so we can have the correct colour transition.
-    if(firstCount.current> 1){
-      setPreviousColour(props.information[props.number].primaryColor)
-    }else{
+    if (firstCount.current > 1) {
+      setPreviousColour(props.information[props.number].primaryColor);
+    } else {
       firstCount.current++;
     }
-    
   }, [props.number]);
 
   useEffect(() => {
     if (!props.attractMode) {
-      // TweenMax.to(document.body, {
-      //   duration: 1,
-      //   backgroundColor: information[props.number].secondaryColor,
-      // });
-      TweenMax.to(ref, {
-        duration: 0.4,
-        opacity: "1",
-      });
-      TweenMax.to(sideBarRef, {
-        duration: 0.4,
-        width: "10px",
-      });
-      TweenMax.to(backgroundRef, {
-        duration: 0.4,
-        opacity: "1",
-      });
+      sideBarAnimationRef.current.play(0.4);
+      backgroundAnimationRef.current.play();
+      textAnimationRef.current.play(0.1);
     } else {
-      TweenMax.to(ref, {
-        duration: 0.1,
-        opacity: "0",
-      });
-      TweenMax.to(sideBarRef, {
-        duration: 0.4,
-        width: "0%",
-      });
-      TweenMax.to(backgroundRef, {
-        duration: 0.4,
-        opacity: "0",
-      });
+      textAnimationRef.current.reverse(0.1);
+      sideBarAnimationRef.current.reverse(0.4);
+      backgroundAnimationRef.current.reverse();
     }
   }, [props.attractMode]);
 
@@ -183,7 +193,7 @@ export default function HtmlText(props) {
         }}
       ></div>
       <div
-        ref={(el) => (ref = el)}
+        ref={(el) => (textRef = el)}
         style={{
           position: "absolute",
           top: "33%",
