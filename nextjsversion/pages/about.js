@@ -1,41 +1,28 @@
-import React from "react";
-//  import { Link } from "next/link";
-// import Title from "../components/Title";
+import React from 'react';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import ProTip from '../src/ProTip';
+import Link from 'next/link';
+import Copyright from '../src/Copyright';
 
 export default function About() {
   return (
-    <div className="about">
-        {/* <Title/> */}
-      <div className="textContainer">
-        <h2>Hey, I'm Matthew</h2>
-        <p>
-          I'm a front-end web developer based in UK and looking for a full-time
-          role
-        </p>
-      </div>
-      <div className="textContainer">
-        <h2>...</h2>
-        <p>
-          I'm a front-end web developer based in UK and looking for a full-time
-          role
-        </p>
-
-        <p>
-          I love learning the massive scope of computer science which I find
-          incredibly rewarding and exciting as there's always something more you
-          can learn and improve on.
-        </p>
-
-        <p>
-        I'm currently looking for an opportunity to work on a JavaScript framework and hope to learn and move to a full-stack position in the future.
-        </p>
-
-        <p>Thank you for checking out my portfolio and if you'd like to learn more about what makes me tick or if you have knowledge of any exciting opportunities feel free to let me know by visiting the contact section</p>
-      </div>
-    
-      {/* <Link href="/about">
-           <a className="button">Home</a> 
-          </Link> */}
-    </div>
+    <Container maxWidth="sm">
+      <Box my={4}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Next.js example
+        </Typography>
+        <Link href="/frontPage">
+          <Button variant="contained" color="primary" naked >
+            Go to the main page
+          </Button>
+        </Link>
+        
+        <ProTip />
+        <Copyright />
+      </Box>
+    </Container>
   );
 }

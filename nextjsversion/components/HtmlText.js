@@ -1,49 +1,38 @@
-import { TimelineMax } from "gsap";
-import { TweenMax } from "gsap";
-import React, { useEffect, useRef, useState } from "react";
-import { Link } from "next/link";
+// import { TimelineMax } from "gsap/gsap-core";
+// import { TweenMax } from "gsap/gsap-core";
+
+import React, { useEffect, useRef, useState, useContext } from "react";
+// import Link from '../src/Link';
+import Link from 'next/link'
+// import { Link } from "react-router-dom";
+import { GlobalContext } from "../src/contexts/GlobalContext";
+import Background from "./Background";
+import SideBar from "./sideBar";
+import { TweenMax } from "gsap/dist/gsap";
+import { TimelineMax } from "gsap/dist/gsap";
 export default function HtmlText(props) {
-  console.log(props.number);
+  const { setPreviousLocation, setPreviousColour } = useContext(GlobalContext);
+
+  const backgroundAnimationRef = useRef();
+  const sideBarAnimationRef = useRef();
+  const textAnimationRef = useRef();
+  const [sideBarWidth, setSideBarSize ]= useState("10px");
+  //ref for making sure certain useEffects do not fire on mount
+  const firstCount = useRef(0);
+  
+
   const [state, setState] = useState({
     title: "Project 1",
     descripttion: "description",
   });
-  let ref = useRef();
+
+  
+  let textRef = useRef();
   let sideBarRef = useRef();
   let backgroundRef = useRef();
   const [colours, setColours] = useState({
     primaryColor: "black",
   });
-  const information = {
-    1: {
-      title: "Project 1",
-      descripttion: "Description 3",
-      primaryColor: "white",
-      secondaryColor: "#1b1f25",
-      textColor: "white",
-    },
-    0: {
-      title: "Project 2",
-      descripttion: "Description 2",
-      primaryColor: "#978d58",
-      secondaryColor: "#0b5269",
-      textColor: "white",
-    },
-    2: {
-      title: "Project 3",
-      descripttion: "Description 3",
-      primaryColor: "#FCBC3E",
-      secondaryColor: "#778899",
-      textColor: "white",
-    },
-    3: {
-      title: "Project 4",
-      descripttion: "Description 4",
-      primaryColor: "white",
-      secondaryColor: "#1e7753",
-      textColor: "white",
-    },
-  };
 
   const linkToContacts = (e) => {
     e.preventDefault();
@@ -52,148 +41,112 @@ export default function HtmlText(props) {
 
   const sideBarSize = (size) => {
     if (size === "small") {
-      TweenMax.to(sideBarRef, {
-        duration: 0.3,
-        width: "10px",
-      });
+      // TweenMax.to(sideBarRef, {
+      //   duration: 0.3,
+      //   width: "10px",
+      // });
+      setSideBarSize("10px")
     } else {
-      TweenMax.to(sideBarRef, {
-        duration: 0.3,
-        width: "15px",
-      });
+      // TweenMax.to(sideBarRef, {
+      //   duration: 0.3,
+      //   width: "15px",
+      // });
+      setSideBarSize("15px")
     }
   };
 
   useEffect(() => {
-    let tl = new TimelineMax();
-    tl.to(backgroundRef, {
-      duration: 1,
-      height: "100%",
-    }).delay(1.5);
-    tl.to(backgroundRef, {
-      duration: 0.5,
-      width: "100%",
-    });
-    tl.to(sideBarRef, {
-      duration: 1,
-      height:'100%',
-    }).delay(1);
-    return()=>{
-      TweenMax.to(backgroundRef, {
-      duration: 1,
-      height: "0%",
-    })
-    }
-    
+    textAnimationRef.current = TweenMax.fromTo(
+      textRef,
+      {
+        opacity: "0",
+      },
+      {
+        duration: 0.4,
+        opacity: "1",
+        paused: true,
+      }
+    );
+
+    setPreviousLocation("home");
   }, []);
 
   useEffect(() => {
     if (!props.attractMode) {
       let tl = new TimelineMax();
-      tl.to(ref, {
+      tl.to(textRef, {
         duration: 0.2,
         opacity: "0",
       });
       tl.add(() => {
         setState({
-          title: information[props.number].title,
-          description: information[props.number].descripttion,
+          title: props.information[props.number].title,
+          description: props.information[props.number].descripttion,
         });
         setColours({
-          primaryColor: information[props.number].primaryColor,
-          textColor: information[props.number].textColor,
+          primaryColor: props.information[props.number].primaryColor,
+          textColor: props.information[props.number].textColor,
           // secondaryColor: information[props.number].secondaryColor,
         });
       });
-      tl.to(ref, {
-        duration: 0.4,
+      tl.to(textRef, {
+        duration: 0.2,
         opacity: "1",
       });
-      TweenMax.to(backgroundRef, {
-        duration: 1,
-        backgroundColor: information[props.number].secondaryColor,
-      });
+
     } else {
+
       setState({
-        title: information[props.number].title,
-        description: information[props.number].descripttion,
+        title: props.information[props.number].title,
+        description: props.information[props.number].descripttion,
       });
       setColours({
-        primaryColor: information[props.number].primaryColor,
-        textColor: information[props.number].textColor,
+        primaryColor: props.information[props.number].primaryColor,
+        textColor: props.information[props.number].textColor,
       });
-      TweenMax.to(backgroundRef, {
-        duration: 1,
-        backgroundColor: information[props.number].secondaryColor,
-      });
+
+    }
+
+    //sets the colour for the next page so we can have the correct colour transition.
+    if (firstCount.current > 1) {
+      setPreviousColour(props.information[props.number].primaryColor);
+    } else {
+      firstCount.current++;
     }
   }, [props.number]);
 
   useEffect(() => {
     if (!props.attractMode) {
-      // TweenMax.to(document.body, {
-      //   duration: 1,
-      //   backgroundColor: information[props.number].secondaryColor,
-      // });
-      TweenMax.to(ref, {
-        duration: 0.4,
-        opacity: "1",
-      });
-      TweenMax.to(sideBarRef, {
-        duration: 0.4,
-        width: "10px",
-      });
-      TweenMax.to(backgroundRef, {
-        duration: 0.4,
-        opacity: "1",
-      });
+      textAnimationRef.current.play(0.1);
     } else {
-
-      TweenMax.to(ref, {
-        duration: 0.1,
-        opacity: "0",
-      });
-      TweenMax.to(sideBarRef, {
-        duration: 0.4,
-        width: "0%",
-      });
-      TweenMax.to(backgroundRef, {
-        duration: 0.4,
-        opacity: "0",
-      });
+      textAnimationRef.current.reverse(0.1);
     }
   }, [props.attractMode]);
-
+  const stopBubbling = (event)=>{
+    console.log(event)
+    event.preventDefault()
+    event.stopPropagation()
+    event.cancelBubble = true;
+  }
   return (
     <>
+      <SideBar
+      information = {props.information}
+      attractMode = {props.attractMode}
+      number = {props.number}
+      sideBarRef = {sideBarWidth}
+      />
+      <Background
+      information = {props.information}
+      attractMode = {props.attractMode}
+      number = {props.number}
+      />
       <div
-        ref={(el) => (sideBarRef = el)}
-        className="sideBar"
-        style={{
-          backgroundColor: colours.primaryColor,
-          position: "absolute",
-          bottom: 0,
-          width: "0px",
-        }}
-      ></div>
-      <div
-        ref={(el) => (backgroundRef = el)}
-        id="background"
-        className="sideBar background"
-        style={{
-          // backgroundColor: colours.secondaryColor,
-          position: "absolute",
-          bottom: 0,
-          zIndex:'-1',
-          height:0,
-          
-        }}
-      ></div>
-      <div
-        ref={(el) => (ref = el)}
+      className="details"
+        ref={(el) => (textRef = el)}
         style={{
           position: "absolute",
-          top: "33%",
+          top: "25%",
           left: "10%",
           margin: "20px",
           color: `${colours.textColor}`,
@@ -203,6 +156,7 @@ export default function HtmlText(props) {
           <h1
             style={{
               color: `${colours.primaryColor}`,
+              zIndex:-1
             }}
           >
             {state.title}
@@ -210,13 +164,20 @@ export default function HtmlText(props) {
           <p>{state.description}</p>
         </div>
         <Link
-          to="/contact"
+          href="/BlogPage"
           onClick={linkToContacts}
           className="button"
-          onPointerOver={() => sideBarSize("big")}
-          onPointerLeave={() => sideBarSize("small")}
+          onTransitionEnd={stopBubbling}
+          onPointerOver={(e) => {
+            e.stopPropagation()
+            sideBarSize("big")
+          }}
+          onPointerLeave={(e) => {
+            sideBarSize("small")
+            e.stopPropagation()
+          }}
         >
-          More Details 
+         <a>More Details</a>
         </Link>
       </div>
     </>
