@@ -8,6 +8,8 @@
     "@testing-library/user-event": "^12.1.10",
     "framer-motion": "^2.9.4",
     "gsap": "^3.5.1",
+    "lodash": "^4.17.20",
+    "lodash-es": "^4.17.15",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router": "^5.2.0",
@@ -15,6 +17,7 @@
     "react-scripts": "4.0.0",
     "react-spring": "^8.0.27",
     "react-three-fiber": "^5.1.5",
+    "react-use-gesture": "^8.0.0",
     "three": "^0.122.0",
     "web-vitals": "^0.2.4"
   },

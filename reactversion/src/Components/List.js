@@ -28,6 +28,9 @@ export default function List(props) {
       duration: 0.3,
       width: "0%",
     });
+
+
+    
   },[])
 
   const pointerOver = () => {
