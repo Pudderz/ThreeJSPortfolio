@@ -3,16 +3,18 @@ import { TweenMax } from "gsap/gsap-core";
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../contexts/GlobalContext";
+import Background from "./Background";
+import SideBar from "./sideBar";
 export default function HtmlText(props) {
   const { setPreviousLocation, setPreviousColour } = useContext(GlobalContext);
 
   const backgroundAnimationRef = useRef();
   const sideBarAnimationRef = useRef();
   const textAnimationRef = useRef();
-
+  const [sideBarWidth, setSideBarSize ]= useState("10px");
   //ref for making sure certain useEffects do not fire on mount
   const firstCount = useRef(0);
-
+  
 
   const [state, setState] = useState({
     title: "Project 1",
@@ -34,41 +36,21 @@ export default function HtmlText(props) {
 
   const sideBarSize = (size) => {
     if (size === "small") {
-      TweenMax.to(sideBarRef, {
-        duration: 0.3,
-        width: "10px",
-      });
+      // TweenMax.to(sideBarRef, {
+      //   duration: 0.3,
+      //   width: "10px",
+      // });
+      setSideBarSize("10px")
     } else {
-      TweenMax.to(sideBarRef, {
-        duration: 0.3,
-        width: "15px",
-      });
+      // TweenMax.to(sideBarRef, {
+      //   duration: 0.3,
+      //   width: "15px",
+      // });
+      setSideBarSize("15px")
     }
   };
 
   useEffect(() => {
-    sideBarAnimationRef.current = TweenMax.fromTo(
-      sideBarRef,
-      {
-        width: "0px",
-      },
-      {
-        width: "10px",
-        duration: 0.4,
-        paused: true,
-      }
-    );
-    backgroundAnimationRef.current = TweenMax.fromTo(
-      backgroundRef,
-      {
-        opacity: "0",
-      },
-      {
-        duration: 0.4,
-        opacity: "1",
-        paused: true,
-      }
-    );
     textAnimationRef.current = TweenMax.fromTo(
       textRef,
       {
@@ -80,28 +62,8 @@ export default function HtmlText(props) {
         paused: true,
       }
     );
-    let tl = new TimelineMax();
-    tl.to(backgroundRef, {
-      duration: 1,
-      height: "100%",
-    }).delay(1.5);
-    tl.to(backgroundRef, {
-      duration: 0.5,
-      width: "100%",
-    });
-    tl.to(sideBarRef, {
-      duration: 1,
-      height: "100%",
-    }).delay(1);
 
     setPreviousLocation("home");
-
-    return () => {
-      TweenMax.to(backgroundRef, {
-        duration: 1,
-        height: "0%",
-      });
-    };
   }, []);
 
   useEffect(() => {
@@ -121,14 +83,10 @@ export default function HtmlText(props) {
           textColor: props.information[props.number].textColor,
           // secondaryColor: information[props.number].secondaryColor,
         });
-      }).delay(0.2);
-      tl.to(textRef, {
-        duration: 0.4,
-        opacity: "1",
       });
-      TweenMax.to(backgroundRef, {
-        duration: 1,
-        backgroundColor: props.information[props.number].secondaryColor,
+      tl.to(textRef, {
+        duration: 0.2,
+        opacity: "1",
       });
 
     } else {
@@ -140,10 +98,6 @@ export default function HtmlText(props) {
       setColours({
         primaryColor: props.information[props.number].primaryColor,
         textColor: props.information[props.number].textColor,
-      });
-      TweenMax.to(backgroundRef, {
-        duration: 1,
-        backgroundColor: props.information[props.number].secondaryColor,
       });
 
     }
@@ -158,41 +112,32 @@ export default function HtmlText(props) {
 
   useEffect(() => {
     if (!props.attractMode) {
-      sideBarAnimationRef.current.play(0.4);
-      backgroundAnimationRef.current.play();
       textAnimationRef.current.play(0.1);
     } else {
       textAnimationRef.current.reverse(0.1);
-      sideBarAnimationRef.current.reverse(0.4);
-      backgroundAnimationRef.current.reverse();
     }
   }, [props.attractMode]);
-
+  const stopBubbling = (event)=>{
+    console.log(event)
+    event.preventDefault()
+    event.stopPropagation()
+    event.cancelBubble = true;
+  }
   return (
     <>
+      <SideBar
+      information = {props.information}
+      attractMode = {props.attractMode}
+      number = {props.number}
+      sideBarRef = {sideBarWidth}
+      />
+      <Background
+      information = {props.information}
+      attractMode = {props.attractMode}
+      number = {props.number}
+      />
       <div
-        ref={(el) => (sideBarRef = el)}
-        className="sideBar"
-        style={{
-          backgroundColor: colours.primaryColor,
-          position: "absolute",
-          bottom: 0,
-          width: "0px",
-        }}
-      ></div>
-      <div
-        ref={(el) => (backgroundRef = el)}
-        id="background"
-        className="sideBar background"
-        style={{
-          // backgroundColor: colours.secondaryColor,
-          position: "absolute",
-          bottom: 0,
-          zIndex: "-1",
-          height: 0,
-        }}
-      ></div>
-      <div
+      className="details"
         ref={(el) => (textRef = el)}
         style={{
           position: "absolute",
@@ -206,6 +151,7 @@ export default function HtmlText(props) {
           <h1
             style={{
               color: `${colours.primaryColor}`,
+              zIndex:-1
             }}
           >
             {state.title}
@@ -216,8 +162,15 @@ export default function HtmlText(props) {
           to="/contact"
           onClick={linkToContacts}
           className="button"
-          onPointerOver={() => sideBarSize("big")}
-          onPointerLeave={() => sideBarSize("small")}
+          onTransitionEnd={stopBubbling}
+          onPointerOver={(e) => {
+            e.stopPropagation()
+            sideBarSize("big")
+          }}
+          onPointerLeave={(e) => {
+            sideBarSize("small")
+            e.stopPropagation()
+          }}
         >
           More Details
         </Link>
