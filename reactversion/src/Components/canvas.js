@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import * as THREE from "three";
+
 import { Canvas } from "react-three-fiber";
-import ReactDOM from "react-dom";
+
 import Picture from "./Picture";
 
 import HtmlText from "./HtmlText";
@@ -11,52 +11,74 @@ import { TweenMax, TimelineMax, Power3, Power4 } from "gsap";
 import { HomeContext } from "../contexts/HomeContext";
 import Title from "./Title";
 import { GlobalContext } from "../contexts/GlobalContext";
-const information = {
-  1: {
-    title: "Project 1",
-    descripttion: "Description 3",
-    primaryColor: "white",
-    secondaryColor: "#1b1f25",
-    textColor: "white",
-  },
-  0: {
-    title: "Project 2",
-    descripttion: "Description 2",
-    primaryColor: "#978d58",
-    secondaryColor: "#0b5269",
-    textColor: "white",
-  },
-  2: {
-    title: "Project 3",
-    descripttion: "Description 3",
-    primaryColor: "#FCBC3E",
-    secondaryColor: "#778899",
-    textColor: "white",
-  },
-  3: {
-    title: "Project 4",
-    descripttion: "Description 4",
-    primaryColor: "white",
-    secondaryColor: "#1e7753",
-    textColor: "white",
-  },
-};
+// const information = {
+//   1: {
+//     title: "Project 1",
+//     descripttion: "Description 3",
+//     primaryColor: "white",
+//     secondaryColor: "#1b1f25",
+//     textColor: "white",
+//   },
+//   0: {
+//     title: "Project 2",
+//     descripttion: "Description 2",
+//     primaryColor: "#978d58",
+//     secondaryColor: "#0b5269",
+//     textColor: "white",
+//   },
+//   2: {
+//     title: "Project 3",
+//     descripttion: "Description 3",
+//     primaryColor: "#FCBC3E",
+//     secondaryColor: "#778899",
+//     textColor: "white",
+//   },
+//   3: {
+//     title: "Project 4",
+//     descripttion: "Description 4",
+//     primaryColor: "white",
+//     secondaryColor: "#1e7753",
+//     textColor: "white",
+//   },
+// };
 
 export function Test() {
   const {
-    active,
-    setActive,
     PreviousLocation,
-    setPreviousLocation,
     previousPageColour,
     setPreviousColour,
   } = useContext(GlobalContext);
-
+  const {information} = useContext(HomeContext)
   const history = useHistory();
   let screen = useRef(null);
   let body = useRef(null);
+
+  //loadin animations
   useEffect(() => {
-    var tl = new TimelineMax();
+    var tl = new TimelineMax({onComplete: ()=>setPreviousColour(information[0].primaryColor)});
+    if(PreviousLocation=='project'){
+      tl.to(screen, {
+        duration: 0.8,
+        width: "100%",
+        right: "0%",
+        ease: Power3.easeInOut,
+      });
+  
+      tl.to(screen, {
+        duration: 0.4,
+        right: "100%",
+        ease: Power3.easeInOut,
+        delay: 0.3,
+      });
+  
+      TweenMax.to(body, 1, {
+        css: {
+          opacity: "1",
+          pointerEvents: "auto",
+          ease: Power4.easeInOut,
+        },
+      })
+  }else{
     tl.to(screen, {
       duration: 0.8,
       width: "100%",
@@ -78,13 +100,10 @@ export function Test() {
         ease: Power4.easeInOut,
       },
     }).delay(1);
-    // tl.set(screen, { left: "-100%" });
-    // TweenMax.to(body, .3, {css: {
-    //   opacity: "1",
-    //   pointerEvents: "auto",
-    //   ease: Power4.easeInOut
-    // }}).delay(2);
+  }  
+
     return () => {
+      console.log(previousPageColour)
       TweenMax.to(body, 4, {
         css: {
           opacity: "0",
@@ -123,9 +142,8 @@ export function Test() {
       console.log(num);
     }
   };
-  
+
   const goTo = (number) => {
-    console.log(number);
     setAttractTo({
       goTo: number,
       shouldJump: true,
@@ -148,22 +166,6 @@ export function Test() {
     });
   };
   return (
-    <HomeContext.Provider
-      value={{
-        displayDom: (e) => displayDom,
-        jumpComplete: (e) => jumpComplete,
-        goTo: (e) => goTo,
-        linkTo: (e) => linkTo,
-
-        state: {
-          rotating: propsPosition,
-          positioning: positioning,
-          attractMode: attractMode,
-          attractTo: attractTo,
-          displayNumber: displayNumber,
-        },
-      }}
-    >
       <div className="Home">
         <div className="load-container">
           <div
@@ -184,7 +186,7 @@ export function Test() {
             camera={{ fov: 45, position: [0, 0, 4] }}
           >
             <ambientLight intensity={0.5} style={{ height: "100vh" }} />
-            {/* <Group/> */}
+
             <Picture
               index={0}
               displayDom={displayDom}
@@ -197,6 +199,7 @@ export function Test() {
               goTo={goTo}
               linkTo={linkTo}
             />
+
             <Picture
               index={1}
               displayDom={displayDom}
@@ -209,6 +212,7 @@ export function Test() {
               displayNumber={displayNumber}
               linkTo={linkTo}
             />
+
             <Picture
               index={2}
               displayDom={displayDom}
@@ -221,6 +225,7 @@ export function Test() {
               goTo={goTo}
               linkTo={linkTo}
             />
+
             <Picture
               index={3}
               displayDom={displayDom}
@@ -251,7 +256,6 @@ export function Test() {
           />
         </div>
       </div>
-    </HomeContext.Provider>
   );
 }
 

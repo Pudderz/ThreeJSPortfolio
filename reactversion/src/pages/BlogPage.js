@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { TweenMax, TimelineMax, Power3, Power4 } from "gsap";
 import { useRef, useEffect } from "react";
@@ -8,7 +8,7 @@ import ProjectPicture from "../Components/ProjectPicture";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap/gsap-core";
 import { GlobalContext } from "../contexts/GlobalContext";
-
+import elite from '../images/elite.png'
 gsap.registerPlugin(ScrollTrigger);
 
 export default function BlogPage() {
@@ -25,10 +25,22 @@ export default function BlogPage() {
     setPreviousLocation,
   } = useContext(GlobalContext);
 //loadin animation 
+
+
+
+const [width, setWidth] = useState(
+  window.innerWidth > 1100 ? "large" : "small"
+);
+window.addEventListener("resize", () => {
+  if (window.innerWidth <= 1100 && width !== "small") {
+    setWidth("small");
+  } else if (window.innerWidth > 1100 && width !== "large") {
+    setWidth("large");
+  }
+});
+
+
   useEffect(() => {
-    // console.log(previousPageColour)
-    // console.log(PreviousLocation)
-    //  if(PreviousLocation!== null){
        var tl = new TimelineMax({onComplete:()=>{}});
       tl.to(screen, {
         duration: 0.5,
@@ -60,7 +72,7 @@ export default function BlogPage() {
           scrollTrigger: {
             id: `textFadeIn-${index}`,
             trigger: el,
-            start: "top bottom-=200",
+            start: "top bottom-=50",
             toggleActions: "play none none reverse",
             markers: true,
           },
@@ -132,10 +144,11 @@ export default function BlogPage() {
         <div
           ref={(el) => (body = el)}
           className="Headd Contact noOpacity"
-          style={{ position: "relative" }}
+          style={{ position: "fixed" }}
         >
           {/* Canvas with single image */}
-          <Canvas>
+    {width ==='large' &&(
+       <Canvas>
             <ProjectPicture
               index={0}
               displayDom={() => {}}
@@ -150,6 +163,12 @@ export default function BlogPage() {
               linkTo={() => {}}
             />
           </Canvas>
+    )}     
+    {width === 'small' &&(
+      <div className="smallProjectImage">
+        <img src={elite} width="50%"alt="" />
+      </div>
+    )}
           <div
             style={{
               position: "absolute",
@@ -160,13 +179,10 @@ export default function BlogPage() {
           ></div>
 
           <div
+          className="projectClass"
             ref={titleRef}
             style={{
-              position: "absolute",
-              top: "33%",
-              left: "10%",
-              margin: "20px",
-              color: `white`,
+              
             }}
           >
             <div>
@@ -216,8 +232,9 @@ export default function BlogPage() {
             </p>
           </div>
 
-          <div ref={addToRefs} className="textFadeIn textFadeIn-1">
-            <h4>What's used in this project:</h4>
+          <div ref={addToRefs} className="textFadeIn textFadeIn-1 flexSmall" >
+            <div style={{paddingLeft: 0}}>
+              <h4>What's used in this project:</h4>
             <ul>
               <li>
                 <p>IndexedDB</p>
@@ -229,15 +246,19 @@ export default function BlogPage() {
                 <p>intersection observers</p>
               </li>
             </ul>
-
-            <h4>Date</h4>
+            </div>
+            <div>
+              <h4>Date</h4>
             <time>05/11/2020</time>
+            </div>
+
+            
           </div>
         </div>
         <div
-          ref={addToRefs}
-          className="textContainer textFadeIn textFadeIn-2"
-          style={{ display: "block" }}
+          // ref={addToRefs}
+          className="textContainer "
+          style={{ display: "block", marginTop: '0'}}
         >
           <div>
             <a href="">Live Demo</a>
@@ -247,7 +268,7 @@ export default function BlogPage() {
         <div className="textContainer">
           <img
             src={SpaceImage}
-            ref={addToRefs}
+            // ref={addToRefs}
             className="textFadeIn-3"
             alt="gallery of the space website"
             width="100%"
@@ -255,7 +276,32 @@ export default function BlogPage() {
           />
           <p className="imageDescription"> This is the image gallery</p>
         </div>
+        <div>
+        {width ==='large' &&(
+       <Canvas>
+            <ProjectPicture
+              index={0}
+              displayDom={() => {}}
+              rotating={"middle"}
+              positioning={"middle"}
+              attractMode={false}
+              attractTo={0}
+              scale={2}
+              jumpComplete={() => {}}
+              displayNumber={0}
+              goTo={() => {}}
+              linkTo={() => {}}
+            />
+          </Canvas>
+    )}     
+    {width === 'small' &&(
+      <div className="smallProjectImage">
+        <img src={elite} width="50%"alt="" />
       </div>
+    )}
+        </div>
+      </div>
+      
     </div>
   );
 }
