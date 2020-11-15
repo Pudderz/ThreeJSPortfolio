@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useRef, useState, useEffect } from "react";
+import { TimelineMax } from "gsap/dist/gsap";
 export const GlobalContext = React.createContext();
 const information = {
   1: {
@@ -31,16 +31,34 @@ const information = {
     textColor: "white",
   },
 };
+
+
 export const GlobalProvider = ({ children }) => {
   const [active, setActive] = useState(true);
   const [PreviousLocation, setPreviousLocation] = useState(null);
   const [previousPageColour, setPreviousColour] = useState(null);
+
+  const animation = useRef({
+    about:new TimelineMax({ paused: true }),
+    canvas: new TimelineMax({ paused: true }),
+    project: new TimelineMax({ paused: true }),
+  });
+  
+  useEffect(()=>{
+    return ()=>{
+       animation.current.about.kill();
+       animation.current.canvas.kill();
+       animation.current.project.kill();
+    }
+  },[])
   return (
     <GlobalContext.Provider
       value={{
         active,
         setActive,
         PreviousLocation,
+        animation,
+        setAnimation: (thing)=> (animation.current = thing),
         setPreviousLocation: e=> setPreviousLocation(e),
         previousPageColour,
         information,
