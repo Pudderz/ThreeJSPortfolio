@@ -32,8 +32,6 @@ export default function List(props) {
       width: "0%",
     });
 
-
-    
   },[])
 
   const pointerOver = () => {
@@ -53,7 +51,6 @@ export default function List(props) {
 
   };
   const select = (number) => {
-    console.log(openRef);
     goToNumber.current = number;
     if (openRef.current) {
       props.goTo(goToNumber.current);
@@ -66,37 +63,20 @@ export default function List(props) {
         className="nav"
         onPointerEnter={pointerOver}
         onPointerLeave={pointerLeave}
-        style={{width:'fit-content'}}
+        style={{width:'fit-content', display: 'flex',
+        flexDirection: 'column-reverse',}}
       >
-        <ListItem
-        display={props.displayNumber}
-        name="Project 3"
-        number={3}
-        select={select}
-        color = {props.information[3].primaryColor}
-        />
-        <ListItem
-        display={props.displayNumber}
-        name="Project 2"
-        number={2}
-        select={select}
-        color = {props.information[2].primaryColor}
-        />
-        <ListItem
-        display={props.displayNumber}
-        name="Project 1"
-        number={1}
-        select={select}
-        color = {props.information[1].primaryColor}
-        />
-        <ListItem
-        display={props.displayNumber}
-        name="Project 0"
-        number={0}
-        select={select}
-        color = {props.information[0].primaryColor}
-        />
-
+        {props.data.map((information, index)=>(
+          <ListItem
+          key={index}
+          display={props.displayNumber}
+          name={information.title}
+          number={index}
+          select={select}
+          color = {information.primaryColour}
+          whiteOrBlack={props.whiteOrBlack}
+          />
+        ))}
       </div>
     </div>
   );

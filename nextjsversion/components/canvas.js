@@ -1,52 +1,14 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-
 import { Canvas } from "react-three-fiber";
-
 import Picture from "./Picture";
-
 import HtmlText from "./HtmlText";
 import List from "./List";
-// import { useHistory } from "react-router-dom";
 import { useRouter } from 'next/router'
-// import { TweenMax} from "gsap";
-import { HomeContext } from "../src/contexts/HomeContext";
-import Title from "./Title";
 import { GlobalContext } from "../src/contexts/GlobalContext";
-import { TimelineMax } from "gsap/dist/gsap";
-import { TweenMax } from "gsap/dist/gsap";
+import { TimelineMax, TweenMax} from "gsap/dist/gsap";
+import Link from "next/link";
 
-// const information = {
-//   1: {
-//     title: "Project 1",
-//     descripttion: "Description 3",
-//     primaryColor: "white",
-//     secondaryColor: "#1b1f25",
-//     textColor: "white",
-//   },
-//   0: {
-//     title: "Project 2",
-//     descripttion: "Description 2",
-//     primaryColor: "#978d58",
-//     secondaryColor: "#0b5269",
-//     textColor: "white",
-//   },
-//   2: {
-//     title: "Project 3",
-//     descripttion: "Description 3",
-//     primaryColor: "#FCBC3E",
-//     secondaryColor: "#778899",
-//     textColor: "white",
-//   },
-//   3: {
-//     title: "Project 4",
-//     descripttion: "Description 4",
-//     primaryColor: "white",
-//     secondaryColor: "#1e7753",
-//     textColor: "white",
-//   },
-// };
-
-export function Test() {
+export function PortfolioCanvas({data}) {
   const {
     PreviousLocation,
     previousPageColour,
@@ -59,6 +21,7 @@ export function Test() {
 
   //loadin animations
   useEffect(() => {
+    
     var tl = new TimelineMax({onComplete: ()=>setPreviousColour(information[0].primaryColor)});
     if(PreviousLocation=='project'){
       tl.to(screen, {
@@ -143,7 +106,6 @@ export function Test() {
   const displayDom = (num) => {
     if (displayNumber !== num) {
       setDisplayNumber(num);
-      console.log(num);
     }
   };
 
@@ -171,28 +133,34 @@ export function Test() {
   };
   return (
       <div className="Home">
+        <div className="top" style={{zIndex:'100', display: (attractMode)?'none': 'flex', pointerEvents:'none'}}>
+          <Link style={{ color: "white" }} href="/">
+           <a><h2 style={{ color: data[displayNumber].primaryColour }}>Matthew Pudney</h2></a> 
+          </Link>
+
+          <Link style={{ color: "white" }} href="/about">
+           <a style={{ color: data[displayNumber].primaryColour }}>About</a>
+          </Link>
+        </div>
         <div className="load-container">
           <div
             className="load-screen"
             ref={(el) => (screen = el)}
             style={{
-              backgroundColor:
-                previousPageColour !== null
-                  ? previousPageColour
-                  : information[0].primaryColor,
+              backgroundColor: data[displayNumber].primaryColour,
             }}
           ></div>
         </div>
         <div className="noOpacity" ref={(el) => (body = el)}>
-          <Title />
           <Canvas
             style={{ height: "100vh", width: "100vw", position: "absolute" }}
             camera={{ fov: 45, position: [0, 0, 4] }}
           >
-            <ambientLight intensity={0.5} style={{ height: "100vh" }} />
 
-            <Picture
-              index={0}
+            {data.map((project, index)=>(
+              <Picture
+              key={index}
+              index={index}
               displayDom={displayDom}
               rotating={propsPosition}
               positioning={positioning}
@@ -202,46 +170,10 @@ export function Test() {
               displayNumber={displayNumber}
               goTo={goTo}
               linkTo={linkTo}
+              image = {project.mainImage.url}
+              maxNumber= {data.length-1}
             />
-
-            <Picture
-              index={1}
-              displayDom={displayDom}
-              rotating={propsPosition}
-              positioning={positioning}
-              attractMode={attractMode}
-              attractTo={attractTo}
-              jumpComplete={jumpComplete}
-              goTo={goTo}
-              displayNumber={displayNumber}
-              linkTo={linkTo}
-            />
-
-            <Picture
-              index={2}
-              displayDom={displayDom}
-              rotating={propsPosition}
-              positioning={positioning}
-              attractMode={attractMode}
-              attractTo={attractTo}
-              jumpComplete={jumpComplete}
-              displayNumber={displayNumber}
-              goTo={goTo}
-              linkTo={linkTo}
-            />
-
-            <Picture
-              index={3}
-              displayDom={displayDom}
-              rotating={propsPosition}
-              positioning={positioning}
-              attractMode={attractMode}
-              attractTo={attractTo}
-              jumpComplete={jumpComplete}
-              displayNumber={displayNumber}
-              goTo={goTo}
-              linkTo={linkTo}
-            />
+            ))}
           </Canvas>
 
           <List
@@ -250,6 +182,8 @@ export function Test() {
             number={displayNumber}
             displayNumber={displayNumber}
             information={information}
+            data={data}
+            whiteOrBlack={data[displayNumber].whiteOrBlackText}
           />
 
           <HtmlText
@@ -257,10 +191,15 @@ export function Test() {
             attractMode={attractMode}
             linkTo={linkTo}
             information={information}
+            data={data}
           />
         </div>
       </div>
   );
 }
 
-export default Test;
+
+
+
+
+export default PortfolioCanvas;
