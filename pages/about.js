@@ -132,9 +132,9 @@ export default function About(props) {
         </div>
 
         <div className="about">
-          <div class="textContainer">
+          <div className="textContainer">
             <div id="contact">
-              <h2 class="red-text text-lighten-3">Get in touch</h2>
+              <h2>Get in touch</h2>
 
               <hr />
 
@@ -173,10 +173,7 @@ export default function About(props) {
                     placeholder="Message"
                   ></textarea>
                 </label>
-
-                <button class="btn large red" id="submitForm" type="submit">
-                  Send
-                </button>
+                <Button id="submitForm" type="submit">Send</Button>
               </form>
             </div>
           </div>
