@@ -73,18 +73,18 @@ export default function Background(props) {
     if (!props.attractMode) {
       TweenMax.to(backgroundRef.current, {
         duration: 1,
-        backgroundColor: props.information[props.number].secondaryColor,
+        backgroundColor: props.information[props.number].secondaryColour,
       });
     } else {
       TweenMax.to(backgroundRef.current, {
         duration: 1,
-        backgroundColor: props.information[props.number].secondaryColor,
+        backgroundColor: props.information[props.number].secondaryColour,
       });
     }
 
     //sets the colour for the next page so we can have the correct colour transition.
     if (firstCount.current > 1) {
-      setPreviousColour(props.information[props.number].primaryColor);
+      setPreviousColour(props.information[props.number].primaryColour);
     } else {
       firstCount.current++;
     }

@@ -15,8 +15,7 @@ import "../styles/App.scss"
 export default function MyApp(props) {
   const { Component, pageProps, router } = props;
   console.log(props)
-  const route = useRouter();
-  const tl = useRef();
+
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
