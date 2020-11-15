@@ -4,25 +4,25 @@ import { HomeContext } from "../src/contexts/HomeContext";
 
 import { useDrag } from "react-use-gesture";
 
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import SmallListVersion from "./smallListVersion";
 import Background from "./Background";
 
 import Link from "next/link";
 import SmallText from "./smallText";
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { Button } from "@material-ui/core";
- 
-export default function SmallFrontPage({data}) {
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { Button, Tooltip } from "@material-ui/core";
+
+export default function SmallFrontPage({ data }) {
   const { information } = useContext(HomeContext);
   const history = useRouter();
-  
+
   const V_THRESHOLD = 0.1;
 
   const boxRefs = useRef([]);
 
-  const firstTime = useRef(0)
+  const firstTime = useRef(0);
 
   const [xPos, setXPos] = useState(0);
   const bind = useDrag(({ last, vxvy: [vx, vy] }) => {
@@ -33,8 +33,8 @@ export default function SmallFrontPage({data}) {
         if (vx < -V_THRESHOLD && xPos > -1) next();
         // swipe right is when horizontal velocity is superior to threshold
         else if (vx > V_THRESHOLD && xPos < 1) prev();
+      }
     }
-  }
   });
 
   // creates a array of refs
@@ -48,7 +48,7 @@ export default function SmallFrontPage({data}) {
   const carousel = useRef();
   const slider = useRef();
   const direction = useRef(-1);
-  const distance = useRef(100/(data.length))
+  const distance = useRef(100 / data.length);
   const [displayNumber, setDisplayNumber] = useState(0);
 
   useEffect(() => {
@@ -62,59 +62,55 @@ export default function SmallFrontPage({data}) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-
           x.current = boxRefs.current[0].offsetLeft - entry.target.offsetLeft;
           setDisplayNumber(Number(entry.target.getAttribute("data-key")));
-        } 
+        }
       });
     }, options);
     console.log(typeof slider.current.children);
     for (const [key, value] of Object.entries(slider.current.children)) {
       observer.observe(value);
     }
-
   }, []);
 
- 
-  const next = (number=1) => {
+  const next = (number = 1) => {
     if (direction.current > 0) {
       slider.current.prepend(slider.current.lastElementChild);
     }
-    direction.current = -1*number;
+    direction.current = -1 * number;
     carousel.current.style.justifyContent = "flex-start";
-    slider.current.style.transform = `translate(${-distance.current*number}%)`;
+    slider.current.style.transform = `translate(${
+      -distance.current * number
+    }%)`;
   };
-  const prev = (number=1) => {
+  const prev = (number = 1) => {
     if (direction.current < 0) {
-      
       slider.current.appendChild(slider.current.firstElementChild);
     }
     direction.current = number;
     carousel.current.style.justifyContent = "flex-end";
-    slider.current.style.transform = `translate(${distance.current*number}%)`;
+    slider.current.style.transform = `translate(${distance.current * number}%)`;
   };
   const transitionEnd = (e) => {
-    if(firstTime.current !== 0){
+    if (firstTime.current !== 0) {
       if (direction.current > 0) {
-            for(let i = direction.current; i>0; i--){
-              slider.current.prepend(slider.current.lastElementChild);
-            }
-            
-          } else {
-            for(let i = direction.current; i<0; i++){
-              slider.current.appendChild(slider.current.firstElementChild);
-            }
-          }
+        for (let i = direction.current; i > 0; i--) {
+          slider.current.prepend(slider.current.lastElementChild);
+        }
+      } else {
+        for (let i = direction.current; i < 0; i++) {
+          slider.current.appendChild(slider.current.firstElementChild);
+        }
+      }
 
-          slider.current.style.transition = "none";
-          slider.current.style.transform = "translate(0)";
-          setTimeout(() => {
-            slider.current.style.transition = "all 0.5s";
-          });
-    }else{
-      firstTime.current++
+      slider.current.style.transition = "none";
+      slider.current.style.transform = "translate(0)";
+      setTimeout(() => {
+        slider.current.style.transition = "all 0.5s";
+      });
+    } else {
+      firstTime.current++;
     }
-   
   };
 
   const body = useRef();
@@ -126,30 +122,28 @@ export default function SmallFrontPage({data}) {
     });
   };
 
-const [attractMode, setAttractMode] = useState(false);
+  const [attractMode, setAttractMode] = useState(false);
   const [attractTo, setAttractTo] = useState({ goTo: 0, shouldJump: false });
 
   const goTo = (number) => {
-    console.log(number)
+    console.log(number);
     setAttractTo({
       goTo: number,
       shouldJump: true,
     });
   };
 
-  useEffect(()=>{
-    if(attractTo.shouldJump){
-      const numberOfChange=attractTo.goTo-displayNumber%4;
-      if(numberOfChange<0){
-      prev(numberOfChange*-1)
-      }else if(numberOfChange>0){
-          next(numberOfChange)   
+  useEffect(() => {
+    if (attractTo.shouldJump) {
+      const numberOfChange = attractTo.goTo - (displayNumber % 4);
+      if (numberOfChange < 0) {
+        prev(numberOfChange * -1);
+      } else if (numberOfChange > 0) {
+        next(numberOfChange);
       }
-      setAttractTo({...attractTo, shouldJump:false})
+      setAttractTo({ ...attractTo, shouldJump: false });
     }
-    
-  },[attractTo])
-  
+  }, [attractTo]);
 
   const changeAttractMode = (boolean) => {
     setAttractMode(boolean);
@@ -165,71 +159,84 @@ const [attractMode, setAttractMode] = useState(false);
       // setPositioning("right");
     }
   };
-  const stopBubbling = (event)=>{
-    event.preventDefault()
-    event.stopPropagation()
+  const stopBubbling = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     event.cancelBubble = true;
-  }
+  };
   return (
     <>
-    <Background
-    information = {information}
-    attractMode = {false}
-    number = {displayNumber}
-    />
-    
-    <div {...bind()} ref={body}>
-    <div className="top" style={{zIndex:'100'}}>
+      <Background
+        information={information}
+        attractMode={false}
+        number={displayNumber}
+      />
+
+      <div {...bind()} ref={body}>
+        <div className="top" style={{ zIndex: "100" }}>
           <Link style={{ color: "white" }} href="/">
-           <a><h2 style={{color: data[displayNumber].primaryColour}}>Matthew Pudney</h2></a> 
+            <Tooltip title="Home">
+              <a style={{ color: data[displayNumber].primaryColour }}>
+                Matthew Pudney
+              </a>
+            </Tooltip>
           </Link>
 
           <Link href="/about">
-           <a style={{color: data[displayNumber].primaryColour}}>About</a>
+            <Tooltip title="About">
+              <a style={{ color: data[displayNumber].primaryColour }}>About</a>
+            </Tooltip>
           </Link>
         </div>
-      <SmallListVersion
-      attractMode={changeAttractMode}
-      goTo={goTo}
-      number={displayNumber}
-      displayNumber={displayNumber}
-      data={data}
-      className="vertical"
-      />
-      <div className="carousel" ref={carousel}>
-        <div className="slider" ref={slider} 
-         onTransitionEnd={transitionEnd}
-        >
-          {data.map((info,index)=>(
+        <SmallListVersion
+          attractMode={changeAttractMode}
+          goTo={goTo}
+          number={displayNumber}
+          displayNumber={displayNumber}
+          data={data}
+          className="vertical"
+        />
+        <div className="carousel" ref={carousel}>
+          <div className="slider" ref={slider} onTransitionEnd={transitionEnd}>
+            {data.map((info, index) => (
               <section key={index} data-key={index} ref={addToRefs}>
-              <img src={info.mainImage.url} width="80%" />
-              <SmallText
-                data={data}
-                number={index}
-                attractMode={false}
-                linkTo={linkTo}
+                <img src={info.mainImage.url} width="80%" />
+                <SmallText
+                  data={data}
+                  number={index}
+                  attractMode={false}
+                  linkTo={linkTo}
+                />
+              </section>
+            ))}
+          </div>
+        </div>
+        <div className="controls">
+          <Tooltip title="Next project">
+            <Button
+              className="next"
+              onClick={(e) => next(1)}
+              style={{ color: data[displayNumber].primaryColour }}
+            >
+              <ArrowForwardIcon
+                style={{ fill: data[displayNumber].primaryColour }}
               />
-              
-              
-            </section>
-          ))}
+            </Button>
+          </Tooltip>
+
+          <Tooltip  title="Previous project">
+            <Button
+              className="prev"
+              onClick={(e) => prev(1)}
+              style={{ color: data[displayNumber].primaryColour }}
+            >
+              <ArrowBackIcon
+                style={{ fill: data[displayNumber].primaryColour }}
+              />
+            </Button>
+          </Tooltip>
         </div>
       </div>
-      <div className="controls">
-        <Button className="next" onClick={e=>next(1)}
-
-        style={{color: data[displayNumber].primaryColour}}
-        >
-          <ArrowForwardIcon style={{fill:  data[displayNumber].primaryColour}}/> 
-          
-        </Button>
-        <Button className="prev" onClick={e=>prev(1)}
-        style={{color:  data[displayNumber].primaryColour}}
-        >
-          <ArrowBackIcon style={{fill:  data[displayNumber].primaryColour}}/>
-        </Button>
-      </div>
-    </div>
     </>
   );
 }

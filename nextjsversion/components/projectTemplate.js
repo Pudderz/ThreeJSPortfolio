@@ -252,7 +252,7 @@ console.log(props.data)
             </div>
             <div>
               <h4>Date</h4>
-            <time>{props.date}</time>
+            <time>{props.date.match(/^[\d-]{10}/i)[0]}</time>
             </div>
 
             

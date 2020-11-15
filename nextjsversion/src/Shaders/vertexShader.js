@@ -28,22 +28,14 @@ export const vertexShader = `
     void main() {
         vec3 pos = position;
         vUv = uv;
-        /**
-        * bend
-        */
+  
         pos.y -= uBend * (1.0 - sin(uv.x * PI));
         pos.x += uBend * (uv.y * 2.0 - 1.0) * (uv.x * 2.0 - 1.0) * 0.5;
-        /**
-        * scaling
-        */
+
         vUv = scaleUv(vUv, 1.0 + (1.0 - uFrameScale));
-        /**
-        * rotation
-        */
+
         vUv = rotateUv(vUv, uFrameRotation);
-        /**
-        * floating
-        */
+ 
         float reducedTime = uTime * 0.35;
         float floatingWave = sin(reducedTime * PI) * uFloating;
         float yShift = 0.028;
@@ -52,6 +44,6 @@ export const vertexShader = `
         pos.x += floatingWave * xShift;
         vUv.y += floatingWave * yShift;
         vUv.x += floatingWave * xShift;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.);
     }
   `;

@@ -1,7 +1,6 @@
-
-    import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 // import Link from '../src/Link';
-import Link from 'next/link'
+import Link from "next/link";
 // import { Link } from "react-router-dom";
 import { GlobalContext } from "../src/contexts/GlobalContext";
 import Background from "./Background";
@@ -15,17 +14,16 @@ export default function SmallText(props) {
   const { setPreviousLocation, setPreviousColour } = useContext(GlobalContext);
   const backgroundAnimationRef = useRef();
   const textAnimationRef = useRef();
-  const [sideBarWidth, setSideBarSize ]= useState("10px");
+  const [sideBarWidth, setSideBarSize] = useState("10px");
 
   //ref for making sure certain useEffects do not fire on mount
   const firstCount = useRef(0);
-  
+
   const [state, setState] = useState({
     title: "Project 1",
     descripttion: "description",
   });
 
-  
   let textRef = useRef();
   const [colours, setColours] = useState({
     primaryColor: "black",
@@ -38,15 +36,15 @@ export default function SmallText(props) {
 
   const sideBarSize = (size) => {
     if (size === "small") {
-      setSideBarSize("10px")
+      setSideBarSize("10px");
     } else {
-      setSideBarSize("15px")
+      setSideBarSize("15px");
     }
   };
 
   useEffect(() => {
     backgroundAnimationRef.current = props.data;
-  console.log(backgroundAnimationRef.current)
+    console.log(backgroundAnimationRef.current);
     textAnimationRef.current = TweenMax.fromTo(
       textRef,
       {
@@ -84,9 +82,7 @@ export default function SmallText(props) {
         duration: 0.2,
         opacity: "1",
       });
-
     } else {
-
       setState({
         title: props.data[props.number].title,
         description: props.data[props.number].snippet,
@@ -95,7 +91,6 @@ export default function SmallText(props) {
         primaryColor: props.data[props.number].primaryColour,
         textColor: props.data[props.number].whiteOrBlackText,
       });
-
     }
 
     //sets the colour for the next page so we can have the correct colour transition.
@@ -113,27 +108,22 @@ export default function SmallText(props) {
       textAnimationRef.current.reverse(0.1);
     }
   }, [props.attractMode]);
-  const stopBubbling = (event)=>{
-    console.log(event)
-    event.preventDefault()
-    event.stopPropagation()
-    event.cancelBubble = true;
-  }
+ 
   return (
     <>
       <SideBar
-      information = {props.data}
-      attractMode = {props.attractMode}
-      number = {props.number}
-      sideBarRef = {sideBarWidth}
+        information={props.data}
+        attractMode={props.attractMode}
+        number={props.number}
+        sideBarRef={sideBarWidth}
       />
       <Background
-      information = {props.data}
-      attractMode = {props.attractMode}
-      number = {props.number}
+        information={props.data}
+        attractMode={props.attractMode}
+        number={props.number}
       />
       <div
-      className="details"
+        className="details"
         ref={(el) => (textRef = el)}
         style={{
           position: "absolute",
@@ -147,7 +137,8 @@ export default function SmallText(props) {
           <h1
             style={{
               color: `${colours.primaryColor}`,
-              zIndex:-1
+              zIndex: -1,
+              margin: '30px',
             }}
           >
             {state.title}
@@ -155,68 +146,63 @@ export default function SmallText(props) {
           <p>{state.description}</p>
         </div>
         <Buttons
-        link={true}
-        primaryColour={props.data[props.number].primaryColour}
-        secondaryColour={props.data[props.number].secondaryColour}
+          link={true}
+          primaryColour={props.data[props.number].primaryColour}
+          secondaryColour={props.data[props.number].secondaryColour}
           href={`/posts/${props.data[props.number].slug}`}
           onClick={linkToContacts}
-          
-         
         >
-         <a
-         
-        //  className="button"
-          onPointerOver={(e) => {
-            e.stopPropagation()
-            sideBarSize("big")
-          }}
-          onPointerLeave={(e) => {
-            sideBarSize("small")
-            e.stopPropagation()
-          }}
-         >More Details </a>
-         
+          <a
+            //  className="button"
+            onPointerOver={(e) => {
+              e.stopPropagation();
+              sideBarSize("big");
+            }}
+            onPointerLeave={(e) => {
+              sideBarSize("small");
+              e.stopPropagation();
+            }}
+          >
+            More Details{" "}
+          </a>
         </Buttons>
-          <ButtonGroup>
-            <Buttons
-        link={false}
-        primaryColour={props.data[props.number].primaryColour}
-        secondaryColour={props.data[props.number].secondaryColour}
-          
-          onClick={linkToContacts}
-          
-          
-         
-        >
-         <a
-         style={{color: 'inherit', textDecoration:'none'}}
-         href={props.data[props.number].liveDemo}
-        //  className="button"
-        target="_blank"
-         rel="noopener noreferrer"
-
-         >Live demo</a>
-        </Buttons>
-        <Buttons
-        link={false}
-        primaryColour={props.data[props.number].primaryColour}
-        secondaryColour={props.data[props.number].secondaryColour}
-          
-          onClick={linkToContacts}
-          
-          
-        >
-         <a
-         style={{color: 'inherit', textDecoration:'none'}}
-         target="_blank"
-         rel="noopener noreferrer"
-         onClick={()=>{console.log(props.data[props.number])}}
-         href={props.data[props.number].sourceCode}
-        //  className="button"
-         >SourceCode</a>
-        </Buttons>
-          </ButtonGroup>
-        
+        <ButtonGroup>
+          <Buttons
+            link={false}
+            primaryColour={props.data[props.number].primaryColour}
+            secondaryColour={props.data[props.number].secondaryColour}
+            onClick={linkToContacts}
+          >
+            <a
+              style={{ color: "inherit", textDecoration: "none" }}
+              href={props.data[props.number].liveDemo}
+              //  className="button"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Live demo
+            </a>
+          </Buttons>
+          <Buttons
+            link={false}
+            primaryColour={props.data[props.number].primaryColour}
+            secondaryColour={props.data[props.number].secondaryColour}
+            onClick={linkToContacts}
+          >
+            <a
+              style={{ color: "inherit", textDecoration: "none" }}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                console.log(props.data[props.number]);
+              }}
+              href={props.data[props.number].sourceCode}
+              //  className="button"
+            >
+              Source Code
+            </a>
+          </Buttons>
+        </ButtonGroup>
       </div>
     </>
   );

@@ -257,7 +257,7 @@ canvas {
   .textContainer.flex {
     display: block;
   }
-  .textContainer h3 {
+  .textContainer h3.large {
     font-size: 10vw;
   }
   .textContainer.flex .flexSmall {

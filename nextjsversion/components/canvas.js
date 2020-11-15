@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { GlobalContext } from "../src/contexts/GlobalContext";
 import { TimelineMax, TweenMax} from "gsap/dist/gsap";
 import Link from "next/link";
+import { Tooltip } from "@material-ui/core";
 
 export function PortfolioCanvas({data}) {
   const {
@@ -135,11 +136,15 @@ export function PortfolioCanvas({data}) {
       <div className="Home">
         <div className="top" style={{zIndex:'100', display: (attractMode)?'none': 'flex', pointerEvents:'none'}}>
           <Link style={{ color: "white" }} href="/">
+            
            <a><h2 style={{ color: data[displayNumber].primaryColour }}>Matthew Pudney</h2></a> 
           </Link>
 
           <Link style={{ color: "white" }} href="/about">
-           <a style={{ color: data[displayNumber].primaryColour }}>About</a>
+            <Tooltip title="About page">
+               <a style={{ color: data[displayNumber].primaryColour }}>About</a>
+            </Tooltip>
+          
           </Link>
         </div>
         <div className="load-container">

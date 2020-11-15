@@ -14,12 +14,14 @@ export default function Picture(props) {
   const mesh = useRef();
   const group = useRef();
   const imageDimensions = useRef();
+  const [aspectRatio, setAspectRatio] = useState(1.5) 
   const texture1 = new THREE.TextureLoader().load(props.src, (tex) => {
     
     uniforms.current.uAspectRatio.value = tex.image.height/ tex.image.width
     tex.wrapS = THREE.ClampToEdgeWrapping;
     tex.wrapT = THREE.RepeatWrapping;
     tex.needsUpdate = true;
+    setAspectRatio(tex.image.width/tex.image.height)
   });
   const material = useRef();
   const value = window.innerWidth/1900;
@@ -117,7 +119,7 @@ const onPointerLeave=()=>{
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
       >
-        <planeBufferGeometry args={[1.5, 1, 20, 20]} />
+        <planeBufferGeometry args={[aspectRatio, 1, 20, 20]} />
         <shaderMaterial
           ref={material}
           attach="material"

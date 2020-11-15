@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import { useFrame } from "react-three-fiber";
 import { fragmentShader } from "../src/Shaders/fragmentShader";
@@ -18,12 +18,14 @@ export default function Picture(props) {
 
   const rotationAnimatation = useRef();
   const positionAnimatation = useRef();
-
+  const [aspectRatio, setAspectRatio] = useState(1.5) 
   const mesh = useRef();
   const group = useRef();
   const texture1 = new THREE.TextureLoader().load(props.image, (tex)=>{
 
-    uniforms.current.uAspectRatio.value = tex.image.height/ tex.image.width
+    uniforms.current.uAspectRatio.value =  tex.image.width/tex.image.height
+    const imageAspect = tex.image.width/tex.image.height;
+    // setAspectRatio(tex.image.width/tex.image.height)
   });
 
   const material = useRef();
@@ -35,7 +37,7 @@ export default function Picture(props) {
     uBend: { type: "f", value: 0.021 },
     uAspectRatio: { type: "f", value: 1.7 },
     uFloating: { type: "f", value: 1 },
-    distanceFromCenter: { type: "f", value: 1 },
+    distanceFromCenter: { type: "f", value: 0 },
     uTime: { type: "f", value: 0 },
     texture1: { type: "t", value: texture1 },
     resolution: { type: "v4", value: new THREE.Vector4() },
@@ -280,7 +282,7 @@ export default function Picture(props) {
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
       >
-        <planeBufferGeometry args={[1.5, 1, 20, 20]} />
+        <planeBufferGeometry args={[aspectRatio, 1, 20, 20]} />
         <shaderMaterial
           ref={material}
           attach="material"
