@@ -1,105 +1,30 @@
-import { Draggable } from "gsap/dist/Draggable";
 import { TweenMax } from "gsap";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { HomeContext } from "../src/contexts/HomeContext";
-import HtmlText from "./HtmlText";
-// import { gsap } from "gsap";
-// import { useSpring, animated } from "react-spring";
+
 import { useDrag } from "react-use-gesture";
-import elite from "../images/elite.png";
-import space from "../images/Gallery.png";
-import asteroid from "../images/asteroidPage.png";
-// import { useHistory } from "react-router";
+
 import { useRouter } from 'next/router'
-import Title from "./Title";
 import SmallListVersion from "./smallListVersion";
 import Background from "./Background";
-import gsap from "gsap/dist/gsap";
 
-const information = {
-  1: {
-    title: "Project 1",
-    descripttion: "Description 3",
-    primaryColor: "white",
-    secondaryColor: "#1b1f25",
-    textColor: "white",
-  },
-  0: {
-    title: "Project 2",
-    descripttion: "Description 2",
-    primaryColor: "#978d58",
-    secondaryColor: "#0b5269",
-    textColor: "white",
-  },
-  2: {
-    title: "Project 3",
-    descripttion: "Description 3",
-    primaryColor: "#FCBC3E",
-    secondaryColor: "#778899",
-    textColor: "white",
-  },
-  3: {
-    title: "Project 4",
-    descripttion: "Description 4",
-    primaryColor: "white",
-    secondaryColor: "#1e7753",
-    textColor: "white",
-  },
-  4: {
-    title: "Project 3",
-    descripttion: "Description 3",
-    primaryColor: "white",
-    secondaryColor: "#1e7753",
-    textColor: "white",
-  },
-};
-
+import Link from "next/link";
+import SmallText from "./smallText";
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Button } from "@material-ui/core";
  
-// console.log(Draggable.version);
-export default function SmallFrontPage() {
-  // gsap.registerPlugin(Draggable);
+export default function SmallFrontPage({data}) {
   const { information } = useContext(HomeContext);
   const history = useRouter();
   
-  var numBoxes = 10;
-  var boxWidth = 350;
-  var boxHeight = 250;
-  var imgWidth = boxWidth - 6;
-  var imgHeight = boxHeight - 14;
-
-  var viewWidth = 500;
-  var wrapWidth = numBoxes * boxWidth;
   const V_THRESHOLD = 0.1;
-  const wrapperRef = useRef();
-  const boxesRef = useRef();
-  const viewportRef = useRef();
+
   const boxRefs = useRef([]);
-  const animation = useRef();
-  const snapArray = useRef([]);
-  const wrapVal = gsap.utils.wrap(0, wrapWidth);
-  const isDragging = useRef(false);
-  const lastPosition = useRef(0);
 
-  const [array, setArray] = useState([]);
+  const firstTime = useRef(0)
 
-  const allImages = useRef([]);
-  useEffect(() => {
-    for (var i = 1; i <= numBoxes; i++) {
-      var src =
-        "https://unsplash.it/" + imgWidth + "/" + imgHeight + "?random=" + i;
-      allImages.current.push(src);
-      //  if(i<=3){
-      console.log(src);
-      array.push(src);
-      setArray(array);
-      console.log(array);
-      //  }
-    }
-
-    return () => {};
-  }, []);
   const [xPos, setXPos] = useState(0);
-  const [yPos, setYPos] = useState(0);
   const bind = useDrag(({ last, vxvy: [vx, vy] }) => {
     if (last) {
       // getting the swipe direction
@@ -108,18 +33,14 @@ export default function SmallFrontPage() {
         if (vx < -V_THRESHOLD && xPos > -1) next();
         // swipe right is when horizontal velocity is superior to threshold
         else if (vx > V_THRESHOLD && xPos < 1) prev();
-      } else {
-        // swipe up is when vertical velocity is inferior to minus threshold
-        // if (vy < -V_THRESHOLD && yPos > -1) setYPos(yp => yp - 1)
-        // // swipe down is when vertical velocity is superior to threshold
-        // else if (vy > V_THRESHOLD && yPos < 1) setYPos(yp => yp + 1)
-      }
     }
+  }
   });
 
+  // creates a array of refs
   const addToRefs = (el) => {
     if (el && !boxRefs.current.includes(el)) {
-      const index = boxRefs.current.push(el);
+      boxRefs.current.push(el);
     }
   };
 
@@ -127,7 +48,9 @@ export default function SmallFrontPage() {
   const carousel = useRef();
   const slider = useRef();
   const direction = useRef(-1);
+  const distance = useRef(100/(data.length))
   const [displayNumber, setDisplayNumber] = useState(0);
+
   useEffect(() => {
     let options = {
       root: carousel.current,
@@ -150,17 +73,6 @@ export default function SmallFrontPage() {
       observer.observe(value);
     }
 
-    // Draggable.create(boxRefs.current, {
-    //   type: "x",
-    //   trigger: slider.current,
-    //    inertia: true,
-    //   liveSnap: {
-    //     x: function (endValue) {
-    //       return 0;
-    //     },
-    //     y: 0,
-    //   },
-    // });
   }, []);
 
  
@@ -170,7 +82,7 @@ export default function SmallFrontPage() {
     }
     direction.current = -1*number;
     carousel.current.style.justifyContent = "flex-start";
-    slider.current.style.transform = `translate(${-20*number}%)`;
+    slider.current.style.transform = `translate(${-distance.current*number}%)`;
   };
   const prev = (number=1) => {
     if (direction.current < 0) {
@@ -179,31 +91,32 @@ export default function SmallFrontPage() {
     }
     direction.current = number;
     carousel.current.style.justifyContent = "flex-end";
-    slider.current.style.transform = `translate(${20*number}%)`;
+    slider.current.style.transform = `translate(${distance.current*number}%)`;
   };
   const transitionEnd = (e) => {
-    if (direction.current > 0) {
-      for(let i = direction.current; i>0; i--){
-        slider.current.prepend(slider.current.lastElementChild);
-        console.log('prepending')
-      }
-      
-    } else {
-      for(let i = direction.current; i<0; i++){
-        slider.current.appendChild(slider.current.firstElementChild);
-        console.log('appending')
-      }
-    }
+    if(firstTime.current !== 0){
+      if (direction.current > 0) {
+            for(let i = direction.current; i>0; i--){
+              slider.current.prepend(slider.current.lastElementChild);
+            }
+            
+          } else {
+            for(let i = direction.current; i<0; i++){
+              slider.current.appendChild(slider.current.firstElementChild);
+            }
+          }
 
-    slider.current.style.transition = "none";
-    slider.current.style.transform = "translate(0)";
-    // console.log(slider.current.firstElementChild.getAttribute('data-key'))
-    setTimeout(() => {
-      slider.current.style.transition = "all 0.5s";
-    });
-    //  const number = slider.current.firstElementChild.getAttribute('data-key')
-    //   setDisplayNumber(number)
+          slider.current.style.transition = "none";
+          slider.current.style.transform = "translate(0)";
+          setTimeout(() => {
+            slider.current.style.transition = "all 0.5s";
+          });
+    }else{
+      firstTime.current++
+    }
+   
   };
+
   const body = useRef();
   const linkTo = () => {
     TweenMax.to(body.current, {
@@ -227,17 +140,10 @@ const [attractMode, setAttractMode] = useState(false);
   useEffect(()=>{
     if(attractTo.shouldJump){
       const numberOfChange=attractTo.goTo-displayNumber%4;
-      console.log(numberOfChange)
       if(numberOfChange<0){
-        // for(let i=numberOfChange*-1; i>0;i++){
       prev(numberOfChange*-1)
-        // }
-        
       }else if(numberOfChange>0){
-        // for(let i=numberOfChange; i>0;i++){
-          next(numberOfChange)
-        // }
-        
+          next(numberOfChange)   
       }
       setAttractTo({...attractTo, shouldJump:false})
     }
@@ -271,81 +177,57 @@ const [attractMode, setAttractMode] = useState(false);
     attractMode = {false}
     number = {displayNumber}
     />
+    
     <div {...bind()} ref={body}>
-      <Title/>
+    <div className="top" style={{zIndex:'100'}}>
+          <Link style={{ color: "white" }} href="/">
+           <a><h2 style={{color: data[displayNumber].primaryColour}}>Matthew Pudney</h2></a> 
+          </Link>
+
+          <Link href="/about">
+           <a style={{color: data[displayNumber].primaryColour}}>About</a>
+          </Link>
+        </div>
       <SmallListVersion
       attractMode={changeAttractMode}
       goTo={goTo}
       number={displayNumber}
       displayNumber={displayNumber}
-      information={information}
+      data={data}
       className="vertical"
       />
       <div className="carousel" ref={carousel}>
         <div className="slider" ref={slider} 
          onTransitionEnd={transitionEnd}
         >
-          <section data-key={0} ref={addToRefs}>
-            <img src={elite} width="80%" />
-            <HtmlText
-              information={information}
-              number={0}
-              attractMode={false}
-              linkTo={linkTo}
-
-            />
-            
-            
-          </section>
-          <section data-key={1} ref={addToRefs}>
-            <img src={space} width="80%" />
-            <HtmlText
-              information={information}
-              number={1}
-              attractMode={false}
-              linkTo={linkTo}
-
-            />
-          </section>
-          <section data-key={2} ref={addToRefs}>
-            <img src={asteroid} width="80%" />
-            <HtmlText
-              information={information}
-              number={2}
-              attractMode={false}
-              linkTo={linkTo}
-
-            />
-          </section>
-          <section data-key={3} ref={addToRefs}>
-            Content section 4
-            <HtmlText
-              information={information}
-              number={3}
-              attractMode={false}
-              linkTo={linkTo}
-
-            />
-          </section>
-          <section data-key={3} ref={addToRefs}>
-            Content section 5
-            <HtmlText
-              information={information}
-              number={2}
-              attractMode={false}
-              linkTo={linkTo}
+          {data.map((info,index)=>(
+              <section key={index} data-key={index} ref={addToRefs}>
+              <img src={info.mainImage.url} width="80%" />
+              <SmallText
+                data={data}
+                number={index}
+                attractMode={false}
+                linkTo={linkTo}
+              />
               
-            />
-          </section>
+              
+            </section>
+          ))}
         </div>
       </div>
       <div className="controls">
-        <button className="next" onClick={e=>next(1)}>
-          next
-        </button>
-        <button className="prev" onClick={e=>prev(1)}>
-          prev
-        </button>
+        <Button className="next" onClick={e=>next(1)}
+
+        style={{color: data[displayNumber].primaryColour}}
+        >
+          <ArrowForwardIcon style={{fill:  data[displayNumber].primaryColour}}/> 
+          
+        </Button>
+        <Button className="prev" onClick={e=>prev(1)}
+        style={{color:  data[displayNumber].primaryColour}}
+        >
+          <ArrowBackIcon style={{fill:  data[displayNumber].primaryColour}}/>
+        </Button>
       </div>
     </div>
     </>

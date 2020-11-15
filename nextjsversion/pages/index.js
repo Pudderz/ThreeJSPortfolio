@@ -1,69 +1,59 @@
-import React from 'react';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import ProTip from '../src/ProTip';
-// import Link from '../src/Link';
-import Link from 'next/link'
-import Copyright from '../src/Copyright';
-import { CSSTransition } from 'react-transition-group'
-import { TweenMax } from 'gsap'
-import Home from '../components/Home'
-export default function Index() {
-  const onEnter = (node) => {
-    TweenMax.from(
-      [node.children[0].firstElementChild, node.children[0].lastElementChild],
-      0.6,
-      {
-        y: 30,
-        delay: 0.6,
-        ease: 'power3.InOut',
-        opacity: 0,
-        stagger: {
-          amount: 0.6,
-        },
-      },
-    )
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import  { PortfolioCanvas } from "../components/canvas";
+import SmallFrontPage from "../components/smallFrontPage";
+import { HomeProvider } from "../src/contexts/HomeContext";
+import {getAllPostsForHome} from '../helpers/api'
+
+
+export default function FrontPage(props) {
+  const [windowWidth, setWindowWidth] = useState();
+
+  const changeSize=(width)=>{
+    console.log(width)
+    console.log(`width is less than 1100 - ${width <= 1100}`)
+    if (width <= 1100 && windowWidth === "large") {
+      setWindowWidth("small");
+      console.log('small')
+      console.log(windowWidth)
+    } else if (width > 1100 && windowWidth === "small") {
+      setWindowWidth("large");
+      console.log('large')
+      console.log(windowWidth)
+    }
+    console.log(windowWidth ==='large')
   }
 
-  const onExit = (node) => {
-    TweenMax.to(
-      [node.children[0].firstElementChild, node.children[0].lastElementChild],
-      0.6,
-      {
-        y: -30,
-        ease: 'power3.InOut',
-        stagger: {
-          amount: 0.2,
-        },
-      },
-    )
-  }
+  useEffect(()=>{
+    console.log('index mounted')
+    setWindowWidth(
+      window.innerWidth > 1100 ? "large" : "small"
+    );
+    window.addEventListener("resize", (e) => {
+     changeSize(e.target.innerWidth)
+     
+    });
+    return()=>{
+      console.log('index unmounted')
+      window.removeEventListener("resize", (e) => {
+        changeSize(e.target.innerWidth)
+      });
+    }
+  },[])
   return (
-    <Container maxWidth="sm">
-    <CSSTransition
-          in={true}
-          timeout={1200}
-          classNames="page"
-          onExit={onExit}
-          onEntering={onEnter}
-          unmountOnExit
-        >
-          <div className="page">
-            <Home />
-          </div>
-        </CSSTransition>
-      <Box my={4}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Next.js example
-        </Typography>
-        <Link href="/about" color="secondary">
-         <a>Go to the about page</a>
-        </Link>
-        <ProTip />
-        <Copyright />
-      </Box>
-
-    </Container>
+    <HomeProvider>
+         
+      <div>{windowWidth === "large" ? <PortfolioCanvas data={props.post}/> : <SmallFrontPage data={props.post} />}</div>
+    </HomeProvider>
   );
+}
+
+
+export async function getStaticProps() {
+  const data = await getAllPostsForHome();
+  return {
+    props: {
+      post: data ?? null,
+    },
+  };
 }
