@@ -1,14 +1,9 @@
 import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
 import { useFrame } from "react-three-fiber";
-import picture from "../images/elite.png";
-// import { TweenMax } from "gsap/gsap-core";
-// import { TimelineMax, Power4 } from "gsap";
 import { fragmentShader } from "../src/Shaders/fragmentShader";
 import { vertexShader } from "../src/Shaders/vertexShader";
-import { TweenMax } from "gsap/dist/gsap";
-import { TimelineMax } from "gsap/dist/gsap";
-import { Power4 } from "gsap/dist/gsap";
+import { TimelineMax, Power4, TweenMax } from "gsap/dist/gsap";
 
 export default function Picture(props) {
   const speed = useRef(0);
@@ -26,7 +21,11 @@ export default function Picture(props) {
 
   const mesh = useRef();
   const group = useRef();
-  const texture1 = new THREE.TextureLoader().load(picture);
+  const texture1 = new THREE.TextureLoader().load(props.image, (tex)=>{
+
+    uniforms.current.uAspectRatio.value = tex.image.height/ tex.image.width
+  });
+
   const material = useRef();
   const scaleMultiplier = useRef({ value: 1 });
 
@@ -36,7 +35,6 @@ export default function Picture(props) {
     uBend: { type: "f", value: 0.021 },
     uAspectRatio: { type: "f", value: 1.7 },
     uFloating: { type: "f", value: 1 },
-    isMiddle: { type: "f", value: 0 },
     distanceFromCenter: { type: "f", value: 1 },
     uTime: { type: "f", value: 0 },
     texture1: { type: "t", value: texture1 },
@@ -138,6 +136,7 @@ export default function Picture(props) {
       }
     );
     return () => {
+      console.log('picture unmounting')
       window.removeEventListener("wheel", (e) => {
         speed.current += e.deltaY * 0.0003;
       });
@@ -157,7 +156,6 @@ export default function Picture(props) {
       }
     } else {
       firstTime.current++;
-      console.log(firstTime.current)
     }
 
   }, [props.rotating]);
@@ -167,36 +165,37 @@ export default function Picture(props) {
     if (firstTime.current > 2) {
       
       if (props.positioning === "middle") {
-        uniforms.current.isMiddle.value = -1;
+        // uniforms.current.isMiddle.value = -1;
         positionAnimatation.current.play();
       } else {
-        uniforms.current.isMiddle.value = 0;
+        // uniforms.current.isMiddle.value = 0;
         positionAnimatation.current.reverse();
       }
       group.current.position.x = props.positioning.x;
     } else {
       firstTime.current++;
-      console.log(firstTime.current)
     }
 
 
   }, [props.positioning]);
 
-  useEffect(()=>{
-    if(!props.isVisible){
-      uniforms.current.visibility.value += 0.01;
-    }
+  // useEffect(()=>{
+  //   if(!props.isVisible){
+  //     uniforms.current.visibility.value += 0.01;
+  //   }
 
-  },[props.isVisible])
+  // },[props.isVisible])
   useFrame(() => {
     const startRound = rounded.current;
     //checks to make sure users dont scroll out of the list
-    if (position.current < -0 || position.current > 3) {
+    if (position.current < -0 || position.current > props.maxNumber) {
+      if (position.current < -0.3 || position.current > props.maxNumber+0.3) {
+      speed.current = 0;
+    }else{
       speed.current *= 0.25;
     }
-    if (position.current < -0.3 || position.current > 3.3) {
-      speed.current = 0;
     }
+    
 
     if (speed.current !== 0 || props.attractTo.shouldJump) {
       uniforms.current.uTime.value += 0.01;
@@ -227,7 +226,6 @@ export default function Picture(props) {
       position.current -= props.attractMode
         ? (position.current - props.attractTo.goTo) * 0.1
         : (position.current - props.attractTo.goTo) * 0.05;
-      console.log(position.current);
 
       //cancels jumps once picture is mostly at the center
       if (

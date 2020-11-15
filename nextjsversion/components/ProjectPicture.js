@@ -13,7 +13,14 @@ export default function Picture(props) {
  const lastScrollHeight = useRef(0)
   const mesh = useRef();
   const group = useRef();
-  const texture1 = new THREE.TextureLoader().load(picture);
+  const imageDimensions = useRef();
+  const texture1 = new THREE.TextureLoader().load(props.src, (tex) => {
+    
+    uniforms.current.uAspectRatio.value = tex.image.height/ tex.image.width
+    tex.wrapS = THREE.ClampToEdgeWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    tex.needsUpdate = true;
+  });
   const material = useRef();
   const value = window.innerWidth/1900;
   const size = useRef( (value>1)? 1: value);
@@ -84,7 +91,6 @@ export default function Picture(props) {
 
   const goToPicture = () =>{
     if(props.displayNumber == props.index){
-      let tl = new TimelineMax({onComplete:()=>props.linkTo() });
       TweenMax.to(group.current.position,{
         duration:1,
         x:-0,
@@ -100,6 +106,8 @@ const onPointerEnter=()=>{
 const onPointerLeave=()=>{
   document.body.style.cursor = "default"
 }
+
+
   return (
     <group {...props} ref={el=>group.current=el}>
       <mesh
@@ -108,7 +116,6 @@ const onPointerLeave=()=>{
         onClick={goToPicture}
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
-        // doubleSided = {true}
       >
         <planeBufferGeometry args={[1.5, 1, 20, 20]} />
         <shaderMaterial
