@@ -10,11 +10,11 @@ import Background from "./Background";
 import SideBar from "./sideBar";
 import { TweenMax } from "gsap/dist/gsap";
 import { TimelineMax } from "gsap/dist/gsap";
+import Buttons from "./Buttons";
+import { ButtonGroup } from "@material-ui/core";
 export default function HtmlText(props) {
   const { setPreviousLocation, setPreviousColour } = useContext(GlobalContext);
-
   const backgroundAnimationRef = useRef();
-  const sideBarAnimationRef = useRef();
   const textAnimationRef = useRef();
   const [sideBarWidth, setSideBarSize ]= useState("10px");
   //ref for making sure certain useEffects do not fire on mount
@@ -28,8 +28,6 @@ export default function HtmlText(props) {
 
   
   let textRef = useRef();
-  let sideBarRef = useRef();
-  let backgroundRef = useRef();
   const [colours, setColours] = useState({
     primaryColor: "black",
   });
@@ -41,21 +39,15 @@ export default function HtmlText(props) {
 
   const sideBarSize = (size) => {
     if (size === "small") {
-      // TweenMax.to(sideBarRef, {
-      //   duration: 0.3,
-      //   width: "10px",
-      // });
       setSideBarSize("10px")
     } else {
-      // TweenMax.to(sideBarRef, {
-      //   duration: 0.3,
-      //   width: "15px",
-      // });
       setSideBarSize("15px")
     }
   };
 
   useEffect(() => {
+    backgroundAnimationRef.current = props.data;
+  console.log(backgroundAnimationRef.current)
     textAnimationRef.current = TweenMax.fromTo(
       textRef,
       {
@@ -80,12 +72,12 @@ export default function HtmlText(props) {
       });
       tl.add(() => {
         setState({
-          title: props.information[props.number].title,
-          description: props.information[props.number].descripttion,
+          title: props.data[props.number].title,
+          description: props.data[props.number].snippet,
         });
         setColours({
-          primaryColor: props.information[props.number].primaryColor,
-          textColor: props.information[props.number].textColor,
+          primaryColor: props.data[props.number].primaryColour,
+          textColor: props.data[props.number].whiteOrBlackText,
           // secondaryColor: information[props.number].secondaryColor,
         });
       });
@@ -97,19 +89,19 @@ export default function HtmlText(props) {
     } else {
 
       setState({
-        title: props.information[props.number].title,
-        description: props.information[props.number].descripttion,
+        title: props.data[props.number].title,
+        description: props.data[props.number].snippet,
       });
       setColours({
-        primaryColor: props.information[props.number].primaryColor,
-        textColor: props.information[props.number].textColor,
+        primaryColor: props.data[props.number].primaryColour,
+        textColor: props.data[props.number].whiteOrBlackText,
       });
 
     }
 
     //sets the colour for the next page so we can have the correct colour transition.
     if (firstCount.current > 1) {
-      setPreviousColour(props.information[props.number].primaryColor);
+      setPreviousColour(props.data[props.number].primaryColour);
     } else {
       firstCount.current++;
     }
@@ -131,13 +123,13 @@ export default function HtmlText(props) {
   return (
     <>
       <SideBar
-      information = {props.information}
+      information = {props.data}
       attractMode = {props.attractMode}
       number = {props.number}
       sideBarRef = {sideBarWidth}
       />
       <Background
-      information = {props.information}
+      information = {props.data}
       attractMode = {props.attractMode}
       number = {props.number}
       />
@@ -161,13 +153,23 @@ export default function HtmlText(props) {
           >
             {state.title}
           </h1>
-          <p>{state.description}</p>
+          <p style={{fontFamily: 'monospace',
+    margin: '20px 8px 0',
+    fontsize: '16px',maxWidth: '55%'}}>{state.description}</p>
         </div>
-        <Link
-          href="/BlogPage"
+        <Buttons
+        link={true}
+        primaryColour={props.data[props.number].primaryColour}
+        secondaryColour={props.data[props.number].secondaryColour}
+          href={`/posts/${props.data[props.number].slug}`}
           onClick={linkToContacts}
-          className="button"
-          onTransitionEnd={stopBubbling}
+          
+          
+         
+        >
+         <a
+         onTransitionEnd={stopBubbling}
+        //  className="button"
           onPointerOver={(e) => {
             e.stopPropagation()
             sideBarSize("big")
@@ -176,10 +178,52 @@ export default function HtmlText(props) {
             sideBarSize("small")
             e.stopPropagation()
           }}
-        >
-         <a>More Details</a>
-        </Link>
+         >More Details</a>
+        </Buttons>
+    
+       
       </div>
+      <div style={{position:'absolute', bottom:'0', left:'20px', display:(props.attractMode)?'none':'block'}}>
+      <Buttons
+        link={false}
+        primaryColour={props.data[props.number].primaryColour}
+        secondaryColour={props.data[props.number].secondaryColour}
+          
+          onClick={linkToContacts}
+          
+          
+        >
+         <a
+         style={{color: 'inherit', textDecoration:'none'}}
+         target="_blank"
+         rel="noopener noreferrer"
+         onClick={()=>{console.log(props.data[props.number])}}
+         href={props.data[props.number].sourceCode}
+        //  className="button"
+         >Source Code</a>
+        </Buttons>
+            <Buttons
+        link={false}
+        primaryColour={props.data[props.number].primaryColour}
+        secondaryColour={props.data[props.number].secondaryColour}
+          
+          onClick={linkToContacts}
+          
+          
+         
+        >
+         <a
+         style={{color: 'inherit', textDecoration:'none'}}
+         href={props.data[props.number].liveDemo}
+        //  className="button"
+        target="_blank"
+         rel="noopener noreferrer"
+
+         >Live demo</a>
+        </Buttons>
+      </div>
+     
+       
     </>
   );
 }
