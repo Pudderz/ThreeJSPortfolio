@@ -40,7 +40,7 @@ export default function SideBar(props) {
             }
           );
           TweenMax.to(sideBarRef.current,{
-            backgroundColor: props.information[props.number].primaryColor,
+            backgroundColor: props.information[props.number].primaryColour,
             duration: 1,
         })
           TweenMax.to(sideBarRef.current, {
@@ -57,15 +57,15 @@ export default function SideBar(props) {
       }
     useEffect(() => {
         TweenMax.to(sideBarRef.current,{
-                  backgroundColor: props.information[props.number].primaryColor,
+                  backgroundColor: props.information[props.number].primaryColour,
                   duration: 1,
               })
           //sets the colour for the next page so we can have the correct colour transition.
           if (firstCount.current > 1) {
               
-            setPreviousColour(props.information[props.number].primaryColor);
+            setPreviousColour(props.information[props.number].primaryColour);
             setColours({
-                primaryColor:props.information[props.number].primaryColor
+                primaryColor:props.information[props.number].primaryColour
             });
           } else {
             firstCount.current++;
