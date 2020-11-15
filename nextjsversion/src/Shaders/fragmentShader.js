@@ -1,5 +1,4 @@
 export const fragmentShader = `
-uniform float isMiddle;
 uniform float uTime;
 uniform float distanceFromCenter;
 uniform sampler2D texture1;
