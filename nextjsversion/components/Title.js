@@ -1,33 +1,22 @@
-import React, { useEffect, useRef } from 'react'
-import { gsap } from 'gsap'
+import Link from 'next/link'
+import React from 'react'
 
-const Title = ({ lineContent, lineContent2 }) => {
-  let line1 = useRef(null)
-  let line2 = useRef(null)
-  useEffect(() => {
-    gsap.from([line1, line2], 0.8, {
-      delay: 0.8,
-      ease: 'power3.out',
-      y: 64,
-      stagger: {
-        amount: 0.15,
-      },
-    })
-  }, [line1, line2])
-  return (
-    <h1 className="page-title">
-      <div className="line-wrap">
-        <div ref={(el) => (line1 = el)} className="line">
-          {lineContent}
+export default function Title(props) {
+    console.log(props.path)
+    return (
+        <div className="top">
+            {props.path !== '/' && props.path !=='/about' &&(
+                <div className="top">
+                <Link  href="/">
+                <a> <h2 style={{ color: props.primaryColour}}>Matthew Pudney</h2></a>
+                </Link>
+                
+                <Link  href="/about">
+                    <a style={{ color: props.primaryColour}}>About</a>
+                </Link>
+                </div>
+            )}
+          
         </div>
-      </div>
-      <div className="line-wrap">
-        <div ref={(el) => (line2 = el)} className="line">
-          {lineContent2}
-        </div>
-      </div>
-    </h1>
-  )
+    )
 }
-
-export default Title
