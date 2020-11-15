@@ -1,3 +1,12 @@
 const withSass = require('@zeit/next-sass')
 const withImages = require('next-images')
-module.exports = withImages()
+const withMDX = require('@next/mdx')({
+    extension: /\.mdx?$/,
+        // Or use this to support MD files too
+        // extension: /\.(md|mdx)$/,
+})
+module.exports = withImages(),withMDX({
+    pageExtensions: ['js', 'jsx', 'mdx'],
+  })
+  
+ 
