@@ -37,7 +37,7 @@ export const GlobalProvider = ({ children }) => {
   const [active, setActive] = useState(true);
   const [PreviousLocation, setPreviousLocation] = useState(null);
   const [previousPageColour, setPreviousColour] = useState(null);
-
+const [colours, setColours] = useState(null)
   const animation = useRef({
     about:new TimelineMax({ paused: true }),
     canvas: new TimelineMax({ paused: true }),
@@ -58,6 +58,11 @@ export const GlobalProvider = ({ children }) => {
         setActive,
         PreviousLocation,
         animation,
+        colours,
+        setColours:(primaryColor, secondaryColor)=>{setColours({
+          primaryColor:primaryColor,
+          secondaryColor:secondaryColor,
+        })},
         setAnimation: (thing)=> (animation.current = thing),
         setPreviousLocation: e=> setPreviousLocation(e),
         previousPageColour,

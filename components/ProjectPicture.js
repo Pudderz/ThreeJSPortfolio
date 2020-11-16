@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import * as THREE from "three";
 import { useFrame} from "react-three-fiber";
-import picture from "../images/elite.png";
 // import { TweenMax } from "gsap/gsap-core";
 // import { TimelineMax } from "gsap";
 import {fragmentShader} from '../src/Shaders/fragmentShader';
