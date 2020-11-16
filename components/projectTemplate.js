@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState} from "react";
 // import { NavLink } from "react-router-dom";
 import { TweenMax, Power3, Power4 } from "gsap";
 import { useRef, useEffect } from "react";
@@ -31,17 +31,29 @@ export default function ProjectTemplate(props) {
   } = useContext(GlobalContext);
   //loadin animation
   let { url, imageTitle } = props.image;
+  
   const content = hydrate(props.content);
   const aboutProject = hydrate(props.aboutProject);
-  console.log(props.data);
+  const isSmall = useRef(false)
   useEffect(() => {
+    if(window.innerWidth > 1100){
+      isSmall.current= false;
+      setWidth('large')
+    }else{
+      isSmall.current= true;
+      setWidth('small')
+    }
     setWidth(window.innerWidth > 1100 ? "large" : "small");
 
     window.addEventListener("resize", () => {
-      if (window.innerWidth <= 1100 && width !== "small") {
+      if (window.innerWidth <= 1100 && isSmall.current ==false) {
         setWidth("small");
-      } else if (window.innerWidth > 1100 && width !== "large") {
+        console.log(width)
+        isSmall.current =true;
+      } else if (window.innerWidth > 1100 && isSmall.current == true) {
         setWidth("large");
+        isSmall.current =false;
+        console.log(width)
       }
     });
 
@@ -50,12 +62,15 @@ export default function ProjectTemplate(props) {
       width: "100%",
       ease: Power3.easeInOut,
     });
+
     animation.current.project.to(screen, {
       duration: 0.5,
       left: "100%",
       ease: Power3.easeInOut,
     });
+
     animation.current.project.set(screen, { left: "-100%" });
+
     animation.current.project
       .to(body, 1, {
         css: {
@@ -65,7 +80,7 @@ export default function ProjectTemplate(props) {
         },
       })
       .delay(0.4);
-    // }
+
     setPreviousLocation("project");
 
     //text fade in when in viewport
@@ -96,18 +111,36 @@ export default function ProjectTemplate(props) {
           duration: 0,
           y: `+=${difference}px`,
         });
-        // titleRef.current.style.top += (difference/document.documentElement.scrollHeight);
         lastScrollHeight.current = window.scrollY;
       }
     });
 
     return () => {
+      window.removeEventListener("resize", () => {
+        if (window.innerWidth <= 1100 && isSmall.current ==false) {
+          setWidth("small");
+          isSmall.current =true;
+        } else if (window.innerWidth > 1100 && isSmall.current !== true) {
+          setWidth("large");
+          isSmall.current =false;
+        }
+      });
       animation.current.project.clear();
       window.removeEventListener("scroll", () => {
         const difference = lastScrollHeight.current - window.scrollY;
         if (titleRef.current != null && difference != 0) {
           titleRef.current.style.top +=
             difference / document.documentElement.scrollHeight;
+          lastScrollHeight.current = window.scrollY;
+        }
+      });
+      window.removeEventListener("scroll", () => {
+        const difference = window.scrollY - lastScrollHeight.current;
+        if (titleRef.current != null && difference != 0) {
+          TweenMax.to(titleRef.current, {
+            duration: 0,
+            y: `+=${difference}px`,
+          });
           lastScrollHeight.current = window.scrollY;
         }
       });

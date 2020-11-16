@@ -26,7 +26,7 @@ export default function Picture(props) {
   const material = useRef();
   const value = window.innerWidth/1900;
   const size = useRef( (value>1)? 1: value);
-
+  const shrink = useRef(1)
   const uniforms = useRef({
     uFrameRotation: {type:"f", value: 0},
     uFrameScale: {type:"f", value:1.},
@@ -52,16 +52,25 @@ export default function Picture(props) {
     window.addEventListener('scroll',(e)=>{
         const difference = lastScrollHeight.current -window.scrollY;
         if(group.current != null && difference!= 0){
-            group.current.rotation.z+= (difference/document.documentElement.scrollHeight)
+            // group.current.rotation.z+= (difference/document.documentElement.scrollHeight)
             group.current.position.y+= (difference/document.documentElement.scrollHeight)*10
-            size.current+= (difference/document.documentElement.scrollHeight)
+            shrink.current+= (difference/document.documentElement.scrollHeight)
             console.log(document.documentElement.scrollHeight)
             lastScrollHeight.current =  window.scrollY
         }
         
         
     })
-
+    // window.addEventListener("scroll", () => {
+    //   const difference = window.scrollY - lastScrollHeight.current;
+    //   if (group.current != null && difference != 0) {
+    //     TweenMax.to(group.current, {
+    //       duration: 0,
+    //       y: `+=${difference*10}px`,
+    //     });
+    //     lastScrollHeight.current = window.scrollY;
+    //   }
+    // });
     return () => {
       window.removeEventListener('resize', ()=>{
         const value = window.innerWidth/700;
@@ -70,9 +79,9 @@ export default function Picture(props) {
       window.removeEventListener('scroll',(e)=>{
         const difference = lastScrollHeight.current -window.scrollY
         if(group.current != null && difference!= 0){
-            group.current.rotation.z+= (difference/document.documentElement.scrollHeight)
+            // group.current.rotation.z+= (difference/document.documentElement.scrollHeight)
             group.current.position.y+= (difference/document.documentElement.scrollHeight)*10
-            size.current+= (difference/document.documentElement.scrollHeight)
+            shrink.current+= (difference/document.documentElement.scrollHeight)
             console.log(document.documentElement.scrollHeight)
             lastScrollHeight.current =  window.scrollY
         }
@@ -85,7 +94,7 @@ export default function Picture(props) {
   }, []);
 
   useFrame(() => {
-    let scale = 4.5*size.current;
+    let scale = 4.5*size.current*shrink.current;
     group.current.scale.set(scale, scale, scale);
 
   });
