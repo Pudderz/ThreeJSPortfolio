@@ -4,10 +4,8 @@ import { getAllPostsWithSlug, getPost } from "../../helpers/api";
 import renderToString from 'next-mdx-remote/render-to-string'
 import ProjectTemplate from "../../components/projectTemplate";
 
-export default function CreatePost({ post, mdx }) {
+export default function CreatePost({ post, mdx, aboutProjectMdx }) {
   const router = useRouter();
-  console.log("post content");
-  console.log(post);
   if (!router.isFallback && !post) {
     return <ErrorPage statusCode={404} />;
   }
@@ -32,6 +30,7 @@ export default function CreatePost({ post, mdx }) {
               whiteOrBlackText= {post.whiteOrBlackText}
               primaryColour={post.primaryColour}
               secondaryColour={post.secondaryColour}
+              aboutProject={aboutProjectMdx}
             />
           </article>
         </>
@@ -44,14 +43,15 @@ export async function getStaticProps({ params }) {
   console.log('testing')
   console.log(params)
   const data = await getPost(params.slug);
-  console.log('data')
-  console.log(data)
 
-  const mdxSource = await renderToString(data?.post.markdownDescription);
+
+  const mdxSource = await renderToString(data?.post?.markdownDescription);
+  const aboutProjectMdx = await renderToString(data?.post?.aboutProject);
   return {
     props: {
       post: data?.post ?? null,
-      mdx: mdxSource
+      mdx: mdxSource,
+      aboutProjectMdx: aboutProjectMdx,
     },
   };
 }

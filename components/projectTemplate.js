@@ -1,18 +1,18 @@
 import React, { useContext, useState } from "react";
 // import { NavLink } from "react-router-dom";
-import { TweenMax, TimelineMax, Power3, Power4 } from "gsap";
+import { TweenMax, Power3, Power4 } from "gsap";
 import { useRef, useEffect } from "react";
 import { Canvas } from "react-three-fiber";
 import ProjectPicture from "./ProjectPicture";
- import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 // import gsap from "gsap/gsap-core";
 import { GlobalContext } from "../src/contexts/GlobalContext";
-import Link from 'next/link'
+import Link from "next/link";
 import gsap from "gsap/dist/gsap";
-import hydrate from 'next-mdx-remote/hydrate'
+import hydrate from "next-mdx-remote/hydrate";
 import Buttons from "./Buttons";
 import { Button, Fab } from "@material-ui/core";
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 export default function ProjectTemplate(props) {
   const [width, setWidth] = useState("large");
   gsap.registerPlugin(ScrollTrigger);
@@ -27,47 +27,46 @@ export default function ProjectTemplate(props) {
     setPreviousColour,
     PreviousLocation,
     setPreviousLocation,
-    animation
+    animation,
   } = useContext(GlobalContext);
-//loadin animation 
-let { url, imageTitle } = props.image
-const content = hydrate(props.content);
-
-console.log(props.data)
+  //loadin animation
+  let { url, imageTitle } = props.image;
+  const content = hydrate(props.content);
+  const aboutProject = hydrate(props.aboutProject);
+  console.log(props.data);
   useEffect(() => {
-    setWidth(
-      window.innerWidth > 1100 ? "large" : "small"
-    );
-      
-      window.addEventListener("resize", () => {
-        if (window.innerWidth <= 1100 && width !== "small") {
-          setWidth("small");
-        } else if (window.innerWidth > 1100 && width !== "large") {
-          setWidth("large");
-        }
-      });
+    setWidth(window.innerWidth > 1100 ? "large" : "small");
 
+    window.addEventListener("resize", () => {
+      if (window.innerWidth <= 1100 && width !== "small") {
+        setWidth("small");
+      } else if (window.innerWidth > 1100 && width !== "large") {
+        setWidth("large");
+      }
+    });
 
-      animation.current.project.to(screen, {
-        duration: 0.5,
-        width: "100%",
-        ease: Power3.easeInOut,
-      });
-      animation.current.project.to(screen, {
-        duration: 0.5,
-        left: "100%",
-        ease: Power3.easeInOut,
-      });
-      animation.current.project.set(screen, { left: "-100%" });
-      animation.current.project.to(body, 1, {
+    animation.current.project.to(screen, {
+      duration: 0.5,
+      width: "100%",
+      ease: Power3.easeInOut,
+    });
+    animation.current.project.to(screen, {
+      duration: 0.5,
+      left: "100%",
+      ease: Power3.easeInOut,
+    });
+    animation.current.project.set(screen, { left: "-100%" });
+    animation.current.project
+      .to(body, 1, {
         css: {
           opacity: "1",
           pointerEvents: "auto",
           ease: Power4.easeInOut,
         },
-      }).delay(0.4);
+      })
+      .delay(0.4);
     // }
-    setPreviousLocation('project')
+    setPreviousLocation("project");
 
     //text fade in when in viewport
     revealRefs.current.forEach((el, index) => {
@@ -120,17 +119,16 @@ console.log(props.data)
       revealRefs.current.push(el);
     }
   };
-  const scrollDown = ()=>{
+  const scrollDown = () => {
     // TweenMax.to(information.current,{
     //   top:'0%',
     //   duration:3,
     // })
-    document.querySelector('.information').scrollIntoView()
-  }
+    document.querySelector(".information").scrollIntoView();
+  };
 
   return (
     <>
-      
       <div className="load-container">
         <div
           className="load-screen1"
@@ -138,41 +136,43 @@ console.log(props.data)
           style={{
             backgroundColor: props.primaryColour,
             width: PreviousLocation === "home" ? "10px" : "0px",
-            left:'0%',
+            left: "0%",
           }}
         ></div>
       </div>
       <div>
-        
         <div
           ref={(el) => (body = el)}
           className="Headd Contact noOpacity"
-          style={{ position: "absolute" , backgroundColor: props.secondaryColour}}
+          style={{
+            position: "absolute",
+            backgroundColor: props.secondaryColour,
+          }}
         >
           {/* Canvas with single image */}
-    {width ==='large' &&(
-       <Canvas>
-            <ProjectPicture
-              index={0}
-              displayDom={() => {}}
-              rotating={"middle"}
-              positioning={"middle"}
-              attractMode={false}
-              attractTo={0}
-              scale={2}
-              jumpComplete={() => {}}
-              displayNumber={0}
-              goTo={() => {}}
-              linkTo={() => {}}
-              src={url}
-            />
-          </Canvas>
-    )}     
-    {width === 'small' &&(
-      <div className="smallProjectImage">
-        <img src={url} alt={imageTitle} width="50%"alt="" />
-      </div>
-    )}
+          {width === "large" && (
+            <Canvas>
+              <ProjectPicture
+                index={0}
+                displayDom={() => {}}
+                rotating={"middle"}
+                positioning={"middle"}
+                attractMode={false}
+                attractTo={0}
+                scale={2}
+                jumpComplete={() => {}}
+                displayNumber={0}
+                goTo={() => {}}
+                linkTo={() => {}}
+                src={url}
+              />
+            </Canvas>
+          )}
+          {width === "small" && (
+            <div className="smallProjectImage">
+              <img src={url} alt={imageTitle} width="50%" alt="" />
+            </div>
+          )}
           <div
             style={{
               position: "absolute",
@@ -182,19 +182,12 @@ console.log(props.data)
             }}
           ></div>
 
-          <div
-          className="projectClass"
-            ref={titleRef}
-            style={{
-              
-            }}
-          >
+          <div className="projectClass" ref={titleRef}>
             <div>
               <h1
                 style={{
                   color: props.primaryColour,
                 }}
-                
               >
                 {props.title}
               </h1>
@@ -204,23 +197,18 @@ console.log(props.data)
             style={{
               position: "absolute",
               bottom: "3%",
-              margin: 'auto',
-              width: '100%',
+              margin: "auto",
+              width: "100%",
               zIndex: 1,
             }}
           >
-            <Button
-            onClick={scrollDown}
-            style={{ color:props.primaryColour}}
-            >
+            <Button onClick={scrollDown} style={{ color: props.primaryColour }}>
               scrollDown
             </Button>
-          
-            
           </div>
         </div>
       </div>
-          
+
       <div
         className="information"
         ref={information}
@@ -228,57 +216,51 @@ console.log(props.data)
       >
         <div className="textContainer flex">
           <div ref={addToRefs} className="textFadeIn textFadeIn-0">
-          <h3 className="large">{props.title}</h3>
+            <h3 className="large">{props.title}</h3>
 
-            <h4>What is this Project?</h4>
-            <p>
-              This project is designed to fetch information from NASA's
-              astronomical picture of the day and asteroid api and be able to
-              collect them in a gallery using IndexedDb to view at a later date.
-            </p>
-            
+            <h4>About The Project</h4>
+            <p>{typeof aboutProject !== undefined && aboutProject}</p>
           </div>
 
-          <div ref={addToRefs} className="textFadeIn textFadeIn-1 flexSmall" >
-            <div style={{paddingLeft: 0}}>
+          <div ref={addToRefs} className="textFadeIn textFadeIn-1 flexSmall">
+            <div style={{ paddingLeft: 0 }}>
               <h4>What's used in this project:</h4>
-            <ul>
-              {props.techUsed.map((tech,index)=>(
-                <li key={index}>
-                <p>{tech}</p>
-              </li>
-              ))}
-            </ul>
+              <ul>
+                {props.techUsed.map((tech, index) => (
+                  <li key={index}>
+                    <p>{tech}</p>
+                  </li>
+                ))}
+              </ul>
             </div>
             <div>
               <h4>Date</h4>
-            <time>{props.date.match(/^[\d-]{10}/i)[0]}</time>
+              <time>{props.date.match(/^[\d-]{10}/i)[0]}</time>
             </div>
-
-            
           </div>
         </div>
         <div
           // ref={addToRefs}
           className="textContainer "
-          style={{ display: "block", marginTop: '0'}}
+          style={{ display: "block", marginTop: "0" }}
         >
           <div>
-            <a href={props.liveDemo}>Live Demo</a>
-            <a href={props.sourceLink}>Learn more at Github repo</a>
+            <a className="block" href={props.liveDemo}>
+              Live Demo
+            </a>
+            <a className="block" href={props.sourceLink}>
+              Learn more at Github repo
+            </a>
           </div>
         </div>
-      
-        <div className="textContainer">
-<div className="markdownContent">
-          {content}
-        </div>
-        </div>
-        
-        <div>
 
-        {/* Next Project GoTo part */}
-        {/* {width ==='large' &&(
+        <div className="textContainer">
+          <div className="markdownContent">{content}</div>
+        </div>
+
+        <div>
+          {/* Next Project GoTo part */}
+          {/* {width ==='large' &&(
        <Canvas>
             <ProjectPicture
               index={0}
@@ -296,14 +278,13 @@ console.log(props.data)
             />
           </Canvas>
     )}      */}
-    {/* {width === 'small' &&(
+          {/* {width === 'small' &&(
       <div className="smallProjectImage">
         <img src={elite} width="50%"alt="" />
       </div>
     )} */}
         </div>
       </div>
-      
     </>
   );
 }
