@@ -17,7 +17,7 @@ export default function ListItem(props) {
           </div>
           <div className="marker"
           style={{
-            background:(props.number ===props.display)?props.color: (props.whiteOrBlack==='White')?'white':'black',
+            background:(props.number ===props.display)?props.color: (props.whiteOrBlack==='White' || props.attractMode)?'white':'black',
             position:'absolute'
           }}></div>
         </div>

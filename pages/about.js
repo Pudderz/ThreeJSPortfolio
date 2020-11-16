@@ -159,14 +159,14 @@ export default function About(props) {
               
               <form name="contact" method="POST" data-netlify="true" style={{display:'flex', flexDirection:'column'}}>
                 <label htmlFor="form-name">
-                  Your Name:
+                  Name:
                   
                 </label>
                 <input 
                 id="form-name"
                 type="text" name="name" placeholder="Name" />
                 <label htmlFor="email">
-                  Your Email:{" "}
+                  Email:{" "}
                   
                 </label>
                 <input

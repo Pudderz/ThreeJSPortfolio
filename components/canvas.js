@@ -182,7 +182,8 @@ export function PortfolioCanvas({data}) {
           </Canvas>
 
           <List
-            attractMode={changeAttractMode}
+            changeAttractMode={changeAttractMode}
+            attractMode={attractMode}
             goTo={goTo}
             number={displayNumber}
             displayNumber={displayNumber}

@@ -17,6 +17,7 @@
     "next-images": "^1.6.2",
     "next-mdx-enhanced": "^5.0.0",
     "next-mdx-remote": "^1.0.0",
+    "next-on-netlify": "^2.6.1",
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
@@ -30,6 +31,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "postbuild": "next-on-netlify",
     "export": "next build && next export",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
   }

@@ -36,7 +36,7 @@ export default function List(props) {
 
   const pointerOver = () => {
     
-    props.attractMode(true);
+    props.changeAttractMode(true);
     props.goTo(props.number);
     gsap.to(document.body, {
       duration: 1,
@@ -45,7 +45,7 @@ export default function List(props) {
     animationRef.current.play()
   };
   const pointerLeave = () => {
-    props.attractMode(false);
+    props.changeAttractMode(false);
     animationRef.current.reverse()
     openRef.current = false;
 
@@ -75,6 +75,7 @@ export default function List(props) {
           select={select}
           color = {information.primaryColour}
           whiteOrBlack={props.whiteOrBlack}
+          attractMode={props.attractMode}
           />
         ))}
       </div>
