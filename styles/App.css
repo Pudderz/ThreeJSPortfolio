@@ -237,8 +237,11 @@ canvas {
   padding: 20px;
 }
 .textContainer a {
-  display: block;
+  display: inline-block;
   width: fit-content;
+}
+.textContainer a.block {
+  display: block;
 }
 .flex {
   display: flex;

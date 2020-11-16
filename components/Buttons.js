@@ -83,7 +83,7 @@ export  function Buttons(props) {
         className={classes.image}
         focusVisibleClassName={classes.focusVisible}
         style={{backgroundColor: colour.secondaryColour, color:colour.primaryColour}}
-        onPointerEnter={PointerOver} onPointerOut={PointerLeave} 
+        onPointerEnter={PointerOver} onPointerLeave={PointerLeave} 
         >
           {props.children}
         </Button>
