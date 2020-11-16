@@ -132,6 +132,11 @@ h1 {
   /* mix-blend-mode: difference; */
   z-index: 100;
 }
+
+.top.project{
+  color: white;
+  mix-blend-mode: difference;
+}
 .top h2,
 .top a {
   /* font-family: 'Anton', sans-serif; */
@@ -521,7 +526,7 @@ svg{
 
 }
 .details{
-  width: 65%;
+  width: 50%;
   pointer-events: none;
 }
 .container {
@@ -541,3 +546,23 @@ svg{
   position: absolute !important;
 }
 
+@media(max-width:700px){
+  #flexHeader{
+    flex-direction: column;
+  }
+  #flexHeader h2{
+    line-height: initial;
+    margin: auto;
+   }
+   #flexHeader div{
+     text-align: center;
+     margin: 0;
+     padding: 0;
+   }
+}
+@media(max-width:600px){
+.buttonParent button {
+  height: fit-content!important;
+  width: fit-content!important;
+}
+}

@@ -15,7 +15,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Button, Tooltip } from "@material-ui/core";
 
 export default function SmallFrontPage({ data }) {
-  const { information } = useContext(HomeContext);
+  // const { information } = useContext(HomeContext);
   const history = useRouter();
 
   const V_THRESHOLD = 0.1;
@@ -167,7 +167,7 @@ export default function SmallFrontPage({ data }) {
   return (
     <>
       <Background
-        information={information}
+        information={data}
         attractMode={false}
         number={displayNumber}
       />

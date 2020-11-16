@@ -31,8 +31,6 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "postbuild": "next-on-netlify",
-    "export": "next build && next export",
-    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
+    "export": "next build && next export"
   }
 }

@@ -1,6 +1,6 @@
 import React, { useContext, useState} from "react";
 // import { NavLink } from "react-router-dom";
-import { TweenMax, Power3, Power4 } from "gsap";
+import { TweenMax, Power3, Power4, Power2 } from "gsap";
 import { useRef, useEffect } from "react";
 import { Canvas } from "react-three-fiber";
 import ProjectPicture from "./ProjectPicture";
@@ -17,6 +17,7 @@ export default function ProjectTemplate(props) {
   const [width, setWidth] = useState("large");
   gsap.registerPlugin(ScrollTrigger);
   const information = useRef(null);
+  const smallImage= useRef(null)
   const revealRefs = useRef([]);
   const titleRef = useRef(null);
   const lastScrollHeight = useRef(0);
@@ -31,9 +32,9 @@ export default function ProjectTemplate(props) {
   } = useContext(GlobalContext);
   //loadin animation
   let { url, imageTitle } = props.image;
-  
-  const content = hydrate(props.content);
   const aboutProject = hydrate(props.aboutProject);
+  const content = hydrate(props.content);
+  
   const isSmall = useRef(false)
   useEffect(() => {
     if(window.innerWidth > 1100){
@@ -48,12 +49,10 @@ export default function ProjectTemplate(props) {
     window.addEventListener("resize", () => {
       if (window.innerWidth <= 1100 && isSmall.current ==false) {
         setWidth("small");
-        console.log(width)
         isSmall.current =true;
       } else if (window.innerWidth > 1100 && isSmall.current == true) {
         setWidth("large");
         isSmall.current =false;
-        console.log(width)
       }
     });
 
@@ -109,13 +108,20 @@ export default function ProjectTemplate(props) {
       if (titleRef.current != null && difference != 0) {
         TweenMax.to(titleRef.current, {
           duration: 0,
-          y: `+=${difference}px`,
+            y: `+=${difference/1.5}px`,
         });
-        lastScrollHeight.current = window.scrollY;
       }
+      if (smallImage.current != null && difference != 0) {
+        TweenMax.to(smallImage.current, {
+          duration: 0,
+            y: `+=${difference/1.5}px`,
+        });
+      }
+      lastScrollHeight.current = window.scrollY;
     });
 
     return () => {
+      
       window.removeEventListener("resize", () => {
         if (window.innerWidth <= 1100 && isSmall.current ==false) {
           setWidth("small");
@@ -125,7 +131,7 @@ export default function ProjectTemplate(props) {
           isSmall.current =false;
         }
       });
-      animation.current.project.clear();
+      
       window.removeEventListener("scroll", () => {
         const difference = lastScrollHeight.current - window.scrollY;
         if (titleRef.current != null && difference != 0) {
@@ -138,12 +144,14 @@ export default function ProjectTemplate(props) {
         const difference = window.scrollY - lastScrollHeight.current;
         if (titleRef.current != null && difference != 0) {
           TweenMax.to(titleRef.current, {
-            duration: 0,
-            y: `+=${difference}px`,
+            duration: 1,
+            ease:Power2.easeInOut,
+            y: `+=${difference/2}px`,
           });
           lastScrollHeight.current = window.scrollY;
         }
       });
+      animation.current.project.clear();
     };
   }, []);
 
@@ -202,7 +210,7 @@ export default function ProjectTemplate(props) {
             </Canvas>
           )}
           {width === "small" && (
-            <div className="smallProjectImage">
+            <div ref={smallImage} className="smallProjectImage">
               <img src={url} alt={imageTitle} width="50%" alt="" />
             </div>
           )}
@@ -252,7 +260,7 @@ export default function ProjectTemplate(props) {
             <h3 className="large">{props.title}</h3>
 
             <h4>About The Project</h4>
-            <p>{typeof aboutProject !== undefined && aboutProject}</p>
+          <div style={{padding:'0'}}>{aboutProject}</div>
           </div>
 
           <div ref={addToRefs} className="textFadeIn textFadeIn-1 flexSmall">

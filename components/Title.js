@@ -59,10 +59,10 @@ export default function Title(props) {
     sidebarAnimation.current.reverse();
   };
 
-  if (props.path !== "/" && props.path !== "/about") {
+  // if (props.path !== "/" && props.path !== "/about") {
     return (
       <>
-        <div className="top">
+        <div className="top project">
           <Link href="/">
             <Tooltip title="Home page">
               <a style={{ color: props.primaryColour }}> Matthew Pudney</a>
@@ -70,12 +70,11 @@ export default function Title(props) {
           </Link>
           <Link
             href="/about"
-            
           >
             <Tooltip title="About page">
               <a 
               onPointerEnter={hoverAbout}
-            onPointerLeave={leaveAbout}
+              onPointerLeave={leaveAbout}
               
               style={{ color: props.primaryColour }}>About</a>
             </Tooltip>
@@ -98,6 +97,7 @@ export default function Title(props) {
         >
           <Tooltip title="Go Home">
             <Fab
+            ref={arrow}
               style={{
                 position: "fixed",
                 bottom: "10px",
@@ -107,13 +107,13 @@ export default function Title(props) {
               onPointerEnter={pointerOver}
               onPointerLeave={pointerLeave}
             >
-              <ArrowForwardIcon ref={arrow} />
+              <ArrowForwardIcon  />
             </Fab>
           </Tooltip>
         </Link>
       </>
     );
-  } else {
-    return <div className="top"></div>;
-  }
+  // } else {
+  //   return <div className="top"></div>;
+  // }
 }

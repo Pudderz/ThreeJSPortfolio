@@ -61,7 +61,7 @@ export  function Buttons(props) {
         
     },[props.primaryColour, props.secondaryColour])
     return (
-    <div>
+    <div className="buttonParent">
       {props.link === true ? (
         <Link 
         href={props.href}

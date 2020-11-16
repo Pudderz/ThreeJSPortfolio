@@ -36,7 +36,7 @@ export default function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalProvider>
-          <Title path={router.pathname}/>
+        {router.pathname !== "/" && router.pathname !== "/about" && <Title path={router.pathname}/>}
           <Layout path={router.pathname}>
                 <Component
                   {...pageProps}
