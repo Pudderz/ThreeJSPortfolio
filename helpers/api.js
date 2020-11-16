@@ -11,6 +11,7 @@ primaryColour
 secondaryColour
 whiteOrBlackText
 markdownDescription
+aboutProject
 mainImage{
   url
   title
@@ -30,6 +31,10 @@ mainImage{
   url
   title
 }
+`
+
+const POST_GRAPHQL_SLUG_FIELDS = `
+slug
 `
 async function fetchGraphQL(query) {
   return fetch(
@@ -71,7 +76,7 @@ export async function getAllPostsWithSlug() {
     `query {
       contentCollection(where: { slug_exists: true }, order: createdAt_DESC) {
         items {
-          ${POST_GRAPHQL_FIELDS}
+          ${POST_GRAPHQL_SLUG_FIELDS}
         }
       }
     }`
