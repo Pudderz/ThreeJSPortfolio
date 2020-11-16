@@ -15,8 +15,7 @@ export default function Picture(props) {
   const group = useRef();
   const imageDimensions = useRef();
   const [aspectRatio, setAspectRatio] = useState(1.5) 
-  const texture1 = new THREE.TextureLoader().load(props.src, (tex) => {
-    
+  const texture1 = new THREE.TextureLoader().load(props.src, tex => {
     uniforms.current.uAspectRatio.value = tex.image.height/ tex.image.width
     tex.wrapS = THREE.ClampToEdgeWrapping;
     tex.wrapT = THREE.RepeatWrapping;
@@ -52,38 +51,28 @@ export default function Picture(props) {
     window.addEventListener('scroll',(e)=>{
         const difference = lastScrollHeight.current -window.scrollY;
         if(group.current != null && difference!= 0){
-            // group.current.rotation.z+= (difference/document.documentElement.scrollHeight)
-            group.current.position.y+= (difference/document.documentElement.scrollHeight)*10
-            shrink.current+= (difference/document.documentElement.scrollHeight)
-            console.log(document.documentElement.scrollHeight)
-            lastScrollHeight.current =  window.scrollY
+            //  group.current.rotation.z += (difference/document.documentElement.scrollHeight)
+            group.current.position.y += (difference/document.documentElement.scrollHeight)*30;
+            shrink.current+= (difference/document.documentElement.scrollHeight);
+            lastScrollHeight.current =  window.scrollY;
         }
         
         
     })
-    // window.addEventListener("scroll", () => {
-    //   const difference = window.scrollY - lastScrollHeight.current;
-    //   if (group.current != null && difference != 0) {
-    //     TweenMax.to(group.current, {
-    //       duration: 0,
-    //       y: `+=${difference*10}px`,
-    //     });
-    //     lastScrollHeight.current = window.scrollY;
-    //   }
-    // });
     return () => {
       window.removeEventListener('resize', ()=>{
         const value = window.innerWidth/700;
         size.current= (value>1)? 1: value;
       })
       window.removeEventListener('scroll',(e)=>{
-        const difference = lastScrollHeight.current -window.scrollY
+        const difference = lastScrollHeight.current -window.scrollY;
         if(group.current != null && difference!= 0){
-            // group.current.rotation.z+= (difference/document.documentElement.scrollHeight)
-            group.current.position.y+= (difference/document.documentElement.scrollHeight)*10
-            shrink.current+= (difference/document.documentElement.scrollHeight)
+            // group.current.rotation.z+= (difference/document.documentElement.scrollHeight);
+            group.current.position.y+= (difference/document.documentElement.scrollHeight)*30;
+            shrink.current+= (difference/document.documentElement.scrollHeight);
             console.log(document.documentElement.scrollHeight)
             lastScrollHeight.current =  window.scrollY
+            
         }
 
     })
@@ -100,17 +89,7 @@ export default function Picture(props) {
   });
   
 
-  const goToPicture = () =>{
-    if(props.displayNumber == props.index){
-      TweenMax.to(group.current.position,{
-        duration:1,
-        x:-0,
-        y: 0,
-        z: -0.,
-      })
-    }
-    
-  }
+
 const onPointerEnter=()=>{
   document.body.style.cursor = "pointer"
 }
@@ -120,11 +99,10 @@ const onPointerLeave=()=>{
 
 
   return (
-    <group {...props} ref={el=>group.current=el}>
+    <group {...props} ref={group}>
       <mesh
         ref={mesh}
         //  scale={active ? [1.5, 1.5, 1.5] : [1, 1, 1]}
-        onClick={goToPicture}
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
       >
@@ -135,7 +113,6 @@ const onPointerLeave=()=>{
           uniforms={uniforms.current}
           vertexShader={vertexShader}
           fragmentShader={fragmentShader}
-          side= {THREE.DoubleSide}
         />
       </mesh>
     </group>
