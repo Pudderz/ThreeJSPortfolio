@@ -9,7 +9,13 @@ import { Power4 } from "gsap/dist/gsap";
 import { Fab, Icon, Tooltip } from "@material-ui/core";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
+import { makeStyles } from '@material-ui/core/styles';
+
+
+
+
 export default function About(props) {
+
   const {
     PreviousLocation,
     previousPageColour,
@@ -70,7 +76,8 @@ export default function About(props) {
         >
           <div>
             <div className="textContainer">
-              <div
+              <header
+              id="flexHeader"
                 style={{
                   display: "flex",
                   gap: "1em",
@@ -79,8 +86,10 @@ export default function About(props) {
                   marginBottom: "20px",
                 }}
               >
-                <h2 style={{ fontSize: "3em" }}>Hey, I'm Matthew</h2>
-                <Tooltip title="LinkedIn profile">
+                <h2 style={{ fontSize: "3em", lineHeight:'initial' }}>Hey, I'm Matthew</h2>
+               
+                  <div style={{display:'flex', gap:'1em', justifyContent:'center'}}>
+                    <Tooltip title="LinkedIn profile">
                   <a
                     href="https://www.linkedin.com/in/matthew-pudney/"
                     target="_blank"
@@ -102,7 +111,9 @@ export default function About(props) {
                     </Fab>
                   </a>
                 </Tooltip>
-              </div>
+                  </div>
+                   
+              </header>
 
               <p style={{textAlign:'center'}}>
                 I'm a front-end web developer based in UK and looking for a
@@ -156,7 +167,7 @@ export default function About(props) {
                 email: mpudney2@gmail.com
               </p>
               <p>Or with this contact form:</p>
-              
+              <div></div>
               <form name="contact" method="POST" data-netlify="true" style={{display:'flex', flexDirection:'column'}}>
                 <label htmlFor="form-name">
                   Name:
@@ -166,7 +177,7 @@ export default function About(props) {
                 id="form-name"
                 type="text" name="name" placeholder="Name" />
                 <label htmlFor="email">
-                  Email:{" "}
+                  Email:
                   
                 </label>
                 <input
