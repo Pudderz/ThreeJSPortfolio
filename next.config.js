@@ -7,6 +7,9 @@ const withMDX = require('@next/mdx')({
 })
 module.exports = withImages(),withMDX({
     pageExtensions: ['js', 'jsx', 'mdx'],
-  })
+  }),{
+    // Target must be serverless
+    target: "serverless",
+  };
   
  
