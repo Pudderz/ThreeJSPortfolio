@@ -47,8 +47,11 @@ export default function About(props) {
   }, []);
 
   return (
-    <div>
-      <div>
+    <div 
+    >
+      <div
+      ref={aboutRef}
+      >
         <div
           className="top"
           style={{ zIndex: "100", justifyContent: "flex-end" }}
@@ -62,7 +65,7 @@ export default function About(props) {
 
         <div
           className="about"
-          ref={aboutRef}
+          
           // style={{position:'absolute'}}
         >
           <div>
@@ -101,14 +104,16 @@ export default function About(props) {
                 </Tooltip>
               </div>
 
-              <p>
+              <p style={{textAlign:'center'}}>
                 I'm a front-end web developer based in UK and looking for a
                 full-time role
               </p>
             </div>
             <div className="textContainer">
-              <h2>...</h2>
-
+              <div>
+                 <h2>About Me</h2>
+                <hr/>
+                <div></div>
               <p>
                 I love learning the massive scope of computer science which I
                 find incredibly rewarding and exciting as there's always
@@ -127,6 +132,8 @@ export default function About(props) {
                 any exciting opportunities feel free to let me know by visiting
                 the contact section
               </p>
+              </div>
+             
             </div>
           </div>
         </div>
@@ -137,60 +144,55 @@ export default function About(props) {
               <h2>Get in touch</h2>
 
               <hr />
-
+                <div></div>
               <p>
                 If you're looking for a passionate developer with interest on
                 learning new ways and techniques to be better with the code or
                 you'd like to chat about something feel free to reach out.
               </p>
-
+              <div></div>
               <p>
                 To get in touch, feel free to contact me about anything via my
-                email: mpudney2@gmail.com{" "}
+                email: mpudney2@gmail.com
               </p>
               <p>Or with this contact form:</p>
-              <form name="contact" method="POST" data-netlify="true">
-                <label>
-                  Your Name:{" "}
-                  <input type="text" name="name" placeholder="Name" />
+              
+              <form name="contact" method="POST" data-netlify="true" style={{display:'flex', flexDirection:'column'}}>
+                <label htmlFor="form-name">
+                  Your Name:
+                  
                 </label>
-                <label>
+                <input 
+                id="form-name"
+                type="text" name="name" placeholder="Name" />
+                <label htmlFor="email">
                   Your Email:{" "}
-                  <input
+                  
+                </label>
+                <input
                     type="email"
                     name="email"
                     id="email"
                     type="email"
                     placeholder="Email"
                   />
+                <label htmlFor="message">
+                  Message:
+                  
                 </label>
-                <label>
-                  Message:{" "}
-                  <textarea
+                <textarea
                     id="message"
                     name="message"
-                    style={{ resize: "vertical" }}
+                    style={{ resize: "vertical", minHeight:'75px' }}
                     placeholder="Message"
                   ></textarea>
-                </label>
-                <Button id="submitForm" type="submit">Send</Button>
+                <Button  variant="contained" color="default" id="submitForm" type="submit"
+                style={{width:'fit-content', margin:'20px auto '}}
+                >Send</Button>
               </form>
             </div>
           </div>
         </div>
-        {/* <Container maxWidth="sm">
-      <Box my={4}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Next.js example
-        </Typography>
-        <Link href="/frontPage">
-          <Button variant="contained" color="primary" >
-            Go to the main page
-          </Button>
-        </Link>
-
-      </Box>
-    </Container> */}
       </div>
     </div>
   );
