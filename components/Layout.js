@@ -20,29 +20,30 @@ let location = (path =='/')? 'canvas': (path=='/about')? 'about':'project';
               
               gsap.set(node, { clearProps: "all" });
               node.classList.add("absolute");
+              animation.current[location].play()
               gsap.fromTo(node,{
                 autoAlpha: 1,
+                x: 0,
               }, {
                 duration: 1,
-                 x: 0,
+                   x: 0,
                 autoAlpha: 1,
                 onComplete(e) {
                   node.classList.remove("absolute");
                 }
               });
-              animation.current[location].play()
+              
             }}
             onExiting={(node) => {
               console.log('back')
               console.log(node)
-              node.classList.add("absolute");
+               node.classList.add("relative");
+               node.classList.add("behind");
+
               gsap.to(node, {
                 duration: 1,
-                 x: -200,
-                 autoAlpha: 0,
+                autoAlpha: 1,
                 onComplete() {
-                  console.log('running')
-                  node.classList.remove("absolute");
                 }
               });
               if(!animation.current[location].isActive()){
@@ -53,8 +54,8 @@ let location = (path =='/')? 'canvas': (path=='/about')? 'about':'project';
             key={path}
             appear={true}
             timeout={1000}
-            unmountOnExit
-            mountOnEnter
+            // unmountOnExit
+            // mountOnEnter
           >
             <div className="container">
               <div className="content">{children}</div>

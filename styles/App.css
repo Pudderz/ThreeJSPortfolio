@@ -88,9 +88,9 @@ canvas {
   /* opacity: 0; */
   /* background-color: #161616; */
   width: 100%;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0%);
+  position: relative;
+  /* left: 50%;
+  transform: translate(-50%, 0%); */
 }
 .Contact {
   background-color: #191c1d;

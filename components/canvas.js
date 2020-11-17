@@ -24,29 +24,32 @@ export function PortfolioCanvas({data}) {
   useEffect(() => {
     
     var tl = new TimelineMax({onComplete: ()=>setPreviousColour(information[0].primaryColor)});
-    if(PreviousLocation=='project'){
-      tl.to(screen, {
-        duration: 0.8,
-        width: "100%",
-        right: "0%",
-        // ease: Power3.easeInOut,
-      });
+  //   if(PreviousLocation=='project'){
+  //     tl.fromTo(screen, {
+  //       duration: 0.8,
+  //       width: "0%",
+  //       right: "0%",
+  //       // ease: Power3.easeInOut,
+  //     },{
+  //       width: "100%",
+  //       right: "0%",
+  //     });
   
-      tl.to(screen, {
-        duration: 0.4,
-        right: "100%",
-        // ease: Power3.easeInOut,
-        delay: 0.3,
-      });
+  //     tl.to(screen, {
+  //       duration: 0.4,
+  //       right: "100%",
+  //       // ease: Power3.easeInOut,
+  //       delay: 0.3,
+  //     });
   
-      TweenMax.to(body, 1, {
-        css: {
-          opacity: "1",
-          pointerEvents: "auto",
-          // ease: Power4.easeInOut,
-        },
-      })
-  }else{
+  //     TweenMax.to(body, 1, {
+  //       css: {
+  //         opacity: "1",
+  //         pointerEvents: "auto",
+  //         // ease: Power4.easeInOut,
+  //       },
+  //     })
+  // }else{
     tl.to(screen, {
       duration: 0.8,
       width: "100%",
@@ -68,7 +71,7 @@ export function PortfolioCanvas({data}) {
         // ease: Power4.easeInOut,
       },
     }).delay(1);
-  }  
+  // }  
 
     return () => {
       console.log(previousPageColour)

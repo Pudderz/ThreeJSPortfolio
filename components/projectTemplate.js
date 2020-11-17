@@ -1,5 +1,6 @@
 import React, { useContext, useState} from "react";
 // import { NavLink } from "react-router-dom";
+import Image from 'next/image'
 import { TweenMax, Power3, Power4, Power2 } from "gsap";
 import { useRef, useEffect } from "react";
 import { Canvas } from "react-three-fiber";
@@ -31,7 +32,7 @@ export default function ProjectTemplate(props) {
     animation,
   } = useContext(GlobalContext);
   //loadin animation
-  let { url, imageTitle } = props.image;
+  let { url, title: imageTitle, height: imageHeight, width: imageWidth  } = props.image;
   const aboutProject = hydrate(props.aboutProject);
   const content = hydrate(props.content);
   
@@ -57,28 +58,27 @@ export default function ProjectTemplate(props) {
     });
 
     animation.current.project.to(screen, {
-      duration: 0.5,
+      duration: 1,
       width: "100%",
       ease: Power3.easeInOut,
     });
 
     animation.current.project.to(screen, {
-      duration: 0.5,
+      duration: 1,
       left: "100%",
       ease: Power3.easeInOut,
     });
 
-    animation.current.project.set(screen, { left: "-100%" });
+    // animation.current.project.set(screen, { left: "-100%" });
 
     animation.current.project
-      .to(body, 1, {
+      .to(body, 0, {
         css: {
           opacity: "1",
           pointerEvents: "auto",
           ease: Power4.easeInOut,
         },
-      })
-      .delay(0.4);
+      },'-=1')
 
     setPreviousLocation("project");
 
@@ -210,8 +210,8 @@ export default function ProjectTemplate(props) {
             </Canvas>
           )}
           {width === "small" && (
-            <div ref={smallImage} className="smallProjectImage">
-              <img src={url} alt={imageTitle} width="50%" alt="" />
+            <div ref={smallImage} className="smallProjectImage" style={{width:'80%', margin:'50px auto 0'}}>
+              <Image src={url} width={imageWidth} height={imageHeight} alt={imageTitle} />
             </div>
           )}
           <div
@@ -264,7 +264,7 @@ export default function ProjectTemplate(props) {
           </div>
 
           <div ref={addToRefs} className="textFadeIn textFadeIn-1 flexSmall">
-            <div style={{ paddingLeft: 0 }}>
+            <div style={{ paddingLeft: '0', width: '200px'}}>
               <h4>What's used in this project:</h4>
               <ul>
                 {props.techUsed.map((tech, index) => (

@@ -10,3 +10,20 @@
     
 
 }
+
+.relative{
+    position: relative !important;
+    z-index: -1;
+}
+// .behind{
+//     z-index: 0 !important;
+//     *:not(canvas){
+//          z-index: 0 !important;
+//     }
+//     canvas{
+//         z-index: 100 !important; 
+//     }
+//     .background{
+//         z-index: -1;
+//     }
+// }

@@ -17,10 +17,7 @@ import { makeStyles } from '@material-ui/core/styles';
 export default function About(props) {
 
   const {
-    PreviousLocation,
     previousPageColour,
-    setPreviousColour,
-    setPreviousLocation,
     animation,
   } = useContext(GlobalContext);
   let aboutRef = useRef(null);
@@ -30,20 +27,26 @@ export default function About(props) {
     console.log(previousPageColour);
     animation.current.about.fromTo(
       aboutRef.current,
-      {
+      { 
+        position:'absolute',
         autoAlpha: 0,
-
+        zIndex:200,
         width: "100%",
         right: "-100vw",
         fontSize: "12px",
       },
       {
+        position:'absolute',
         duration: 1,
+        zIndex:200,
         width: "100%",
         right: "0",
         fontSize: "16px",
         autoAlpha: 1,
         ease: Power4.easeInOut,
+        onComplete() {
+          console.log('ran')
+        }
       }
     );
 
@@ -53,14 +56,16 @@ export default function About(props) {
   }, []);
 
   return (
-    <div 
+    <div
+
     >
       <div
       ref={aboutRef}
       >
         <div
           className="top"
-          style={{ zIndex: "100", justifyContent: "flex-end" }}
+          style={{ zIndex: "400", justifyContent: "flex-end" }}
+          
         >
           <Link href="/">
             <Tooltip title="Home">
@@ -74,9 +79,14 @@ export default function About(props) {
           
           // style={{position:'absolute'}}
         >
-          <div>
-            <div className="textContainer">
+          <div
+          
+          >
+            <div 
+            
+            className="textContainer">
               <header
+              
               id="flexHeader"
                 style={{
                   display: "flex",
