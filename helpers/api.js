@@ -85,7 +85,6 @@ export async function getAllPostsWithSlug() {
       }
     }`
   )
-  console.log(entries)
   return extractPostEntries(entries)
 }
 
@@ -100,8 +99,6 @@ export async function getAllPostsForHome() {
       }
     }`
   )
-  console.log('entries')
- console.log(entries)
   return extractPostEntries(entries)
 }
 
