@@ -109,7 +109,7 @@ export default function SmallFrontPage({ data }) {
         slider.current.style.transition = "all 0.5s";
       });
     } else {
-      firstTime.current++;
+      firstTime.current=1;
     }
   };
 
@@ -125,17 +125,21 @@ export default function SmallFrontPage({ data }) {
   const [attractMode, setAttractMode] = useState(false);
   const [attractTo, setAttractTo] = useState({ goTo: 0, shouldJump: false });
 
-  const goTo = (number) => {
-    console.log(number);
-    setAttractTo({
-      goTo: number,
-      shouldJump: true,
-    });
-  };
+  
 
   useEffect(() => {
     if (attractTo.shouldJump) {
-      const numberOfChange = attractTo.goTo - (displayNumber % 4);
+      let numberOfChange = attractTo.goTo - (displayNumber % data.length);
+      console.log(numberOfChange)
+
+
+      //If distance travelling is greater than data.length/2 then goes the opposite direction
+      if(numberOfChange> data.length/2){
+        numberOfChange =  numberOfChange - data.length;
+      }else if(numberOfChange< -(data.length/2)){
+        numberOfChange =  data.length+ numberOfChange;
+      }
+
       if (numberOfChange < 0) {
         prev(numberOfChange * -1);
       } else if (numberOfChange > 0) {
@@ -145,20 +149,26 @@ export default function SmallFrontPage({ data }) {
     }
   }, [attractTo]);
 
+const goTo = (number) => {
+    setAttractTo({
+      goTo: number,
+      shouldJump: true,
+    });
+  };
+
+
   const changeAttractMode = (boolean) => {
     setAttractMode(boolean);
     if (boolean) {
-      // setPosition("middle");
-      // setPositioning("middle");
     } else {
       setAttractTo({
         ...attractTo,
         shouldJump: false,
       });
-      // setPosition("right");
-      // setPositioning("right");
     }
   };
+
+  
   const stopBubbling = (event) => {
     event.preventDefault();
     event.stopPropagation();
