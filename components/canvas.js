@@ -180,6 +180,7 @@ export function PortfolioCanvas({data}) {
               linkTo={linkTo}
               image = {project.mainImage.url}
               maxNumber= {data.length-1}
+              slug={project.slug}
             />
             ))}
           </Canvas>

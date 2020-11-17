@@ -4,8 +4,10 @@ import { useFrame } from "react-three-fiber";
 import { fragmentShader } from "../src/Shaders/fragmentShader";
 import { vertexShader } from "../src/Shaders/vertexShader";
 import { TimelineMax, Power4, TweenMax } from "gsap/dist/gsap";
-
+import { useRouter } from 'next/router'
 export default function Picture(props) {
+
+  const router = useRouter()
   const speed = useRef(0);
   const rounded = useRef(0);
   const position = useRef(0);
@@ -22,9 +24,7 @@ export default function Picture(props) {
   const mesh = useRef();
   const group = useRef();
   const texture1 = new THREE.TextureLoader().load(props.image, (tex)=>{
-
     uniforms.current.uAspectRatio.value =  tex.image.width/tex.image.height
-    const imageAspect = tex.image.width/tex.image.height;
     // setAspectRatio(tex.image.width/tex.image.height)
   });
 
@@ -207,7 +207,9 @@ export default function Picture(props) {
     }
     distance.current =
       1 - Math.min(Math.abs(position.current - props.index), 1) ** 2;
+
     const newPosition = props.index * 1.2 - position.current * 1.2;
+
     mesh.current.position.y = newPosition;
 
     const sizing = props.attractMode ? size.current : size.current;
@@ -229,7 +231,7 @@ export default function Picture(props) {
         ? (position.current - props.attractTo.goTo) * 0.1
         : (position.current - props.attractTo.goTo) * 0.05;
 
-      //cancels jumps once picture is mostly at the center
+      //cancels jump to once picture is mostly at the center
       if (
         props.attractTo.shouldJump &&
         Math.round(position.current * 2) / 2 == props.attractTo.goTo
@@ -246,22 +248,23 @@ export default function Picture(props) {
   //Changes orientation of images on click before using the goTo props to navigate to selected page
   const goToPicture = () => {
     if (props.displayNumber == props.index) {
-      TweenMax.to(scaleMultiplier.current, {
-        value: 1,
-        duration: 1,
-      });
-      TweenMax.to(group.current.position, {
-        duration: 1,
-        x: -0,
-        y: 0,
-        z: 1,
-      });
-      TweenMax.to(group.current.rotation, {
-        duration: 1,
-        x: 0,
-        y: 0,
-        z: 0,
-      });
+      // TweenMax.to(scaleMultiplier.current, {
+      //   value: 1,
+      //   duration: 1,
+      // });
+      // TweenMax.to(group.current.position, {
+      //   duration: 1,
+      //   x: -0,
+      //   y: 0,
+      //   z: 1,
+      // });
+      // TweenMax.to(group.current.rotation, {
+      //   duration: 1,
+      //   x: 0,
+      //   y: 0,
+      //   z: 0,
+      // });
+      // router.push(props.slug)
     }
     props.goTo(props.index);
   };
