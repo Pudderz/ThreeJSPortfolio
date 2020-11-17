@@ -1,7 +1,7 @@
 import { TweenMax } from "gsap";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { HomeContext } from "../src/contexts/HomeContext";
-
+import Image from 'next/image'
 import { useDrag } from "react-use-gesture";
 
 import { useRouter } from "next/router";
@@ -168,7 +168,7 @@ const goTo = (number) => {
     }
   };
 
-  
+
   const stopBubbling = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -210,7 +210,13 @@ const goTo = (number) => {
           <div className="slider" ref={slider} onTransitionEnd={transitionEnd}>
             {data.map((info, index) => (
               <section key={index} data-key={index} ref={addToRefs}>
-                <img src={info.mainImage.url} width="80%" />
+                <div style={{margin:'50px auto 0', width:'80%'}}>
+                  <Image alt={info.mainImage.title}
+                  width={info.mainImage.width}
+                  height={info.mainImage.height}
+                  src={info.mainImage.url} />
+                </div>
+                
                 <SmallText
                   data={data}
                   number={index}

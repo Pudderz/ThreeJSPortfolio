@@ -15,6 +15,8 @@ aboutProject
 mainImage{
   url
   title
+  width
+  height
 }
 `
 const POST_GRAPHQL_HOMEPAGE_FIELDS = `
@@ -30,6 +32,8 @@ whiteOrBlackText
 mainImage{
   url
   title
+  width
+  height
 }
 `
 
