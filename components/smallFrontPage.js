@@ -1,7 +1,7 @@
 import { TweenMax } from "gsap";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { HomeContext } from "../src/contexts/HomeContext";
-import Image from 'next/image'
+import Image from "next/image";
 import { useDrag } from "react-use-gesture";
 
 import { useRouter } from "next/router";
@@ -74,6 +74,7 @@ export default function SmallFrontPage({ data }) {
   }, []);
 
   const next = (number = 1) => {
+    if (firstTime.current === 0) firstTime.current = 1;
     if (direction.current > 0) {
       slider.current.prepend(slider.current.lastElementChild);
     }
@@ -84,6 +85,7 @@ export default function SmallFrontPage({ data }) {
     }%)`;
   };
   const prev = (number = 1) => {
+    if (firstTime.current === 0) firstTime.current = 1;
     if (direction.current < 0) {
       slider.current.appendChild(slider.current.firstElementChild);
     }
@@ -92,6 +94,8 @@ export default function SmallFrontPage({ data }) {
     slider.current.style.transform = `translate(${distance.current * number}%)`;
   };
   const transitionEnd = (e) => {
+    //firstTime.current makes sure the transitionEnd function does not fire
+    // on the page transition to the page
     if (firstTime.current !== 0) {
       if (direction.current > 0) {
         for (let i = direction.current; i > 0; i--) {
@@ -109,7 +113,7 @@ export default function SmallFrontPage({ data }) {
         slider.current.style.transition = "all 0.5s";
       });
     } else {
-      firstTime.current=1;
+      firstTime.current = 1;
     }
   };
 
@@ -125,19 +129,16 @@ export default function SmallFrontPage({ data }) {
   const [attractMode, setAttractMode] = useState(false);
   const [attractTo, setAttractTo] = useState({ goTo: 0, shouldJump: false });
 
-  
-
   useEffect(() => {
     if (attractTo.shouldJump) {
       let numberOfChange = attractTo.goTo - (displayNumber % data.length);
-      console.log(numberOfChange)
-
+      console.log(numberOfChange);
 
       //If distance travelling is greater than data.length/2 then goes the opposite direction
-      if(numberOfChange> data.length/2){
-        numberOfChange =  numberOfChange - data.length;
-      }else if(numberOfChange< -(data.length/2)){
-        numberOfChange =  data.length+ numberOfChange;
+      if (numberOfChange > data.length / 2) {
+        numberOfChange = numberOfChange - data.length;
+      } else if (numberOfChange < -data.length / 2) {
+        numberOfChange = data.length + numberOfChange;
       }
 
       if (numberOfChange < 0) {
@@ -149,13 +150,12 @@ export default function SmallFrontPage({ data }) {
     }
   }, [attractTo]);
 
-const goTo = (number) => {
+  const goTo = (number) => {
     setAttractTo({
       goTo: number,
       shouldJump: true,
     });
   };
-
 
   const changeAttractMode = (boolean) => {
     setAttractMode(boolean);
@@ -167,7 +167,6 @@ const goTo = (number) => {
       });
     }
   };
-
 
   const stopBubbling = (event) => {
     event.preventDefault();
@@ -210,13 +209,15 @@ const goTo = (number) => {
           <div className="slider" ref={slider} onTransitionEnd={transitionEnd}>
             {data.map((info, index) => (
               <section key={index} data-key={index} ref={addToRefs}>
-                <div style={{margin:'50px auto 0', width:'80%'}}>
-                  <Image alt={info.mainImage.title}
-                  width={info.mainImage.width}
-                  height={info.mainImage.height}
-                  src={info.mainImage.url} />
+                <div style={{ margin: "50px auto 0", width: "80%" }}>
+                  <Image
+                    alt={info.mainImage.title}
+                    width={info.mainImage.width}
+                    height={info.mainImage.height}
+                    src={info.mainImage.url}
+                  />
                 </div>
-                
+
                 <SmallText
                   data={data}
                   number={index}
@@ -240,7 +241,7 @@ const goTo = (number) => {
             </Button>
           </Tooltip>
 
-          <Tooltip  title="Previous project">
+          <Tooltip title="Previous project">
             <Button
               className="prev"
               onClick={(e) => prev(1)}

@@ -167,7 +167,9 @@ export default function About(props) {
                 email: mpudney2@gmail.com
               </p>
               <p>Or with this contact form:</p>
+              
               <div></div>
+<hr/>
               <form name="contact" method="POST" data-netlify="true" style={{display:'flex', flexDirection:'column'}}>
                 <label htmlFor="form-name">
                   Name:

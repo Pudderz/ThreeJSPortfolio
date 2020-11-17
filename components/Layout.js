@@ -17,8 +17,6 @@ let location = (path =='/')? 'canvas': (path=='/about')? 'about':'project';
           <Transition
             onEntering={(node) => {
               gsap.killTweensOf(node);
-              console.log('playing')
-              console.log(node)
               
               gsap.set(node, { clearProps: "all" });
               node.classList.add("absolute");
