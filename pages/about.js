@@ -180,7 +180,10 @@ export default function About(props) {
               <div></div>
 <hr/>
               <form name="contact" method="POST" data-netlify="true" style={{display:'flex', flexDirection:'column'}}>
-                <label htmlFor="form-name">
+              <input type='hidden' name='form-name'
+    value='contact' />
+
+                <label htmlFor="form-userName">
                   Name:
                   
                 </label>
