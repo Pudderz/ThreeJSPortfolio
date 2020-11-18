@@ -1,3 +1,4 @@
+import { Button } from "@material-ui/core";
 import React from "react";
 
 const encode = (data) => {
@@ -32,43 +33,49 @@ export default class ContactForm extends React.Component {
   render() {
     const { name, email, message } = this.state;
     return (
-      <form onSubmit={this.handleSubmit} data-netlify="true" name="contact">
+      <form
+        onSubmit={this.handleSubmit}
+        data-netlify="true"
+        name="contact"
+        style={{ display: "flex", flexDirection: "column" }}
+      >
         <input type="hidden" name="form-name" value="contact" />
-        <p>
-          <label>
-            Your Name:
-            <input
-              type="text"
-              name="formUsername"
-              value={name}
-              onChange={this.handleChange}
-            />
-          </label>
-        </p>
-        <p>
-          <label>
-            Your Email:
-            <input
-              type="email"
-              name="formEmail"
-              value={email}
-              onChange={this.handleChange}
-            />
-          </label>
-        </p>
-        <p>
-          <label>
-            Message:
-            <textarea
-              name="formMessage"
-              value={message}
-              onChange={this.handleChange}
-            />
-          </label>
-        </p>
-        <p>
-          <button type="submit">Send</button>
-        </p>
+
+        <label htmlFor="name">Your Name:</label>
+        <input
+          id="name"
+          type="text"
+          name="formUsername"
+          value={name}
+          onChange={this.handleChange}
+        />
+
+        <label htmlFor="message">Your Email:</label>
+        <input
+          id="message"
+          type="email"
+          name="formEmail"
+          value={email}
+          onChange={this.handleChange}
+        />
+
+        <label htmlFor="message">Message:</label>
+        <textarea
+          id="message"
+          name="formMessage"
+          value={message}
+          onChange={this.handleChange}
+        />
+
+        <Button
+          variant="contained"
+          color="default"
+          id="submitForm"
+          type="submit"
+          style={{ width: "fit-content", margin: "20px auto " }}
+        >
+          Send
+        </Button>
       </form>
     );
   }
