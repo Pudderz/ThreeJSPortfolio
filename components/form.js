@@ -76,7 +76,7 @@ export default class ContactForm extends React.Component {
           name="formMessage"
           value={formMessage}
           onChange={this.handleChange}
-          onKeyup={this.handleChange}
+          onKeyDown={this.handleChange}
           style={{ resize: "vertical", minHeight: "75px", maxHeight: "500px" }}
           placeholder="Message"
         />
