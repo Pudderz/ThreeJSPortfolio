@@ -10,7 +10,11 @@ const encode = (data) => {
 export default class ContactForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { formUsername: "", formEmail: "", formMessage: "" };
+    this.state = {
+      formUsername: "",
+      formEmail: "",
+      formMessage: "",
+    };
   }
 
   /* Here’s the juicy bit for posting the form submission */
@@ -31,7 +35,7 @@ export default class ContactForm extends React.Component {
   handleChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   render() {
-    const { name, email, message } = this.state;
+    const { formUsername, formEmail, formMessage } = this.state;
     return (
       <form
         onSubmit={this.handleSubmit}
@@ -46,7 +50,7 @@ export default class ContactForm extends React.Component {
           id="name"
           type="text"
           name="formUsername"
-          value={name}
+          value={formUsername}
           onChange={this.handleChange}
           placeholder="Name"
         />
@@ -56,7 +60,7 @@ export default class ContactForm extends React.Component {
           id="message"
           type="email"
           name="formEmail"
-          value={email}
+          value={formEmail}
           onChange={this.handleChange}
           placeholder="Email"
         />
@@ -65,9 +69,9 @@ export default class ContactForm extends React.Component {
         <textarea
           id="message"
           name="formMessage"
-          value={message}
+          value={formMessage}
           onChange={this.handleChange}
-          style={{ resize: "vertical", minHeight:'75px' , maxHeight:'500px'}}
+          style={{ resize: "vertical", minHeight: "75px", maxHeight: "500px" }}
           placeholder="Message"
         />
 
