@@ -10,6 +10,7 @@ import { Fab, Icon, Tooltip } from "@material-ui/core";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import { makeStyles } from '@material-ui/core/styles';
+import ContactForm from "../components/form";
 
 
 
@@ -179,7 +180,10 @@ export default function About(props) {
               
               <div></div>
 <hr/>
-              <form name="contact" method="POST" data-netlify="true" style={{display:'flex', flexDirection:'column'}}>
+
+
+<ContactForm/>
+              {/* <form name="contact" method="POST" data-netlify="true" style={{display:'flex', flexDirection:'column'}}>
               <input type='hidden' name='form-name'
     value='contact' />
 
@@ -189,7 +193,7 @@ export default function About(props) {
                 </label>
                 <input 
                 id="form-name"
-                type="text" name="form-name" placeholder="Name" />
+                type="text" name="form-name" placeholder="Name" required/>
                 <label htmlFor="email">
                   Email:
                   
@@ -200,22 +204,25 @@ export default function About(props) {
                     id="email"
                     type="email"
                     placeholder="Email"
+                    required
                   />
                 <label htmlFor="message">
                   Message:
                   
                 </label>
                 <textarea
+                    required
                     id="message"
                     name="form-message"
                     style={{ resize: "vertical", minHeight:'75px' }}
                     placeholder="Message"
                   ></textarea>
-                   <button type="submit">Send</button>
+                   <button type="submit">Send</button> */}
                 {/* <Button  variant="contained" color="default" id="submitForm" type="submit"
                 style={{width:'fit-content', margin:'20px auto '}}
                 >Send</Button> */}
-              </form>
+              {/* </form> */}
+
             </div>
           </div>
         </div>
