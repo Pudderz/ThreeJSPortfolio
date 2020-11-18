@@ -32,7 +32,10 @@ export default class ContactForm extends React.Component {
     e.preventDefault();
   };
 
-  handleChange = (e) => this.setState({ [e.target.name]: e.target.value });
+  handleChange = (e) => {
+    console.log(e.target.name) 
+    console.log(e.target.value) 
+    this.setState({ [e.target.name]: e.target.value },()=>console.log(this.state))};
 
   render() {
     const { formUsername, formEmail, formMessage } = this.state;
@@ -52,16 +55,18 @@ export default class ContactForm extends React.Component {
           name="formUsername"
           value={formUsername}
           onChange={this.handleChange}
+          onKeyDown={this.handleChange}
           placeholder="Name"
         />
 
-        <label htmlFor="message">Your Email:</label>
+        <label htmlFor="email">Your Email:</label>
         <input
-          id="message"
+          id="email"
           type="email"
           name="formEmail"
           value={formEmail}
           onChange={this.handleChange}
+          onKeyDown={this.handleChange}
           placeholder="Email"
         />
 
@@ -71,6 +76,7 @@ export default class ContactForm extends React.Component {
           name="formMessage"
           value={formMessage}
           onChange={this.handleChange}
+          onKeyup={this.handleChange}
           style={{ resize: "vertical", minHeight: "75px", maxHeight: "500px" }}
           placeholder="Message"
         />
