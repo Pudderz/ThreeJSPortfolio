@@ -186,14 +186,14 @@ export default function About(props) {
                 </label>
                 <input 
                 id="form-name"
-                type="text" name="name" placeholder="Name" />
+                type="text" name="form-name" placeholder="Name" />
                 <label htmlFor="email">
                   Email:
                   
                 </label>
                 <input
                     type="email"
-                    name="email"
+                    name="form-email"
                     id="email"
                     type="email"
                     placeholder="Email"
@@ -204,13 +204,14 @@ export default function About(props) {
                 </label>
                 <textarea
                     id="message"
-                    name="message"
+                    name="form-message"
                     style={{ resize: "vertical", minHeight:'75px' }}
                     placeholder="Message"
                   ></textarea>
-                <Button  variant="contained" color="default" id="submitForm" type="submit"
+                   <button type="submit">Send</button>
+                {/* <Button  variant="contained" color="default" id="submitForm" type="submit"
                 style={{width:'fit-content', margin:'20px auto '}}
-                >Send</Button>
+                >Send</Button> */}
               </form>
             </div>
           </div>
