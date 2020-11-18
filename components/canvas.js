@@ -161,6 +161,7 @@ export function PortfolioCanvas({data}) {
         </div>
         <div className="noOpacity" ref={(el) => (body = el)}>
           <Canvas
+          gl={{ antialias: true ,preserveDrawingBuffer: true,}}
             style={{ height: "100vh", width: "100vw", position: "absolute" }}
             camera={{ fov: 45, position: [0, 0, 4] }}
           >

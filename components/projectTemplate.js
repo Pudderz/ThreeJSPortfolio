@@ -15,6 +15,7 @@ import Buttons from "./Buttons";
 import { Button, Fab } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 export default function ProjectTemplate(props) {
+  const multipleSizes = require(`../public/images/${props.slug}.png?resize&sizes[]=340&sizes[]=600&sizes[]=1000`);
   const [width, setWidth] = useState("large");
   gsap.registerPlugin(ScrollTrigger);
   const information = useRef(null);
@@ -211,7 +212,19 @@ export default function ProjectTemplate(props) {
           )}
           {width === "small" && (
             <div ref={smallImage} className="smallProjectImage" style={{width:'80%', margin:'50px auto 0'}}>
-              <Image src={url} width={imageWidth} height={imageHeight} alt={imageTitle} />
+              <img 
+                //  width={info.mainImage.width}
+                //  height={info.mainImage.height}
+                width={multipleSizes.width}
+                height={multipleSizes.height}
+                loading="lazy"
+                //  height="100%"
+                style={{maxHeight:'100%', height:'100%', maxWidth:'100%', width:'100%'}}
+                srcSet={multipleSizes.srcSet}
+                src={multipleSizes.src} 
+                sizes = "(min-width: 600px) 1000px,(min-width: 350px) 350px,(min-width: 180px)  300px"
+                />
+              {/* <Image src={url} width={imageWidth} height={imageHeight} alt={imageTitle} /> */}
             </div>
           )}
           <div

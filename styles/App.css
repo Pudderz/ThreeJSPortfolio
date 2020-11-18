@@ -430,7 +430,7 @@ body {
   height: 100vh;
   display: flex;
   justify-content: flex-start;
-  overflow: hidden;
+  overflow-x: hidden;
   margin: auto;
 
   position: relative;
@@ -461,7 +461,7 @@ body {
 .controls button.next {
   position: absolute;
   right: 20px;
-  top: 20px;
+  top: 10px;
   /* background: none; */
   border: none;
   cursor: pointer;
@@ -470,7 +470,7 @@ body {
 .controls button.prev {
   position: absolute;
   left: 20px;
-  top: 20px;
+  top: 10px;
   /* background: none; */
   border: none;
   cursor: pointer;
@@ -528,6 +528,25 @@ svg{
 .details{
   width: 50%;
   pointer-events: none;
+}
+@media(max-width:900px){
+ .details{
+   width: 90%;
+   max-width: 600px;
+ } 
+ .details h1{
+   margin:10px;
+ }
+ .details button{
+   margin:5px
+ }
+ .details p{
+   font-size: 0.8;
+ }
+ .top{
+  margin: 15px 90px;
+  font-size: 0.7em;
+ }
 }
 .container {
   width: 100%;

@@ -25,6 +25,8 @@ export default function Picture(props) {
   const value = window.innerWidth/1900;
   const size = useRef( (value>1)? 1: value);
   const shrink = useRef(1)
+
+  
   const uniforms = useRef({
     uFrameRotation: {type:"f", value: 0},
     uFrameScale: {type:"f", value:1.},

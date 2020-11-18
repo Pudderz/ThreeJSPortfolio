@@ -3,18 +3,14 @@ import React, { useEffect, useState, useRef } from "react";
 import { PortfolioCanvas } from "../components/canvas";
 import SmallFrontPage from "../components/smallFrontPage";
 import { HomeProvider } from "../src/contexts/HomeContext";
-import { getAllPostsForHome } from "../helpers/api";
+import { getAllPostsForHome, getAllPostsWithImages } from "../helpers/api";
+import { createImage } from "../helpers/getImage";
 
 export default function FrontPage(props) {
   console.log("typeof window " + typeof window);
   console.log(typeof window != "undefined");
   const [windowWidth, setWindowWidth] = useState({
-    size:
-      typeof window != "undefined"
-        ? window.innerWidth < 900
-          ? "small"
-          : "large"
-        : "large",
+    size: '',
   });
   const isSmall = useRef(false);
   const changeSize = (width) => {
@@ -50,9 +46,10 @@ export default function FrontPage(props) {
   return (
     <HomeProvider>
       <div>
-        {windowWidth.size === "large" ? (
+        {(windowWidth.size === "large") && (
           <PortfolioCanvas data={props.post} />
-        ) : (
+        )}
+        {(windowWidth.size === "small") && (
           <SmallFrontPage data={props.post} />
         )}
       </div>
@@ -62,6 +59,16 @@ export default function FrontPage(props) {
 
 export async function getStaticProps() {
   const data = await getAllPostsForHome();
+
+
+//creates pictures in public
+  const allData = await getAllPostsWithImages();
+  console.log(allData)
+  allData?.map((data) =>{
+    console.log(data?.slug, data?.mainImage?.url)
+    createImage(data?.slug, data?.mainImage?.url)
+  });
+
   return {
     props: {
       post: data ?? null,

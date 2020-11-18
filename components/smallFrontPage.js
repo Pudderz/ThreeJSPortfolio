@@ -207,15 +207,40 @@ export default function SmallFrontPage({ data }) {
         />
         <div className="carousel" ref={carousel}>
           <div className="slider" ref={slider} onTransitionEnd={transitionEnd}>
-            {data.map((info, index) => (
+            {data.map((info, index) => {
+              const multipleSizes = require(`../public/images/${info.slug}.png?resize&sizes[]=340&sizes[]=600&sizes[]=1000`);
+              console.log(multipleSizes)
+              console.log(multipleSizes.width)
+              console.log(multipleSizes.height)
+              return (
               <section key={index} data-key={index} ref={addToRefs}>
                 <div style={{ margin: "50px auto 0", width: "80%" }}>
-                  <Image
+                  {/* <img
+                   style={{maxHeight:'100%', height:'100%', maxWidth:'100%', width:'100%'}}
                     alt={info.mainImage.title}
                     width={info.mainImage.width}
                     height={info.mainImage.height}
-                    src={info.mainImage.url}
-                  />
+                    
+                    src={require(`../public/images/${info.slug}.png`)}
+                    loading="lazy"
+                  /> */}
+                  
+              {/* <picture>
+                <source srcSet={require(`../public/images/${info.slug}.png?resize&webp`)} type="image/webp" /> */}
+                {/* <source srcSet={require(`../public/images/${info.slug}.png?resize`)} type="image/png" /> */}
+                <img 
+                //  width={info.mainImage.width}
+                //  height={info.mainImage.height}
+                width={multipleSizes.width}
+                height={multipleSizes.height}
+                loading="lazy"
+                //  height="100%"
+                style={{maxHeight:'100%', height:'100%', maxWidth:'100%', width:'100%'}}
+                srcSet={multipleSizes.srcSet}
+                src={multipleSizes.src} 
+                sizes = "(min-width: 600px) 1000px,(min-width: 350px) 350px,(min-width: 180px)  300px"
+                />
+              {/* </picture> */}
                 </div>
 
                 <SmallText
@@ -225,7 +250,7 @@ export default function SmallFrontPage({ data }) {
                   linkTo={linkTo}
                 />
               </section>
-            ))}
+            )})}
           </div>
         </div>
         <div className="controls">

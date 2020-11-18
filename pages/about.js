@@ -140,7 +140,6 @@ export default function About(props) {
                 find incredibly rewarding and exciting as there's always
                 something more you can learn and improve on.
               </p>
-
               <p>
                 I'm currently looking for an opportunity to work on a JavaScript
                 framework and hope to learn and move to a full-stack position in

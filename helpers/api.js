@@ -40,6 +40,17 @@ mainImage{
 const POST_GRAPHQL_SLUG_FIELDS = `
 slug
 `
+
+
+const POST_GRAPHQL_SLUG_IMAGE_FIELDS = `
+slug
+mainImage{
+  url
+  title
+  width
+  height
+}
+`
 async function fetchGraphQL(query) {
   return fetch(
     `https://graphql.contentful.com/content/v1/spaces/${process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID}`,
@@ -75,6 +86,19 @@ export async function getPreviewPostBySlug(slug) {
   return extractPost(entry)
 }
 
+export async function getAllPostsWithImages() {
+  const entries = await fetchGraphQL(
+    `query {
+      contentCollection(where: { slug_exists: true }, order: createdAt_DESC) {
+        items {
+          ${POST_GRAPHQL_SLUG_IMAGE_FIELDS}
+        }
+      }
+    }`
+  )
+  return extractPostEntries(entries)
+}
+
 export async function getAllPostsWithSlug() {
   const entries = await fetchGraphQL(
     `query {
@@ -87,6 +111,8 @@ export async function getAllPostsWithSlug() {
   )
   return extractPostEntries(entries)
 }
+
+
 
 export async function getAllPostsForHome() {
   console.log('running allposts')
