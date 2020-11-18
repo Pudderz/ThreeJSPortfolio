@@ -48,6 +48,7 @@ export default class ContactForm extends React.Component {
           name="formUsername"
           value={name}
           onChange={this.handleChange}
+          placeholder="Name"
         />
 
         <label htmlFor="message">Your Email:</label>
@@ -57,6 +58,7 @@ export default class ContactForm extends React.Component {
           name="formEmail"
           value={email}
           onChange={this.handleChange}
+          placeholder="Email"
         />
 
         <label htmlFor="message">Message:</label>
@@ -65,6 +67,8 @@ export default class ContactForm extends React.Component {
           name="formMessage"
           value={message}
           onChange={this.handleChange}
+          style={{ resize: "vertical", minHeight:'75px' , maxHeight:'500px'}}
+          placeholder="Message"
         />
 
         <Button
