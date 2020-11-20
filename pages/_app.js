@@ -2,16 +2,12 @@ import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../src/theme";
-import "../styles/App.css";
 import { GlobalProvider } from "../src/contexts/GlobalContext";
-// import Test from "../components/canvas";
-import { useRouter } from "next/router";
 import Layout from '../components/Layout'
 import Title from "../components/Title";
 import "../styles/App.scss"
-// import { Transition } from "react-transition-group";
+
 export default function MyApp(props) {
   const { Component, pageProps, router } = props;
   console.log(props)
