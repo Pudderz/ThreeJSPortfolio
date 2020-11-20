@@ -190,23 +190,7 @@ export default function Picture(props) {
 
   // },[props.isVisible])
   useFrame(() => {
-    // const startRound = rounded.current;
-    //checks to make sure users dont scroll out of the list
-    // if (position.current < -0 || position.current > props.maxNumber) {
-    //   if (position.current < -0.3 || position.current > props.maxNumber+0.3) {
-    //   speed.current = 0;
-    // }else{
-    //   speed.current *= 0.25;
-    // }
-    // }
-    
-
-    // if (speed.current !== 0 || props.attractTo.shouldJump) {
-       uniforms.current.uTime.value += 0.01;
-    //   position.current = speed.current + position.current;
-    //   speed.current = speed.current * 0.8;
-    //   rounded.current = Math.round(position.current);
-    // }
+    uniforms.current.uTime.value += 0.01;
     distance.current =
       1 - Math.min(Math.abs(props.position.current - props.index), 1) ** 2;
 

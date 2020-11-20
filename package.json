@@ -18,6 +18,7 @@
     "imagemin-svgo": "^8.0.0",
     "isomorphic-unfetch": "^3.1.0",
     "jimp": "^0.16.1",
+    "json2mq": "^0.2.0",
     "next": "latest",
     "next-compose-plugins": "^2.2.1",
     "next-mdx-remote": "^1.0.0",

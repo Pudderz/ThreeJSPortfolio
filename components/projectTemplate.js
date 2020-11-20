@@ -14,10 +14,13 @@ import hydrate from "next-mdx-remote/hydrate";
 import Buttons from "./Buttons";
 import { Button, Fab } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import {useMediaQuery} from '@material-ui/core';
+  import json2mq from 'json2mq';
+
+
 export default function ProjectTemplate(props) {
-  const multipleSizes = require(`../public/images/${props.slug}.png?resize&sizes[]=340&sizes[]=600&sizes[]=1000`);
-  const [width, setWidth] = useState("large");
   gsap.registerPlugin(ScrollTrigger);
+  const multipleSizes = require(`../public/images/${props.slug}.png?resize&sizes[]=340&sizes[]=600&sizes[]=1000`);
   const information = useRef(null);
   const smallImage= useRef(null)
   const revealRefs = useRef([]);
@@ -25,6 +28,16 @@ export default function ProjectTemplate(props) {
   const lastScrollHeight = useRef(0);
   let screen = useRef(null);
   let body = useRef(null);
+  
+  const matches = useMediaQuery(
+    json2mq({
+      minWidth: 1100,
+    }),
+  );
+
+  
+
+
   const {
     previousPageColour,
     setPreviousColour,
@@ -37,27 +50,8 @@ export default function ProjectTemplate(props) {
   const aboutProject = hydrate(props.aboutProject);
   const content = hydrate(props.content);
   
-  const isSmall = useRef(false)
   useEffect(() => {
-    if(window.innerWidth > 1100){
-      isSmall.current= false;
-      setWidth('large')
-    }else{
-      isSmall.current= true;
-      setWidth('small')
-    }
-    setWidth(window.innerWidth > 1100 ? "large" : "small");
-
-    window.addEventListener("resize", () => {
-      if (window.innerWidth <= 1100 && isSmall.current ==false) {
-        setWidth("small");
-        isSmall.current =true;
-      } else if (window.innerWidth > 1100 && isSmall.current == true) {
-        setWidth("large");
-        isSmall.current =false;
-      }
-    });
-
+  
     animation.current.project.to(screen, {
       duration: 1,
       width: "100%",
@@ -123,16 +117,6 @@ export default function ProjectTemplate(props) {
 
     return () => {
       
-      window.removeEventListener("resize", () => {
-        if (window.innerWidth <= 1100 && isSmall.current ==false) {
-          setWidth("small");
-          isSmall.current =true;
-        } else if (window.innerWidth > 1100 && isSmall.current !== true) {
-          setWidth("large");
-          isSmall.current =false;
-        }
-      });
-      
       window.removeEventListener("scroll", () => {
         const difference = lastScrollHeight.current - window.scrollY;
         if (titleRef.current != null && difference != 0) {
@@ -192,7 +176,7 @@ export default function ProjectTemplate(props) {
           }}
         >
           {/* Canvas with single image */}
-          {width === "large" && (
+          {matches? (
             <Canvas>
               <ProjectPicture
                 index={0}
@@ -209,8 +193,7 @@ export default function ProjectTemplate(props) {
                 src={url}
               />
             </Canvas>
-          )}
-          {width === "small" && (
+          ): (
             <div ref={smallImage} className="smallProjectImage" style={{width:'80%', margin:'50px auto 0'}}>
               <img 
                 //  width={info.mainImage.width}
