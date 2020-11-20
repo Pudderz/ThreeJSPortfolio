@@ -48,7 +48,7 @@ export default function Projects(props) {
 
     // mesh.current.position.y = props.index * 1.2 - newPosition * 1.2;
 
-    if (props.index == 0 && startRound !== rounded.current) {
+    if ( startRound !== rounded.current) {
       props.displayDom(rounded.current);
     }
 
@@ -76,7 +76,10 @@ export default function Projects(props) {
   });
 
   const jumpComplete = (number) => props.jumpComplete(number);
-  const displayDom = (e) => props.displayDom(e);
+  const displayDom = (number) => {
+    console.log(number)      
+    props.displayDom(number)
+    };
   const goTo = (number) => props.goTo(number);
   const linkTo = (number) => props.linkTo(number);
 

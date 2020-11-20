@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 
 export const HomeContext = React.createContext();
 
@@ -7,6 +7,7 @@ export const HomeProvider = ({ children }) => {
 //   const [attractTo, setAttractTo] = useState({ goTo: 0, shouldJump: false });
   const [attractMode, setAttractMode] = useState(false);
   const [displayNumber, setDisplayNumber] = useState(0);
+  const position = useRef(0)
 
   return (
     <HomeContext.Provider
@@ -18,9 +19,12 @@ export const HomeProvider = ({ children }) => {
         setAttractMode: (boolean) => setAttractMode(boolean),
         displayNumber,
         attractMode,
+        position,
       }}
     >
       {children}
     </HomeContext.Provider>
   );
 };
+
+export default HomeContext;
