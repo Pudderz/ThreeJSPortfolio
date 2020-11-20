@@ -4,7 +4,7 @@ import { useFrame } from "react-three-fiber";
 import { fragmentShader } from "../src/Shaders/fragmentShader";
 import { vertexShader } from "../src/Shaders/vertexShader";
 import { TimelineMax, Power4, TweenMax } from "gsap/dist/gsap";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import { HomeContext } from "../src/contexts/HomeContext";
 import { GlobalContext } from "../src/contexts/GlobalContext";
 export default function Picture(props) {
@@ -22,7 +22,6 @@ export default function Picture(props) {
 
   const rotationAnimatation = useRef();
   const positionAnimatation = useRef();
-  const [aspectRatio, setAspectRatio] = useState(1.5) 
   const mesh = useRef();
   const group = useRef();
   const texture1 = new THREE.TextureLoader().load(props.image, (tex)=>{
@@ -161,25 +160,19 @@ export default function Picture(props) {
     } else {
       firstTime.current++;
     }
-
   }, [props.rotating]);
 
   useEffect(() => {
-
-    if (firstTime.current > 2) {
-      
+    if (firstTime.current > 2) {    
       if (props.positioning === "middle") {
-        // uniforms.current.isMiddle.value = -1;
         positionAnimatation.current.play();
       } else {
-        // uniforms.current.isMiddle.value = 0;
         positionAnimatation.current.reverse();
       }
       group.current.position.x = props.positioning.x;
     } else {
       firstTime.current++;
     }
-
 
   }, [props.positioning]);
 
@@ -194,9 +187,7 @@ export default function Picture(props) {
     distance.current =
       1 - Math.min(Math.abs(props.position.current - props.index), 1) ** 2;
 
-    const newPosition = props.index * 1.2 - props.position.current * 1.2;
-
-    mesh.current.position.y = newPosition;
+    mesh.current.position.y = props.index * 1.2 - props.position.current * 1.2;
 
     const sizing = props.attractMode ? size.current : size.current;
     const fromCenter = props.attractMode ? 1 : distance.current;
@@ -204,12 +195,13 @@ export default function Picture(props) {
       (1 + 0.08 * fromCenter) * sizing * 1.3 * scaleMultiplier.current.value;
 
     group.current.scale.set(scale, scale, scale);
+
     uniforms.current.distanceFromCenter.value = distance.current;
 
-    
   });
 
   //Changes orientation of images on click before using the goTo props to navigate to selected page
+  
   const goToPicture = () => {
     if (props.displayNumber == props.index) {
       // TweenMax.to(scaleMultiplier.current, {
@@ -249,7 +241,7 @@ export default function Picture(props) {
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
       >
-        <planeBufferGeometry args={[aspectRatio, 1, 20, 20]} />
+        <planeBufferGeometry args={[1.5, 1, 20, 20]} />
         <shaderMaterial
           ref={material}
           attach="material"

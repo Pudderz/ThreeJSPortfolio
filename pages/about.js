@@ -58,7 +58,7 @@ export default function About(props) {
         >
           <Link href="/">
             <Tooltip title="Home">
-              <a style={{ color: "white" }}>Home</a>
+              <a style={{ color: "white",pointerEvents:'all', cursor: 'pointer' }}>Home</a>
             </Tooltip>
           </Link>
         </div>

@@ -278,6 +278,10 @@ canvas {
   display: none !important;
 }
 
+button span svg{
+  position: inherit;
+}
+
 svg {
   font: bold 70px Century Gothic, Arial;
   height: 173px;
@@ -450,7 +454,10 @@ text {
     pointer-events: all;
   }
 }
-
+a{
+  pointer-events: all;
+  cursor: pointer;
+}
 .container {
   width: 100%;
   opacity: 0;

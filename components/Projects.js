@@ -88,7 +88,7 @@ export default function Projects(props) {
           key={index}
           index={index}
           displayDom={displayDom}
-          rotating={propsPosition}
+          rotating={props.rotating}
           positioning={props.positioning}
           attractMode={props.attractMode}
           attractTo={props.attractTo}

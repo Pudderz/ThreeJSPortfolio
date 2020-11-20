@@ -22,6 +22,14 @@ export function PortfolioCanvas({data}) {
   let screen = useRef(null);
   let body = useRef(null);
 
+  const [attractMode, setAttractMode] = useState(false);
+  const [attractTo, setAttractTo] = useState({ goTo: 0, shouldJump: false });
+
+  const [propsPosition, setPosition] = useState("right");
+  const [positioning, setPositioning] = useState("right");
+
+
+
   //loadin animations
   useEffect(() => {
     
@@ -86,11 +94,7 @@ export function PortfolioCanvas({data}) {
     };
   }, []);
 
-  const [attractMode, setAttractMode] = useState(false);
-  const [attractTo, setAttractTo] = useState({ goTo: 0, shouldJump: false });
 
-  const [propsPosition, setPosition] = useState("right");
-  const [positioning, setPositioning] = useState("right");
 
   const changeAttractMode = (boolean) => {
     setAttractMode(boolean);
@@ -131,23 +135,23 @@ export function PortfolioCanvas({data}) {
 
   const linkTo = () => {
     var tl = new TimelineMax({ onComplete: () => history.push("/Contact") });
-
     tl.to(body, {
       duration: 0.5,
       opacity: "0",
     });
   };
+
   return (
       <div className="Home">
         <div className="top" style={{zIndex:'100', display: (attractMode)?'none': 'flex', pointerEvents:'none'}}>
           <Link style={{ color: "white" }} href="/">
             
-           <a><h2 style={{ color: data[displayNumber].primaryColour }}>Matthew Pudney</h2></a> 
+           <a style={{pointerEvents:'all',  cursor: 'pointer'}}><h2 style={{ color: data[displayNumber].primaryColour }}>Matthew Pudney</h2></a> 
           </Link>
 
           <Link style={{ color: "white" }} href="/about">
             <Tooltip title="About page">
-               <a style={{ color: data[displayNumber].primaryColour }}>About</a>
+               <a style={{ color: data[displayNumber].primaryColour, pointerEvents:'all', cursor: 'pointer' }}>About</a>
             </Tooltip>
           
           </Link>
@@ -167,25 +171,6 @@ export function PortfolioCanvas({data}) {
             style={{ height: "100vh", width: "100vw", position: "absolute" }}
             camera={{ fov: 45, position: [0, 0, 4] }}
           >
-
-            {/* {data.map((project, index)=>(
-              <Picture
-              key={index}
-              index={index}
-              displayDom={displayDom}
-              rotating={propsPosition}
-              positioning={positioning}
-              attractMode={attractMode}
-              attractTo={attractTo}
-              jumpComplete={jumpComplete}
-              displayNumber={displayNumber}
-              goTo={goTo}
-              linkTo={linkTo}
-              image = {project.mainImage.url}
-              maxNumber= {data.length-1}
-              slug={project.slug}
-            />
-            ))} */}
             <Projects
             data={data}
               displayDom={displayDom}
@@ -198,8 +183,7 @@ export function PortfolioCanvas({data}) {
               goTo={goTo}
               linkTo={linkTo}
               maxNumber= {data.length-1}
-            >
-            
+            >            
 
             </Projects>
           </Canvas>
