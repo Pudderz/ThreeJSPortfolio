@@ -8,7 +8,9 @@ import { GlobalContext } from "../src/contexts/GlobalContext";
 import { TimelineMax, TweenMax} from "gsap/dist/gsap";
 import Link from "next/link";
 import { Tooltip } from "@material-ui/core";
-
+import Projects from './Projects'
+import * as THREE from "three";
+import { useFrame } from "react-three-fiber";
 export function PortfolioCanvas({data}) {
   const {
     PreviousLocation,
@@ -23,7 +25,7 @@ export function PortfolioCanvas({data}) {
   //loadin animations
   useEffect(() => {
     
-    var tl = new TimelineMax({onComplete: ()=>setPreviousColour(information[0].primaryColor)});
+    var tl = new TimelineMax({onComplete: ()=>setPreviousColour(data[0].primaryColour)});
   //   if(PreviousLocation=='project'){
   //     tl.fromTo(screen, {
   //       duration: 0.8,
@@ -166,7 +168,7 @@ export function PortfolioCanvas({data}) {
             camera={{ fov: 45, position: [0, 0, 4] }}
           >
 
-            {data.map((project, index)=>(
+            {/* {data.map((project, index)=>(
               <Picture
               key={index}
               index={index}
@@ -183,9 +185,25 @@ export function PortfolioCanvas({data}) {
               maxNumber= {data.length-1}
               slug={project.slug}
             />
-            ))}
-          </Canvas>
+            ))} */}
+            <Projects
+            data={data}
+              displayDom={displayDom}
+              rotating={propsPosition}
+              positioning={positioning}
+              attractMode={attractMode}
+              attractTo={attractTo}
+              jumpComplete={jumpComplete}
+              displayNumber={displayNumber}
+              goTo={goTo}
+              linkTo={linkTo}
+              maxNumber= {data.length-1}
+            >
+            
 
+            </Projects>
+          </Canvas>
+              
           <List
             changeAttractMode={changeAttractMode}
             attractMode={attractMode}

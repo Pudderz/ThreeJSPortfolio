@@ -1,16 +1,18 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import * as THREE from "three";
 import { useFrame } from "react-three-fiber";
 import { fragmentShader } from "../src/Shaders/fragmentShader";
 import { vertexShader } from "../src/Shaders/vertexShader";
 import { TimelineMax, Power4, TweenMax } from "gsap/dist/gsap";
 import { useRouter } from 'next/router'
+import { HomeContext } from "../src/contexts/HomeContext";
+import { GlobalContext } from "../src/contexts/GlobalContext";
 export default function Picture(props) {
-
+  // const {position} = useContext(GlobalContext);
   const router = useRouter()
   const speed = useRef(0);
   const rounded = useRef(0);
-  const position = useRef(0);
+  // const position = useRef(0);
   const distance = useRef(0);
   const firstTime = useRef(1);
 
@@ -188,27 +190,27 @@ export default function Picture(props) {
 
   // },[props.isVisible])
   useFrame(() => {
-    const startRound = rounded.current;
+    // const startRound = rounded.current;
     //checks to make sure users dont scroll out of the list
-    if (position.current < -0 || position.current > props.maxNumber) {
-      if (position.current < -0.3 || position.current > props.maxNumber+0.3) {
-      speed.current = 0;
-    }else{
-      speed.current *= 0.25;
-    }
-    }
+    // if (position.current < -0 || position.current > props.maxNumber) {
+    //   if (position.current < -0.3 || position.current > props.maxNumber+0.3) {
+    //   speed.current = 0;
+    // }else{
+    //   speed.current *= 0.25;
+    // }
+    // }
     
 
-    if (speed.current !== 0 || props.attractTo.shouldJump) {
-      uniforms.current.uTime.value += 0.01;
-      position.current = speed.current + position.current;
-      speed.current = speed.current * 0.8;
-      rounded.current = Math.round(position.current);
-    }
+    // if (speed.current !== 0 || props.attractTo.shouldJump) {
+       uniforms.current.uTime.value += 0.01;
+    //   position.current = speed.current + position.current;
+    //   speed.current = speed.current * 0.8;
+    //   rounded.current = Math.round(position.current);
+    // }
     distance.current =
-      1 - Math.min(Math.abs(position.current - props.index), 1) ** 2;
+      1 - Math.min(Math.abs(props.position.current - props.index), 1) ** 2;
 
-    const newPosition = props.index * 1.2 - position.current * 1.2;
+    const newPosition = props.index * 1.2 - props.position.current * 1.2;
 
     mesh.current.position.y = newPosition;
 
@@ -220,29 +222,7 @@ export default function Picture(props) {
     group.current.scale.set(scale, scale, scale);
     uniforms.current.distanceFromCenter.value = distance.current;
 
-    if (props.index == 0 && startRound !== rounded.current) {
-      props.displayDom(rounded.current);
-    }
-    let diff = rounded.current - position.current;
-
-    if (props.attractMode || props.attractTo.shouldJump) {
-      //speeds up selection with attractmode is true
-      position.current -= props.attractMode
-        ? (position.current - props.attractTo.goTo) * 0.1
-        : (position.current - props.attractTo.goTo) * 0.05;
-
-      //cancels jump to once picture is mostly at the center
-      if (
-        props.attractTo.shouldJump &&
-        Math.round(position.current * 2) / 2 == props.attractTo.goTo
-      ) {
-        props.jumpComplete();
-      }
-    } else {
-      position.current =
-        position.current +
-        Math.sign(diff) * Math.pow(Math.abs(diff), 0.7) * 0.05;
-    }
+    
   });
 
   //Changes orientation of images on click before using the goTo props to navigate to selected page
