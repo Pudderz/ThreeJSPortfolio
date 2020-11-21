@@ -80,13 +80,12 @@ export default function Title(props) {
             </Tooltip>
           </Link>
         </div>
-        {/*TODO  */}
         <div
           ref={aboutSideBarRef}
           style={{
             height: "100vh",
             width: "0px",
-            backgroundColor: "black",
+            backgroundColor: 'rgb(25, 28, 29)',
             position: "fixed",
             right:'0',
             zIndex:'2'

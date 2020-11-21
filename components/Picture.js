@@ -10,9 +10,9 @@ import { GlobalContext } from "../src/contexts/GlobalContext";
 
 export default function Picture(props) {
   // const {position} = useContext(GlobalContext);
-  const router = useRouter()
+
+
   const speed = useRef(0);
-  const rounded = useRef(0);
   // const position = useRef(0);
   const distance = useRef(0);
   const firstTime = useRef(1);
@@ -61,7 +61,8 @@ export default function Picture(props) {
     });
 
     //Load in animatations
-    //  if(PreviousLocation!=='home'){
+    console.log(PreviousLocation);
+    //  if(PreviousLocation!=='home' ||PreviousLocation!=='about'){
     let tl = new TimelineMax();
     tl.to(group.current.rotation, {
       duration: 0,

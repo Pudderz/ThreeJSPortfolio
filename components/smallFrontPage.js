@@ -238,6 +238,7 @@ export default function SmallFrontPage({ data }) {
                 height={multipleSizes.height}
                 loading="lazy"
                 //  height="100%"
+                alt={info.mainImage.title}
                 style={{maxHeight:'100%', height:'100%', maxWidth:'100%', width:'100%'}}
                 srcSet={multipleSizes.srcSet}
                 src={multipleSizes.src} 
