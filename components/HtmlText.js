@@ -127,6 +127,7 @@ export default function HtmlText(props) {
         information={props.data}
         attractMode={props.attractMode}
         number={props.number}
+        loadIn ={true}
       />
       <div
         className="details"

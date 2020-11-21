@@ -13,9 +13,15 @@ import SmallText from "./smallText";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Button, Tooltip } from "@material-ui/core";
-
+import {useMediaQuery} from '@material-ui/core';
+import json2mq from 'json2mq';
 export default function SmallFrontPage({ data }) {
   // const { information } = useContext(HomeContext);
+
+  
+
+
+
   const history = useRouter();
 
   const V_THRESHOLD = 0.1;
@@ -179,6 +185,7 @@ export default function SmallFrontPage({ data }) {
         information={data}
         attractMode={false}
         number={displayNumber}
+        loadIn={false}
       />
 
       <div {...bind()} ref={body}>
@@ -228,9 +235,7 @@ export default function SmallFrontPage({ data }) {
               {/* <picture>
                 <source srcSet={require(`../public/images/${info.slug}.png?resize&webp`)} type="image/webp" /> */}
                 {/* <source srcSet={require(`../public/images/${info.slug}.png?resize`)} type="image/png" /> */}
-                <img 
-                //  width={info.mainImage.width}
-                //  height={info.mainImage.height}
+                <img
                 width={multipleSizes.width}
                 height={multipleSizes.height}
                 loading="lazy"
@@ -238,7 +243,7 @@ export default function SmallFrontPage({ data }) {
                 style={{maxHeight:'100%', height:'100%', maxWidth:'100%', width:'100%'}}
                 srcSet={multipleSizes.srcSet}
                 src={multipleSizes.src} 
-                sizes = "(min-width: 600px) 1000px,(min-width: 350px) 350px,(min-width: 180px)  300px"
+                // sizes = "(min-width: 600px) 1000px,(min-width: 350px) 350px,(min-width: 180px)  300px"
                 />
               {/* </picture> */}
                 </div>

@@ -138,7 +138,7 @@ export default function SmallText(props) {
             style={{
               color: `${colours.primaryColor}`,
               zIndex: -1,
-              margin: '30px',
+
             }}
           >
             {state.title}

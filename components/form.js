@@ -40,7 +40,11 @@ export default class ContactForm extends React.Component {
   render() {
     const { formUsername, formEmail, formMessage } = this.state;
     return (
-      <form
+      <div className="form">
+        <h2>Contact Form</h2>
+
+        <hr />
+        <form
         onSubmit={this.handleSubmit}
         data-netlify="true"
         name="contact"
@@ -86,11 +90,13 @@ export default class ContactForm extends React.Component {
           color="default"
           id="submitForm"
           type="submit"
-          style={{ width: "fit-content", margin: "20px auto " }}
+          style={{ width: "fit-content"}}
         >
           Send
         </Button>
       </form>
+      </div>
+      
     );
   }
 }

@@ -46,7 +46,7 @@ let location = (path =='/')? 'canvas': (path=='/about')? 'about':'project';
                 onComplete() {
                 }
               });
-              if(!animation.current[location].isActive()){
+              if(!animation.current[location].isActive() && location!=='canvas' && location!=='project'){
                  animation.current[location].reverse()
               }
              

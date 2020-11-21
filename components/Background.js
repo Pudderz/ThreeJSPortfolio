@@ -16,9 +16,9 @@ export default function Background(props) {
   const { setPreviousLocation, setPreviousColour, PreviousLocation} = useContext(GlobalContext);
 
   useEffect(() => {
-    //   && window.location.href=="http://localhost:3000/"
-      if(PreviousLocation==='home' ){
-        let tl = new TimelineMax();
+    //LoadIn animation
+    const tl = new TimelineMax();
+      if(props.loadIn !== true){
         tl.fromTo(backgroundRef.current, {
             width:'100%',
           opacity:'0',
@@ -27,14 +27,9 @@ export default function Background(props) {
             opacity:1,
             width:'100%',
             height:'100%',
-            duration: 0,
+            duration: 1,
         });
-        // tl.to(backgroundRef.current, {
-        //   duration: 0.5,
-        //   width: "100%",
-        // });
       }else{
-        let tl = new TimelineMax();
         tl.to(backgroundRef.current, {
           duration: 1,
           height: "100%",
@@ -44,6 +39,8 @@ export default function Background(props) {
           width: "100%",
         });
       }
+
+      //Background animations 
     backgroundAnimationRef.current = TweenMax.fromTo(
       backgroundRef.current,
       {
@@ -56,17 +53,14 @@ export default function Background(props) {
       }
     );
 
-    let tl = new TimelineMax();
-    tl.to(backgroundRef.current, {
-      duration: 1,
-      height: "100%",
-    }).delay(1.5);
-    tl.to(backgroundRef.current, {
-      duration: 0.5,
-      width: "100%",
-    });
-
     setPreviousLocation("home");
+
+    return()=>{
+
+    }
+
+
+
   }, []);
 
   useEffect(() => {
@@ -97,6 +91,8 @@ export default function Background(props) {
       backgroundAnimationRef.current.reverse();
     }
   }, [props.attractMode]);
+
+
   return (
     <div
       ref={backgroundRef}

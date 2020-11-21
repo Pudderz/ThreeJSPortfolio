@@ -16,6 +16,7 @@ export function PortfolioCanvas({data}) {
     PreviousLocation,
     previousPageColour,
     setPreviousColour,
+    animation,
   } = useContext(GlobalContext);
   const {information} = useContext(GlobalContext);
   const history = useRouter();
@@ -33,8 +34,9 @@ export function PortfolioCanvas({data}) {
   //loadin animations
   useEffect(() => {
     
-    var tl = new TimelineMax({onComplete: ()=>setPreviousColour(data[0].primaryColour)});
-  //   if(PreviousLocation=='project'){
+    // var animation.current.canvas = new TimelineMax({onComplete: ()=>setPreviousColour(data[0].primaryColour)});
+ 
+    //   if(PreviousLocation=='project'){
   //     tl.fromTo(screen, {
   //       duration: 0.8,
   //       width: "0%",
@@ -60,37 +62,44 @@ export function PortfolioCanvas({data}) {
   //       },
   //     })
   // }else{
-    tl.to(screen, {
+    animation.current.canvas.to(screen, {
       duration: 0.8,
       width: "100%",
       left: "0%",
       // ease: Power3.easeInOut,
     });
 
-    tl.to(screen, {
+    animation.current.canvas.to(screen, {
       duration: 0.4,
       left: "100%",
       // ease: Power3.easeInOut,
       delay: 0.3,
     });
-
-    TweenMax.to(body, 1, {
+    animation.current.canvas.to(body,{
       css: {
         opacity: "1",
         pointerEvents: "auto",
-        // ease: Power4.easeInOut,
       },
-    }).delay(1);
+    },'-=0.2')
+    // TweenMax.to(body, 1, {
+    //   css: {
+    //     opacity: "1",
+    //     pointerEvents: "auto",
+    //     // ease: Power4.easeInOut,
+    //   },
+    // })
   // }  
 
     return () => {
+
+      animation.current.canvas.clear()
       console.log(previousPageColour)
-      TweenMax.to(body, 4, {
-        css: {
-          opacity: "0",
-          pointerEvents: "none",
-        },
-      });
+      // TweenMax.to(body, 4, {
+      //   css: {
+      //     opacity: "0",
+      //     pointerEvents: "none",
+      //   },
+      // });
     };
   }, []);
 
