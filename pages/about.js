@@ -56,7 +56,7 @@ export default function About(props) {
     
 
     return () => {
-      animation.current.about.pause();
+      // animation.current.about.pause();
       animation.current.about.clear();
     };
 
@@ -127,7 +127,7 @@ export default function About(props) {
                 full-time role.
               </p>
             </div>
-            <div className="textContainer">
+            <div className="textContainer" style={{margin: '0 auto'}}>
               <div>
                 <h2>About Me</h2>
                 <hr />
@@ -150,7 +150,7 @@ export default function About(props) {
 
         <div className="about">
           
-          <div className="textContainer" id="contactInfo" >
+          <div className="textContainer" id="contactInfo" style={{margin: '0 auto'}} >
             <div id="contact">
               <h2>Get in touch</h2>
 
@@ -160,15 +160,12 @@ export default function About(props) {
                   learn more about what makes me tick or if you have knowledge
                   of any exciting opportunities feel free to reach out.
               </p>
-              <div style={{padding:'10px'}}></div>
               <p>
                 To get in touch, contact via my
                 email: mpudney2@gmail.com
               </p>
-              <div style={{padding:'10px'}}></div>
               <p>Or by this contact form:</p>
 
-              <div style={{padding:'20px'}}></div>
             </div>
             <ContactForm />
           </div>

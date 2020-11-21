@@ -1,32 +1,30 @@
-
-import React from "react";
-import { PortfolioCanvas } from "../components/canvas";
+import React, { useRef, useEffect, useState } from "react";
+import { PortfolioCanvas } from "../components/largeFrontPage";
 import SmallFrontPage from "../components/smallFrontPage";
 import { HomeProvider } from "../src/contexts/HomeContext";
 import { getAllPostsForHome, getAllPostsWithImages } from "../helpers/api";
 import { createImage } from "../helpers/getImage";
- import {useMediaQuery} from '@material-ui/core';
- import json2mq from 'json2mq';
+import { useMediaQuery } from "@material-ui/core";
+import json2mq from "json2mq";
+
 export default function FrontPage(props) {
+  const [firstRun, setFirstRun] = useState(false);
 
   const matches = useMediaQuery(
     json2mq({
       minWidth: 900,
-    }),
+    })
   );
 
-console.log(`matches`)
-console.log(matches)
+  useEffect(() => {
+    setFirstRun(true);
+  }, []);
 
   return (
     <HomeProvider>
       <div>
-        {(matches) && (
-          <PortfolioCanvas data={props.post} />
-        )}
-        {(!matches && typeof window != 'undefined') && (
-          <SmallFrontPage data={props.post} />
-        )}
+        {matches && firstRun && <PortfolioCanvas data={props.post} />}
+        {!matches && firstRun && <SmallFrontPage data={props.post} />}
       </div>
     </HomeProvider>
   );
@@ -35,12 +33,10 @@ console.log(matches)
 export async function getStaticProps() {
   const data = await getAllPostsForHome();
 
-
-//creates pictures in public/images
+  //creates pictures in public/images
   const allData = await getAllPostsWithImages();
-  allData?.map((data) =>{
-    console.log(data?.slug, data?.mainImage?.url)
-    createImage(data?.slug, data?.mainImage?.url)
+  allData?.map((data) => {
+    createImage(data?.slug, data?.mainImage?.url);
   });
 
   return {

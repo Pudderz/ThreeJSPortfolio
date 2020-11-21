@@ -58,6 +58,7 @@ export default function SmallFrontPage({ data }) {
   const [displayNumber, setDisplayNumber] = useState(0);
 
   useEffect(() => {
+    console.log('smallFrontPage mounted')
     let options = {
       root: carousel.current,
       rootMargin: "0px",
@@ -216,9 +217,6 @@ export default function SmallFrontPage({ data }) {
           <div className="slider" ref={slider} onTransitionEnd={transitionEnd}>
             {data.map((info, index) => {
               const multipleSizes = require(`../public/images/${info.slug}.png?resize&sizes[]=340&sizes[]=600&sizes[]=1000`);
-              console.log(multipleSizes)
-              console.log(multipleSizes.width)
-              console.log(multipleSizes.height)
               return (
               <section key={index} data-key={index} ref={addToRefs}>
                 <div style={{ margin: "50px auto 0", width: "80%" }}>

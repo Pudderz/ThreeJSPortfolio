@@ -46,11 +46,15 @@ export default function SideBar(props) {
           TweenMax.to(sideBarRef.current, {
             duration: 1,
             height: "100%",
-          }).delay(4);      
+          }).delay(4);  
+          
+          
+          return()=>{
+            sideBarAnimationRef.current.kill();
+          }
     }, [])
 
     const stopBubbling = (event)=>{
-        console.log(event)
         event.preventDefault()
         event.stopPropagation()
         event.cancelBubble = true;

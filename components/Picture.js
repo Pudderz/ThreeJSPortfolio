@@ -7,6 +7,7 @@ import { TimelineMax, Power4, TweenMax } from "gsap/dist/gsap";
 import { useRouter } from 'next/router';
 import { HomeContext } from "../src/contexts/HomeContext";
 import { GlobalContext } from "../src/contexts/GlobalContext";
+
 export default function Picture(props) {
   // const {position} = useContext(GlobalContext);
   const router = useRouter()
@@ -15,7 +16,9 @@ export default function Picture(props) {
   // const position = useRef(0);
   const distance = useRef(0);
   const firstTime = useRef(1);
-
+  const {
+    PreviousLocation
+  } = useContext(GlobalContext);
   const size = useRef(
     window.innerWidth / 1900 > 1 ? 1 : window.innerWidth / 1900
   );
@@ -26,7 +29,6 @@ export default function Picture(props) {
   const group = useRef();
   const texture1 = new THREE.TextureLoader().load(props.image, (tex)=>{
     uniforms.current.uAspectRatio.value =  tex.image.width/tex.image.height
-    // setAspectRatio(tex.image.width/tex.image.height)
   });
 
   const material = useRef();
@@ -59,6 +61,7 @@ export default function Picture(props) {
     });
 
     //Load in animatations
+    //  if(PreviousLocation!=='home'){
     let tl = new TimelineMax();
     tl.to(group.current.rotation, {
       duration: 0,
@@ -105,6 +108,7 @@ export default function Picture(props) {
       },
       "-=0.8"
     );
+    //  }
     rotationAnimatation.current = TweenMax.fromTo(
       group.current.rotation,
       1,
@@ -139,7 +143,6 @@ export default function Picture(props) {
       }
     );
     return () => {
-      console.log('picture unmounting')
       window.removeEventListener("wheel", (e) => {
         speed.current += e.deltaY * 0.0003;
       });

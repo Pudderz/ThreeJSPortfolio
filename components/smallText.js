@@ -12,7 +12,6 @@ import Buttons from "./Buttons";
 import { ButtonGroup } from "@material-ui/core";
 export default function SmallText(props) {
   const { setPreviousLocation, setPreviousColour } = useContext(GlobalContext);
-  const backgroundAnimationRef = useRef();
   const textAnimationRef = useRef();
   const [sideBarWidth, setSideBarSize] = useState("10px");
 
@@ -43,8 +42,6 @@ export default function SmallText(props) {
   };
 
   useEffect(() => {
-    backgroundAnimationRef.current = props.data;
-    console.log(backgroundAnimationRef.current);
     textAnimationRef.current = TweenMax.fromTo(
       textRef,
       {
@@ -58,11 +55,15 @@ export default function SmallText(props) {
     );
 
     setPreviousLocation("home");
+    return()=>{
+      textAnimationRef.current.kill();
+
+    }
   }, []);
 
   useEffect(() => {
+    const tl = new TimelineMax();
     if (!props.attractMode) {
-      let tl = new TimelineMax();
       tl.to(textRef, {
         duration: 0.2,
         opacity: "0",
@@ -99,6 +100,10 @@ export default function SmallText(props) {
     } else {
       firstCount.current++;
     }
+
+    return()=>{
+      tl.clear();
+    }
   }, [props.number]);
 
   useEffect(() => {
@@ -107,6 +112,7 @@ export default function SmallText(props) {
     } else {
       textAnimationRef.current.reverse(0.1);
     }
+    
   }, [props.attractMode]);
  
   return (
