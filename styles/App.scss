@@ -39,9 +39,9 @@ canvas {
   background: red;
 }
 
-* {
-  margin: 0;
-}
+// * {
+//   margin: 0;
+// }
 
 .load-screen {
   position: relative;
@@ -176,6 +176,9 @@ h1 {
   margin-right: 50px;
   font-size: 12px;
   width: 50px;
+  p{
+    margin:0;
+  }
 }
 
 .flexItems {
@@ -234,7 +237,7 @@ canvas {
     padding: 0px;
   }
   ul {
-    padding: 20px;
+    padding: 0 20px;
   }
   a {
     display: inline-block;
@@ -506,8 +509,11 @@ a{
       }
     }
   }
-  .textContainer {
+
+  .about.textContainer{
     margin:0;
+  }
+  .textContainer {
 
     .flex {
       display: block;
@@ -588,6 +594,30 @@ a{
   .buttonParent button {
     height: fit-content !important;
     width: fit-content !important;
+  }
+}
+
+@media (max-width:1100px){
+  .information{
+    .textContainer.flex{
+      display: block;
+    }
+    
+  }
+  .textContainer.flex{
+    display: block;
+  }
+  .smallFlex{
+    display: flex;
+    & > div{
+      width: 50%;
+    }
+  }
+}
+.information{
+  ul li{
+    margin: 0;
+    padding: 0;
   }
 }
 

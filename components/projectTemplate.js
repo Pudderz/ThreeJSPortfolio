@@ -205,7 +205,7 @@ export default function ProjectTemplate(props) {
                 style={{maxHeight:'100%', height:'100%', maxWidth:'100%', width:'100%'}}
                 srcSet={multipleSizes.srcSet}
                 src={multipleSizes.src} 
-                sizes = "(min-width: 600px) 1000px,(min-width: 350px) 350px,(min-width: 180px)  300px"
+                // sizes = "(min-width: 600px) 1000px,(min-width: 350px) 350px,(min-width: 180px)  300px"
                 />
               {/* <Image src={url} width={imageWidth} height={imageHeight} alt={imageTitle} /> */}
             </div>
@@ -252,15 +252,19 @@ export default function ProjectTemplate(props) {
         style={{ background: "white" }}
       >
         <div className="textContainer flex">
-          <div ref={addToRefs} className="textFadeIn textFadeIn-0">
+          <div ref={addToRefs} className="textFadeIn textFadeIn-0"
+          style={{padding:'20px'}}
+          >
             <h3 className="large">{props.title}</h3>
 
             <h4>About The Project</h4>
           <div style={{padding:'0'}}>{aboutProject}</div>
           </div>
 
-          <div ref={addToRefs} className="textFadeIn textFadeIn-1 flexSmall">
-            <div style={{ paddingLeft: '0', width: '200px'}}>
+          <div ref={addToRefs} className="textFadeIn textFadeIn-1 flexSmall smallFlex"
+          style={{padding:'20px'}}
+          >
+            <div style={{ paddingLeft: '0'}}>
               <h4>What's used in this project:</h4>
               <ul>
                 {props.techUsed.map((tech, index) => (
