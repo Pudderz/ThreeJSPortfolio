@@ -11,14 +11,20 @@ import { Tooltip } from "@material-ui/core";
 import Projects from './Projects'
 import * as THREE from "three";
 import { useFrame } from "react-three-fiber";
+
+import { HomeContext } from "../src/contexts/HomeContext";
+
 export function PortfolioCanvas({data}) {
   const {
     PreviousLocation,
     previousPageColour,
     setPreviousColour,
     animation,
+    information
   } = useContext(GlobalContext);
-  const {information} = useContext(GlobalContext);
+  const GlobalContextValue = useContext(GlobalContext);
+  const HomeContextValue = useContext(HomeContext);
+  // const {} = useContext(GlobalContext);
   const history = useRouter();
   let screen = useRef(null);
   let body = useRef(null);
@@ -34,35 +40,8 @@ export function PortfolioCanvas({data}) {
   //loadin animations
   useEffect(() => {
     
-    // var animation.current.canvas = new TimelineMax({onComplete: ()=>setPreviousColour(data[0].primaryColour)});
- 
-    //   if(PreviousLocation=='project'){
-  //     tl.fromTo(screen, {
-  //       duration: 0.8,
-  //       width: "0%",
-  //       right: "0%",
-  //       // ease: Power3.easeInOut,
-  //     },{
-  //       width: "100%",
-  //       right: "0%",
-  //     });
-  
-  //     tl.to(screen, {
-  //       duration: 0.4,
-  //       right: "100%",
-  //       // ease: Power3.easeInOut,
-  //       delay: 0.3,
-  //     });
-  
-  //     TweenMax.to(body, 1, {
-  //       css: {
-  //         opacity: "1",
-  //         pointerEvents: "auto",
-  //         // ease: Power4.easeInOut,
-  //       },
-  //     })
-  // }else{
-    animation.current.canvas.to(screen, {
+    if(PreviousLocation!=='home'){
+      animation.current.canvas.to(screen, {
       duration: 0.8,
       width: "100%",
       left: "0%",
@@ -81,28 +60,26 @@ export function PortfolioCanvas({data}) {
         pointerEvents: "auto",
       },
     },'-=0.2')
-    // TweenMax.to(body, 1, {
-    //   css: {
-    //     opacity: "1",
-    //     pointerEvents: "auto",
-    //     // ease: Power4.easeInOut,
-    //   },
-    // })
-  // }  
-
+    }else{
+      animation.current.canvas.to(body, {
+        duration: 0.8,
+        opacity: "1",
+        pointerEvents: "auto",
+        // ease: Power3.easeInOut,
+      });
+    }
     return () => {
-
+      
       animation.current.canvas.clear()
       console.log(previousPageColour)
-      // TweenMax.to(body, 4, {
-      //   css: {
-      //     opacity: "0",
-      //     pointerEvents: "none",
-      //   },
-      // });
+      TweenMax.to(body, 4, {
+        css: {
+          opacity: "0",
+          pointerEvents: "none",
+        },
+      });
     };
   }, []);
-
 
 
   const changeAttractMode = (boolean) => {
@@ -144,10 +121,10 @@ export function PortfolioCanvas({data}) {
 
   const linkTo = () => {
     var tl = new TimelineMax({ onComplete: () => history.push("/Contact") });
-    tl.to(body, {
-      duration: 0.5,
-      opacity: "0",
-    });
+    // tl.to(body, {
+    //   duration: 0.5,
+    //   opacity: "0",
+    // });
   };
 
   return (
@@ -180,21 +157,27 @@ export function PortfolioCanvas({data}) {
             style={{ height: "100vh", width: "100vw", position: "absolute" }}
             camera={{ fov: 45, position: [0, 0, 4] }}
           >
-            <Projects
-            data={data}
-              displayDom={displayDom}
-              rotating={propsPosition}
-              positioning={positioning}
-              attractMode={attractMode}
-              attractTo={attractTo}
-              jumpComplete={jumpComplete}
-              displayNumber={displayNumber}
-              goTo={goTo}
-              linkTo={linkTo}
-              maxNumber= {data.length-1}
-            >            
+            <GlobalContext.Provider value={GlobalContextValue} >
+                <HomeContext.Provider value={HomeContextValue}>
+                  <Projects
+                data={data}
+                  displayDom={displayDom}
+                  rotating={propsPosition}
+                  positioning={positioning}
+                  attractMode={attractMode}
+                  attractTo={attractTo}
+                  jumpComplete={jumpComplete}
+                  displayNumber={displayNumber}
+                  goTo={goTo}
+                  linkTo={linkTo}
+                  maxNumber= {data.length-1}
+                >            
 
-            </Projects>
+                </Projects>
+              </HomeContext.Provider>
+            </GlobalContext.Provider>
+            
+           
           </Canvas>
               
           <List
