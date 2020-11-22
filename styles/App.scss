@@ -623,6 +623,9 @@ a{
   }
 }
 .information{
+  ul{
+    min-width: 200px;
+  }
   ul li{
     margin: 0;
     padding: 0;

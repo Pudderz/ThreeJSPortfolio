@@ -1,3 +1,4 @@
+import { duration } from "@material-ui/core";
 import gsap from "gsap/dist/gsap";
 import { TimelineMax } from "gsap/dist/gsap";
 import React, { useEffect, useRef } from "react";
@@ -10,7 +11,9 @@ export default function List(props) {
   const openRef = useRef(false);
   const goToNumber = useRef(props.number);
   const animationRef = useRef();
-
+  const nav = useRef(null);
+  const markerRefs = useRef([]);
+  const descriptionRefs = useRef([]);
   useEffect(()=>{
     animationRef.current = new TimelineMax({
       onComplete: () => {
@@ -19,15 +22,29 @@ export default function List(props) {
       },
       paused:true
     });
-    animationRef.current.to(".marker", {
+    animationRef.current.fromTo(descriptionRefs.current,{
+      display:'none'
+    },{
+      display:'block',
+      duration:0,
+    })
+    animationRef.current.fromTo(nav.current,{
+      width: '50px'
+    },{
+      width:'fit-content',
+      duration:0,
+    })
+    animationRef.current.fromTo(markerRefs.current,{
+      width: "fit-content",
+    }, {
       duration: 0.3,
       width: "100px",
     });
-    animationRef.current.to(".visHide", {
+    animationRef.current.to( descriptionRefs.current, {
       duration: 0,
       visibility: "visible",
     });
-    animationRef.current.to(".marker", {
+    animationRef.current.to(markerRefs.current, {
       duration: 0.3,
       width: "0%",
     });
@@ -56,26 +73,38 @@ export default function List(props) {
       props.goTo(goToNumber.current);
     }
   };
-
+  const addToMarkerRefs= (el)=>{
+    if (el && !descriptionRefs.current.includes(el)) {
+      markerRefs.current.push(el);
+    }
+  }
+  const addToDescriptRefs= (el)=>{
+    if (el && !descriptionRefs.current.includes(el)) {
+      descriptionRefs.current.push(el);
+    }
+  }  
   return (
     <div>
       <div
         className="nav"
+        ref={nav}
         onPointerEnter={pointerOver}
         onPointerLeave={pointerLeave}
         style={{width:'fit-content', display: 'flex',
-        flexDirection: 'column-reverse',}}
+        flexDirection: 'column-reverse', overflow:'hidden', minWidth:'50px'}}
       >
         {props.data.map((information, index)=>(
           <ListItem
-          key={index}
-          display={props.displayNumber}
-          name={information.title}
-          number={index}
-          select={select}
+          key = {index}
+          display = {props.displayNumber}
+          name = {information.title}
+          number = {index}
+          select = {select}
           color = {information.primaryColour}
-          whiteOrBlack={props.whiteOrBlack}
-          attractMode={props.attractMode}
+          whiteOrBlack = {props.whiteOrBlack}
+          attractMode = {props.attractMode}
+          addToMarkerRefs = {addToMarkerRefs}
+          addToDescriptRefs = {addToDescriptRefs}
           />
         ))}
       </div>

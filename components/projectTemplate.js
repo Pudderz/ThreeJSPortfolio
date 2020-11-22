@@ -11,7 +11,6 @@ import { GlobalContext } from "../src/contexts/GlobalContext";
 import Link from "next/link";
 import gsap from "gsap/dist/gsap";
 import hydrate from "next-mdx-remote/hydrate";
-import Buttons from "./Buttons";
 import { Button, Fab } from "@material-ui/core";
 import {useMediaQuery} from '@material-ui/core';
   import json2mq from 'json2mq';
@@ -87,7 +86,7 @@ export default function ProjectTemplate(props) {
     revealRefs.current.forEach((el, index) => {
       gsap.fromTo(
         el,
-        { autoAlpha: 0, y: 100 },
+        { autoAlpha: 0, x: 100 },
         {
           scrollTrigger: {
             id: `textFadeIn-${index}`,
@@ -99,11 +98,11 @@ export default function ProjectTemplate(props) {
           autoAlpha: 1,
           duration: 0.5,
           ease: "none",
-          y: 0,
+          x: 0,
         }
       );
     });
-
+    
     window.addEventListener("scroll", () => {
       const difference = window.scrollY - lastScrollHeight.current;
       if (titleRef.current != null && difference != 0) {

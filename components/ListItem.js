@@ -14,13 +14,15 @@ export default function ListItem(props) {
       }}
     >
       <div
+        ref={props.addToDescriptRefs}
         className="visHide"
-        style={{ margin: "20px 50px 20px 0", width: "fit-content" }}
+        style={{ margin: "20px 50px 20px 0", width: "fit-content" ,display:'none'}}
       >
         <p style={{ whiteSpace: "nowrap" }}>{props.name}</p>
       </div>
       <div
         className="marker"
+        ref={props.addToMarkerRefs}
         style={{
           background:
             props.number === props.display
