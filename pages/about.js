@@ -18,7 +18,7 @@ export default function About(props) {
 
   const history = useRouter();
 
-  const V_THRESHOLD = 0.8;
+  
 
   const boxRefs = useRef([]);
 
@@ -33,8 +33,7 @@ export default function About(props) {
     if (last) {
       // getting the swipe direction
       if (Math.abs(vx) > Math.abs(vy)) {
-        // swipe right is when horizontal velocity is superior to threshold
-        if (vx > V_THRESHOLD) goBack();
+        if (vx > 0.4) goBack();
       }
     }
   });

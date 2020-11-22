@@ -13,12 +13,12 @@ import gsap from "gsap/dist/gsap";
 import hydrate from "next-mdx-remote/hydrate";
 import Buttons from "./Buttons";
 import { Button, Fab } from "@material-ui/core";
-import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import {useMediaQuery} from '@material-ui/core';
   import json2mq from 'json2mq';
 
 
 export default function ProjectTemplate(props) {
+
   gsap.registerPlugin(ScrollTrigger);
   const multipleSizes = require(`../public/images/${props.slug}.png?resize&sizes[]=340&sizes[]=600&sizes[]=1000`);
   const information = useRef(null);
@@ -43,15 +43,21 @@ export default function ProjectTemplate(props) {
     setPreviousColour,
     PreviousLocation,
     setPreviousLocation,
+    setColours,
     animation,
   } = useContext(GlobalContext);
+
+
+  
   //loadin animation
   let { url, title: imageTitle, height: imageHeight, width: imageWidth  } = props.image;
   const aboutProject = hydrate(props.aboutProject);
   const content = hydrate(props.content);
   
   useEffect(() => {
-  
+    console.log(props.primaryColour);
+    console.log(props.secondaryColour);
+    setColours(props.primaryColour, props.secondaryColour)
     animation.current.project.to(screen, {
       duration: 1,
       width: "100%",
@@ -163,6 +169,8 @@ export default function ProjectTemplate(props) {
             backgroundColor: props.primaryColour,
             width: PreviousLocation === "home" ? "10px" : "0px",
             left: "0%",
+            zIndex: '10',
+            position: 'absolute',
           }}
         ></div>
       </div>
