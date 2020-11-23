@@ -4,8 +4,7 @@ import { useFrame } from "react-three-fiber";
 import * as THREE from "three";
 import { useRouter } from "next/router";
 import Picture from "./Picture";
-import { GlobalContext } from "../src/contexts/GlobalContext";
-
+import normalizeWheel from 'normalize-wheel';
 export default function Projects(props) {
 
   const speed = useRef(0);
@@ -15,7 +14,10 @@ export default function Projects(props) {
 
   useEffect(() => {
     window.addEventListener("wheel", (e) => {
-      speed.current += e.deltaY * 0.0003;
+      // speed.current += e.deltaY * 0.0003;
+      const normalized = normalizeWheel(e);
+      console.log( normalized);
+      speed.current += normalized.pixelY * 0.0003;
     });
 
     return () => {
@@ -38,16 +40,17 @@ export default function Projects(props) {
     }
 
     if (speed.current !== 0 || props.attractTo.shouldJump) {
-      //   uniforms.current.uTime.value += 0.01;
       newPosition = speed.current + position.current;
       speed.current = speed.current * 0.8;
-      rounded.current = Math.round(position.current);
+      rounded.current = Math.round(newPosition);
     }
+
     distance.current =
       1 - Math.min(Math.abs(newPosition - props.index), 1) ** 2;
 
-    // mesh.current.position.y = props.index * 1.2 - newPosition * 1.2;
 
+    //Changes current display number that is being displayed to change
+    // the title and text for the project
     if ( startRound !== rounded.current) {
       props.displayDom(rounded.current);
     }
@@ -55,7 +58,8 @@ export default function Projects(props) {
     let diff = rounded.current - newPosition;
 
     if (props.attractMode || props.attractTo.shouldJump) {
-      //speeds up selection with attractmode is true
+
+      // Speeds up selection with attractmode is true (when right markers are hovered)
       newPosition -= props.attractMode
         ? (newPosition - props.attractTo.goTo) * 0.1
         : (newPosition - props.attractTo.goTo) * 0.05;
@@ -76,10 +80,9 @@ export default function Projects(props) {
   });
 
   const jumpComplete = (number) => props.jumpComplete(number);
-  const displayDom = (number) => {
-    console.log(number)      
-    props.displayDom(number)
-    };
+  const displayDom = (number) => props.displayDom(number);
+
+
   const goTo = (number) => props.goTo(number);
   const linkTo = (number) => props.linkTo(number);
 

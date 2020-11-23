@@ -83,25 +83,25 @@ export default function ProjectTemplate(props) {
     setPreviousLocation("project");
 
     //text fade in when in viewport
-    revealRefs.current.forEach((el, index) => {
-      gsap.fromTo(
-        el,
-        { autoAlpha: 0, x: 100 },
-        {
-          scrollTrigger: {
-            id: `textFadeIn-${index}`,
-            trigger: el,
-            start: "top bottom-=50",
-            toggleActions: "play none none reverse",
-            markers: true,
-          },
-          autoAlpha: 1,
-          duration: 0.5,
-          ease: "none",
-          x: 0,
-        }
-      );
-    });
+    // revealRefs.current.forEach((el, index) => {
+    //   gsap.fromTo(
+    //     el,
+    //     { autoAlpha: 0, x: 100 },
+    //     {
+    //       scrollTrigger: {
+    //         id: `textFadeIn-${index}`,
+    //         trigger: el,
+    //         start: "top bottom-=50",
+    //         toggleActions: "play none none reverse",
+    //         markers: true,
+    //       },
+    //       autoAlpha: 1,
+    //       duration: 0.5,
+    //       ease: "none",
+    //       x: 0,
+    //     }
+    //   );
+    // });
     
     window.addEventListener("scroll", () => {
       const difference = window.scrollY - lastScrollHeight.current;
