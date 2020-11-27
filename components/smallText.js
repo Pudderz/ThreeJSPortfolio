@@ -1,155 +1,63 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
-// import Link from '../src/Link';
-import Link from "next/link";
-// import { Link } from "react-router-dom";
 import { GlobalContext } from "../src/contexts/GlobalContext";
 import Background from "./Background";
 import SideBar from "./sideBar";
 import { TweenMax } from "gsap/dist/gsap";
 import { TimelineMax } from "gsap/dist/gsap";
 import Buttons from "./Buttons";
+import { ButtonGroup, makeStyles } from "@material-ui/core";
 
-import { ButtonGroup } from "@material-ui/core";
-export default function SmallText(props) {
-  const { setPreviousLocation, setPreviousColour } = useContext(GlobalContext);
-  const textAnimationRef = useRef();
+export function SmallText(props) {
   const [sideBarWidth, setSideBarSize] = useState("10px");
-
-  //ref for making sure certain useEffects do not fire on mount
-  const firstCount = useRef(0);
-
-  const [state, setState] = useState({
-    title: "Project 1",
-    descripttion: "description",
-  });
-
-  let textRef = useRef();
-  const [colours, setColours] = useState({
-    primaryColor: "black",
-  });
 
   const linkToContacts = (e) => {
     e.preventDefault();
     props.linkTo();
   };
 
-  const sideBarSize = (size) => {
-    if (size === "small") {
-      setSideBarSize("10px");
-    } else {
+  const sideBarLarge = (event, boolean) => {
+    event.stopPropagation() ;
+    if (boolean) {
       setSideBarSize("15px");
+    } else {
+      setSideBarSize("10px");
+      
     }
   };
 
-  useEffect(() => {
-    textAnimationRef.current = TweenMax.fromTo(
-      textRef,
-      {
-        opacity: "0",
-      },
-      {
-        duration: 0.4,
-        opacity: "1",
-        paused: true,
-      }
-    );
-
-
-    return()=>{
-      textAnimationRef.current.kill();
-
-    }
-  }, []);
-
-  useEffect(() => {
-    const tl = new TimelineMax();
-    if (!props.attractMode) {
-      tl.to(textRef, {
-        duration: 0.2,
-        opacity: "0",
-      });
-      tl.add(() => {
-        setState({
-          title: props.data[props.number].title,
-          description: props.data[props.number].snippet,
-        });
-        setColours({
-          primaryColor: props.data[props.number].primaryColour,
-          textColor: props.data[props.number].whiteOrBlackText,
-          // secondaryColor: information[props.number].secondaryColor,
-        });
-      });
-      tl.to(textRef, {
-        duration: 0.2,
-        opacity: "1",
-      });
-    } else {
-      setState({
-        title: props.data[props.number].title,
-        description: props.data[props.number].snippet,
-      });
-      setColours({
-        primaryColor: props.data[props.number].primaryColour,
-        textColor: props.data[props.number].whiteOrBlackText,
-      });
-    }
-
-    //sets the colour for the next page so we can have the correct colour transition.
-    if (firstCount.current > 1) {
-      setPreviousColour(props.data[props.number].primaryColour);
-    } else {
-      firstCount.current++;
-    }
-
-    return()=>{
-      tl.clear();
-    }
-  }, [props.number]);
-
-  useEffect(() => {
-    if (!props.attractMode) {
-      textAnimationRef.current.play(0.1);
-    } else {
-      textAnimationRef.current.reverse(0.1);
-    }
-    
-  }, [props.attractMode]);
- 
   return (
     <>
       <SideBar
         information={props.data}
-        attractMode={props.attractMode}
+        attractMode={false}
         number={props.number}
         sideBarRef={sideBarWidth}
       />
       <Background
         information={props.data}
-        attractMode={props.attractMode}
+        attractMode={false}
         number={props.number}
       />
       <div
         className="details"
-        ref={(el) => (textRef = el)}
         style={{
           position: "absolute",
           top: "25%",
           left: "10%",
           margin: "auto",
-          color: `${colours.textColor}`,
+          color: `${props.data[props.number].whiteOrBlackText}`,
         }}
       >
         <div>
           <h1
             style={{
-              color: `${colours.primaryColor}`,
+              color: `${props.data[props.number].primaryColour}`,
               zIndex: -1,
-
             }}
           >
-            {state.title}
+            {props.data[props.number].title}
           </h1>
-          <p>{state.description}</p>
+          <p>{props.data[props.number].snippet}</p>
         </div>
         <Buttons
           link={true}
@@ -159,17 +67,11 @@ export default function SmallText(props) {
           onClick={linkToContacts}
         >
           <a
-            //  className="button"
-            onPointerOver={(e) => {
-              e.stopPropagation();
-              sideBarSize("big");
-            }}
-            onPointerLeave={(e) => {
-              sideBarSize("small");
-              e.stopPropagation();
-            }}
+            // href={`/posts/${props.data[props.number].slug}`}
+            onPointerOver={e => sideBarLarge(e, true)}
+            onPointerLeave={(e) => sideBarLarge(e, false)}
           >
-            More Details{" "}
+            More Details
           </a>
         </Buttons>
         <ButtonGroup>
@@ -182,7 +84,6 @@ export default function SmallText(props) {
             <a
               style={{ color: "inherit", textDecoration: "none" }}
               href={props.data[props.number].liveDemo}
-              //  className="button"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -213,3 +114,6 @@ export default function SmallText(props) {
     </>
   );
 }
+
+
+export default React.memo(SmallText)

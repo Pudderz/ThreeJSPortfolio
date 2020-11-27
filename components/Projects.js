@@ -1,8 +1,5 @@
-import React, { useContext, useRef, useState, useEffect } from "react";
-import { HomeContext } from "../src/contexts/HomeContext";
+import React, {useRef, useEffect } from "react";
 import { useFrame } from "react-three-fiber";
-import * as THREE from "three";
-import { useRouter } from "next/router";
 import Picture from "./Picture";
 import normalizeWheel from 'normalize-wheel';
 export default function Projects(props) {
@@ -14,9 +11,7 @@ export default function Projects(props) {
 
   useEffect(() => {
     window.addEventListener("wheel", (e) => {
-      // speed.current += e.deltaY * 0.0003;
       const normalized = normalizeWheel(e);
-      console.log( normalized);
       speed.current += normalized.pixelY * 0.0003;
     });
 
@@ -64,7 +59,7 @@ export default function Projects(props) {
         ? (newPosition - props.attractTo.goTo) * 0.1
         : (newPosition - props.attractTo.goTo) * 0.05;
 
-      //cancels jump too once picture is mostly at the center
+      // Cancels jump once picture is mostly at the center
       if (
         props.attractTo.shouldJump &&
         Math.round(newPosition * 2) / 2 == props.attractTo.goTo
@@ -94,7 +89,6 @@ export default function Projects(props) {
           key={index}
           index={index}
           displayDom={displayDom}
-          rotating={props.rotating}
           positioning={props.positioning}
           attractMode={props.attractMode}
           attractTo={props.attractTo}

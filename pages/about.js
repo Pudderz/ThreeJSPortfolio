@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useRef, useState } from "react";
 import Link from "next/link";
 import { GlobalContext } from "../src/contexts/GlobalContext";
 import { Power4 } from "gsap/dist/gsap";
-import { Fab, Tooltip } from "@material-ui/core";
+import { Fab, makeStyles, Tooltip } from "@material-ui/core";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import ContactForm from "../components/form";
@@ -10,25 +10,30 @@ import { useDrag } from "react-use-gesture";
 import { useRouter } from "next/router";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
+const useStyles = makeStyles({
+  contactInfo: {
+    display: "flex",
+    padding: 0,
+  },
+  contact: {
+    width: "50%",
+    padding: "20px",
+    boxSizing: "border-box",
+    "& button": {
+      margin: "20px 0",
+    },
+  },
+});
+
 export default function About(props) {
-  const {
-    previousPageColour,
-    animation,
-    PreviousLocation,
-    setPreviousLocation,
-  } = useContext(GlobalContext);
+  const { animation, PreviousLocation, setPreviousLocation } = useContext(
+    GlobalContext
+  );
+  const classes = useStyles();
   let aboutRef = useRef(null);
 
-  const history = useRouter();
-
-  const boxRefs = useRef([]);
-
-  const firstTime = useRef(0);
-
-  const goBack = () => {
-    console.log("go back");
-    history.back();
-  };
+  const router = useRouter();
+  const goBack = () => router.back();
 
   const bind = useDrag(({ last, vxvy: [vx, vy] }) => {
     if (last) {
@@ -61,9 +66,6 @@ export default function About(props) {
           fontSize: "16px",
           autoAlpha: 1,
           ease: Power4.easeInOut,
-          onComplete() {
-            console.log("ran");
-          },
         }
       );
     } else {
@@ -86,7 +88,6 @@ export default function About(props) {
   }, []);
 
   return (
-    <div>
       <div
         {...bind()}
         ref={aboutRef}
@@ -201,11 +202,13 @@ export default function About(props) {
 
         <div className="about">
           <div
-            className="textContainer"
+            className={`textContainer ${classes.contactInfo}`}
             id="contactInfo"
             style={{ margin: "0 auto" }}
           >
-            <div id="contact">
+            <div id="contact"
+            className={classes.contact}
+            >
               <h2>Get in touch</h2>
 
               <hr />
@@ -221,6 +224,5 @@ export default function About(props) {
           </div>
         </div>
       </div>
-    </div>
   );
 }

@@ -4,21 +4,18 @@ import { useFrame } from "react-three-fiber";
 import { fragmentShader } from "../src/Shaders/fragmentShader";
 import { vertexShader } from "../src/Shaders/vertexShader";
 import { TimelineMax, Power4, TweenMax } from "gsap/dist/gsap";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import { HomeContext } from "../src/contexts/HomeContext";
 import { GlobalContext } from "../src/contexts/GlobalContext";
 
 export default function Picture(props) {
   // const {position} = useContext(GlobalContext);
 
-
-  const speed = useRef(0);
-  // const position = useRef(0);
   const distance = useRef(0);
+
   const firstTime = useRef(1);
-  const {
-    PreviousLocation
-  } = useContext(GlobalContext);
+
+  const { PreviousLocation } = useContext(GlobalContext);
   const size = useRef(
     window.innerWidth / 1900 > 1 ? 1 : window.innerWidth / 1900
   );
@@ -27,8 +24,8 @@ export default function Picture(props) {
   const positionAnimatation = useRef();
   const mesh = useRef();
   const group = useRef();
-  const texture1 = new THREE.TextureLoader().load(props.image, (tex)=>{
-    uniforms.current.uAspectRatio.value =  tex.image.width/tex.image.height
+  const texture1 = new THREE.TextureLoader().load(props.image, (tex) => {
+    uniforms.current.uAspectRatio.value = tex.image.width / tex.image.height;
   });
 
   const material = useRef();
@@ -52,99 +49,92 @@ export default function Picture(props) {
   useEffect(() => {
     uniforms.current.distanceFromCenter.value = 1;
 
-    window.addEventListener("wheel", (e) => {
-      speed.current += e.deltaY * 0.0003;
-    });
     window.addEventListener("resize", () => {
       const value = window.innerWidth / 1900;
       size.current = value > 1 ? 1 : value;
     });
 
-    //Load in animatations
-    console.log(PreviousLocation);
-    //  if(PreviousLocation!=='home' ||PreviousLocation!=='about'){
-      
     let tl = new TimelineMax();
-    console.log(PreviousLocation)
-    if(PreviousLocation === null){
-    tl.to(group.current.rotation, {
-      duration: 0,
-      x: 0,
-      z: 0,
-      y: 0,
-    });
-
-    tl.fromTo(
-      group.current.position,
-      {
+    //Animations for if no PreviousLocation
+    if (PreviousLocation === null) {
+      tl.to(group.current.rotation, {
+        duration: 0,
         x: 0,
-        z: 2,
-        y: -10,
-        ease: Power4.easeInOut,
-      },
-      {
-        duration: 3,
-        x: 0,
-        y: 0,
         z: 0,
-        ease: Power4.easeInOut,
-      }
-    );
-    tl.add(
-      group.current.rotation,
-      {
-        duration: 0.8,
-        x: -0.3,
-        y: -0.35,
-        z: -0.12,
-        ease: Power4.easeInOut,
-      },
-      "-=0.8"
-    );
-    tl.to(
-      group.current.position,
-      {
-        duration: 0.8,
-        x: 0.8,
         y: 0,
-        z: 0.1,
-        ease: Power4.easeInOut,
-      },
-      "-=0.8"
-    );
-      }else{
-        tl.add(
-          group.current.rotation,
-          {
-            duration: 0.8,
-            x: -0.3,
-            y: -0.35,
-            z: -0.12,
-            ease: Power4.easeInOut,
-          },
-          "-=0.8"
-        );
-        tl.to(
-          group.current.position,
-          {
-            duration: 0.8,
-            x: 0.8,
-            y: 0,
-            z: 0.1,
-            ease: Power4.easeInOut,
-          },
-          "-=0.8"
-        );
-        tl.from(
-          group.current,
-          {
-            duration: 2.8,
-            autoAlpha:0,
-            ease: Power4.easeInOut,
-          },
-          "-=0.8"
-        );
-      }
+      });
+
+      tl.fromTo(
+        group.current.position,
+        {
+          x: 0,
+          z: 2,
+          y: -10,
+          ease: Power4.easeInOut,
+        },
+        {
+          duration: 3,
+          x: 0,
+          y: 0,
+          z: 0,
+          ease: Power4.easeInOut,
+        }
+      );
+      tl.add(
+        group.current.rotation,
+        {
+          duration: 0.8,
+          x: -0.3,
+          y: -0.35,
+          z: -0.12,
+          ease: Power4.easeInOut,
+        },
+        "-=0.8"
+      );
+      tl.to(
+        group.current.position,
+        {
+          duration: 0.8,
+          x: 0.8,
+          y: 0,
+          z: 0.1,
+          ease: Power4.easeInOut,
+        },
+        "-=0.8"
+      );
+    } else {
+      tl.to(
+        group.current.rotation,
+        {
+          duration: 0.8,
+          x: -0.3,
+          y: -0.35,
+          z: -0.12,
+          ease: Power4.easeInOut,
+        },
+        "-=0.8"
+      );
+      tl.to(
+        group.current.position,
+        {
+          duration: 0.8,
+          x: 0.8,
+          y: 0,
+          z: 0.1,
+          ease: Power4.easeInOut,
+        },
+        "-=0.8"
+      );
+      tl.from(
+        group.current,
+        {
+          duration: 2.8,
+          autoAlpha: 0,
+          ease: Power4.easeInOut,
+        },
+        "-=0.8"
+      );
+    }
     rotationAnimatation.current = TweenMax.fromTo(
       group.current.rotation,
       1,
@@ -179,9 +169,7 @@ export default function Picture(props) {
       }
     );
     return () => {
-      window.removeEventListener("wheel", (e) => {
-        speed.current += e.deltaY * 0.0003;
-      });
+      tl.clear();
       window.removeEventListener("resize", () => {
         const value = window.innerWidth / 700;
         size.current = value > 1 ? 1 : value;
@@ -190,29 +178,18 @@ export default function Picture(props) {
   }, []);
 
   useEffect(() => {
-    if (firstTime.current > 2) {
-      if (props.rotating === "middle") {
-        rotationAnimatation.current.play();
-      } else {
-        rotationAnimatation.current.reverse();
-      }
-    } else {
-      firstTime.current++;
-    }
-  }, [props.rotating]);
-
-  useEffect(() => {
-    if (firstTime.current > 2) {    
+    if (firstTime.current > 1) {
       if (props.positioning === "middle") {
         positionAnimatation.current.play();
+        rotationAnimatation.current.play();
       } else {
         positionAnimatation.current.reverse();
+        rotationAnimatation.current.reverse();
       }
       group.current.position.x = props.positioning.x;
     } else {
       firstTime.current++;
     }
-
   }, [props.positioning]);
 
   // useEffect(()=>{
@@ -221,6 +198,7 @@ export default function Picture(props) {
   //   }
 
   // },[props.isVisible])
+
   useFrame(() => {
     uniforms.current.uTime.value += 0.01;
     distance.current =
@@ -236,14 +214,12 @@ export default function Picture(props) {
     group.current.scale.set(scale, scale, scale);
 
     uniforms.current.distanceFromCenter.value = distance.current;
-
   });
 
-  //Changes orientation of images on click before using the goTo props to navigate to selected page
-  
   const goToPicture = () => {
     props.goTo(props.index);
   };
+
 
   //Creates pointer events for the images
   const onPointerEnter = () => {

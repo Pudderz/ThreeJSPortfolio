@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
+
+
 const encode = (data) => {
   return Object.keys(data)
     .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
@@ -11,8 +13,12 @@ const encode = (data) => {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    alignItems: "center",
+    width: '50%',
+    padding: '20px',
+    boxSizing: 'border-box',
+    '& button':{
+      margin: '20px 0',
+    }
   },
   wrapper: {
     margin: theme.spacing(1),
@@ -26,13 +32,6 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: green[700],
     },
-  },
-  fabProgress: {
-    color: green[500],
-    position: "absolute",
-    top: -6,
-    left: -6,
-    zIndex: 1,
   },
   buttonProgress: {
     color: green[500],
@@ -83,8 +82,7 @@ export default function ContactForm() {
         body: encode({ "form-name": "contact", ...form }),
       })
         .then(() => {
-          // setSuccess(true);
-          // setLoading(false);
+          //Adds a delay to the form sending so it is not instant
           setTimeout(() => {
             setSuccess(true);
             setLoading(false);
@@ -112,10 +110,11 @@ export default function ContactForm() {
   };
 
   return (
-      <div className="form">
+      <div className={`${classes.root} form`}>
         <h2>Contact Form</h2>
 
         <hr />
+        {/* form designed to work with for netlify forms */}
         <form
           onSubmit={handleSubmit}
           data-netlify="true"

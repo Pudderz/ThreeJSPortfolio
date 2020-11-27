@@ -1,32 +1,68 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { Canvas } from "react-three-fiber";
-import Picture from "./Picture";
 import HtmlText from "./HtmlText";
 import List from "./List";
-import { useRouter } from 'next/router'
 import { GlobalContext } from "../src/contexts/GlobalContext";
-import { TimelineMax, TweenMax} from "gsap/dist/gsap";
+import {TweenMax} from "gsap/dist/gsap";
 import Link from "next/link";
-import { Tooltip } from "@material-ui/core";
+import { makeStyles, Tooltip } from "@material-ui/core";
 import Projects from './Projects'
-import * as THREE from "three";
-import { useFrame } from "react-three-fiber";
-
 import { HomeContext } from "../src/contexts/HomeContext";
+
+
+// Styling
+const useStyles = makeStyles({
+  home:{
+    height:'100vh',
+    width:'100%',
+    position:'relative',
+  },
+  loadScreen: {
+    position: 'relative',
+    paddingTop: '0px',
+    paddingLeft: '0px',
+    paddingRight: '0px',
+    backgroundColor: '#19bc8b',
+    width: '0%',
+    height: '100%',
+  },
+  loadContainer: {
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100vh',
+    overflow: 'hidden',
+    zIndex: '10',
+    pointerEvents: 'none',
+  },
+  canvasContainer:{
+    position: 'absolute !important',
+    '& canvas':{
+      display: 'block',
+      zIndex: '0',
+      position: 'absolute',
+    }
+  }
+})
+
+
+
+
+
 
 export function PortfolioCanvas({data}) {
   const {
     PreviousLocation,
-    previousPageColour,
-    setPreviousLocation,
-    setPreviousColour,
     animation,
     information
   } = useContext(GlobalContext);
+
+  const classes = useStyles();
+
   const GlobalContextValue = useContext(GlobalContext);
   const HomeContextValue = useContext(HomeContext);
-  // const {} = useContext(GlobalContext);
-  const history = useRouter();
+
   let screen = useRef(null);
   let body = useRef(null);
 
@@ -38,7 +74,7 @@ export function PortfolioCanvas({data}) {
 
 
 
-  //loadin animations
+  //Loadin animations
   useEffect(() => {
     
     if(PreviousLocation ===null){
@@ -46,13 +82,11 @@ export function PortfolioCanvas({data}) {
       duration: 0.8,
       width: "100%",
       left: "0%",
-      // ease: Power3.easeInOut,
     });
 
     animation.current.canvas.to(screen, {
       duration: 0.4,
       left: "100%",
-      // ease: Power3.easeInOut,
       delay: 0.3,
     });
     animation.current.canvas.to(body,{
@@ -69,15 +103,13 @@ export function PortfolioCanvas({data}) {
       });
     }
     return () => {
-      
       animation.current.canvas.clear()
-      console.log(previousPageColour)
-      TweenMax.to(body, 4, {
-        css: {
-          opacity: "0",
-          pointerEvents: "none",
-        },
-      });
+      // TweenMax.to(body, 4, {
+      //   css: {
+      //     opacity: "0",
+      //     pointerEvents: "none",
+      //   },
+      // });
     };
   }, []);
 
@@ -119,21 +151,11 @@ export function PortfolioCanvas({data}) {
     });
   };
 
-  const linkTo = () => {
-    var tl = new TimelineMax({ onComplete: () => history.push("/Contact") });
-    // tl.to(body, {
-    //   duration: 0.5,
-    //   opacity: "0",
-    // });
-  };
 
   return (
-      <div className="Home">
-        <div className="top" style={{zIndex:'100', display: (attractMode)?'none': 'flex', pointerEvents:'none'}}>
-          <Link style={{ color: "white" }} href="/">
-            
-           <a style={{pointerEvents:'all',  cursor: 'pointer'}}><h2 style={{ color: data[displayNumber].primaryColour }}>Matthew Pudney</h2></a> 
-          </Link>
+      <div className={classes.home}>
+        <nav className="top" style={{zIndex:'100', display: (attractMode)?'none': 'flex', pointerEvents:'none'}}>
+           <h2 style={{ color: data[displayNumber].primaryColour }}>Matthew Pudney</h2>
 
           <Link style={{ color: "white" }} href="/about">
             <Tooltip title="About page">
@@ -141,10 +163,10 @@ export function PortfolioCanvas({data}) {
             </Tooltip>
           
           </Link>
-        </div>
-        <div className="load-container">
+        </nav>
+        <div className={classes.loadContainer}>
           <div
-            className="load-screen"
+            className={classes.loadScreen}
             ref={(el) => (screen = el)}
             style={{
               backgroundColor: data[displayNumber].primaryColour,
@@ -153,10 +175,12 @@ export function PortfolioCanvas({data}) {
         </div>
         <div className="noOpacity" ref={(el) => (body = el)}>
           <Canvas
+          className={classes.canvasContainer}
           gl={{ antialias: true ,preserveDrawingBuffer: true,}}
-            style={{ height: "100vh", width: "100vw", position: "absolute" }}
+            // style={{ height: "100vh", width: "100vw", position: "absolute" }}
             camera={{ fov: 45, position: [0, 0, 4] }}
           >
+            {/* Work around to make context work in the canvas */}
             <GlobalContext.Provider value={GlobalContextValue} >
                 <HomeContext.Provider value={HomeContextValue}>
                   <Projects
@@ -169,7 +193,7 @@ export function PortfolioCanvas({data}) {
                   jumpComplete={jumpComplete}
                   displayNumber={displayNumber}
                   goTo={goTo}
-                  linkTo={linkTo}
+                  linkTo={()=>{}}
                   maxNumber= {data.length-1}
                 >            
 
@@ -194,7 +218,7 @@ export function PortfolioCanvas({data}) {
           <HtmlText
             number={displayNumber}
             attractMode={attractMode}
-            linkTo={linkTo}
+            linkTo={()=>{}}
             information={information}
             data={data}
           />

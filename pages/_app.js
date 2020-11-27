@@ -10,8 +10,6 @@ import "../styles/App.scss"
 
 export default function MyApp(props) {
   const { Component, pageProps, router } = props;
-  console.log(props)
-
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -39,7 +37,6 @@ export default function MyApp(props) {
                   key={router.route}
                 />
           </Layout>
-        
         </GlobalProvider>
       </ThemeProvider>
     </React.Fragment>
