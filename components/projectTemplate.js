@@ -22,7 +22,7 @@ export default function ProjectTemplate(props) {
   const multipleSizes = require(`../public/images/${props.slug}.png?resize&sizes[]=340&sizes[]=600&sizes[]=1000`);
   const information = useRef(null);
   const smallImage= useRef(null)
-  const revealRefs = useRef([]);
+  // const revealRefs = useRef([]);
   const titleRef = useRef(null);
   const lastScrollHeight = useRef(0);
   let screen = useRef(null);
@@ -57,28 +57,45 @@ export default function ProjectTemplate(props) {
     console.log(props.primaryColour);
     console.log(props.secondaryColour);
     setColours(props.primaryColour, props.secondaryColour)
-    animation.current.project.to(screen, {
+
+console.log(PreviousLocation)
+    if(PreviousLocation!=='project' && PreviousLocation!==null){
+      animation.current.project.fromTo(information.current,{
+      left:'-100%'
+    }, {
       duration: 1,
-      width: "100%",
+      left:'0%',
+      // width: "100%",
       ease: Power3.easeInOut,
     });
+    }else{
+      animation.current.project.fromTo(information.current,{
+        opacity:0,
+      }, {
+        duration: 1,
+        opacity:1,
+        // width: "100%",
+        ease: Power3.easeInOut,
+      });
+    }
+    
 
-    animation.current.project.to(screen, {
-      duration: 1,
-      left: "100%",
-      ease: Power3.easeInOut,
-    });
+    // animation.current.project.to(screen, {
+    //   duration: 1,
+    //   left: "100%",
+    //   ease: Power3.easeInOut,
+    // });
 
-    // animation.current.project.set(screen, { left: "-100%" });
+    // // animation.current.project.set(screen, { left: "-100%" });
 
-    animation.current.project
-      .to(body, 0, {
-        css: {
-          opacity: "1",
-          pointerEvents: "auto",
-          ease: Power4.easeInOut,
-        },
-      },'-=1')
+    // animation.current.project
+    //   .to(body, 0, {
+    //     css: {
+    //       opacity: "1",
+    //       pointerEvents: "auto",
+    //       ease: Power4.easeInOut,
+    //     },
+    //   },'-=1')
 
     setPreviousLocation("project");
 
@@ -145,11 +162,11 @@ export default function ProjectTemplate(props) {
     };
   }, []);
 
-  const addToRefs = (el) => {
-    if (el && !revealRefs.current.includes(el)) {
-      revealRefs.current.push(el);
-    }
-  };
+  // const addToRefs = (el) => {
+  //   if (el && !revealRefs.current.includes(el)) {
+  //     revealRefs.current.push(el);
+  //   }
+  // };
   const scrollDown = () => {
     // TweenMax.to(information.current,{
     //   top:'0%',
@@ -160,115 +177,29 @@ export default function ProjectTemplate(props) {
 
   return (
     <>
-      <div className="load-container">
-        <div
-          className="load-screen1"
-          ref={(el) => (screen = el)}
-          style={{
-            backgroundColor: props.primaryColour,
-            width: PreviousLocation === "home" ? "10px" : "0px",
-            left: "0%",
-            zIndex: '10',
-            position: 'absolute',
-          }}
-        ></div>
-      </div>
-      <div>
-        <div
-          ref={(el) => (body = el)}
-          className="Headd Contact noOpacity"
-          style={{
-            position: "absolute",
-            backgroundColor: props.secondaryColour,
-          }}
-        >
-          {/* Canvas with single image */}
-          {matches? (
-            <Canvas>
-              <ProjectPicture
-                index={0}
-                displayDom={() => {}}
-                rotating={"middle"}
-                positioning={"middle"}
-                attractMode={false}
-                attractTo={0}
-                scale={2}
-                jumpComplete={() => {}}
-                displayNumber={0}
-                goTo={() => {}}
-                linkTo={() => {}}
-                src={url}
-              />
-            </Canvas>
-          ): (
-            <div ref={smallImage} className="smallProjectImage" style={{width:'80%', margin:'50px auto 0'}}>
-              <img 
-                //  width={info.mainImage.width}
-                //  height={info.mainImage.height}
-                width={multipleSizes.width}
-                height={multipleSizes.height}
-                loading="lazy"
-                //  height="100%"
-                style={{maxHeight:'100%', height:'100%', maxWidth:'100%', width:'100%'}}
-                srcSet={multipleSizes.srcSet}
-                src={multipleSizes.src} 
-                // sizes = "(min-width: 600px) 1000px,(min-width: 350px) 350px,(min-width: 180px)  300px"
-                />
-              {/* <Image src={url} width={imageWidth} height={imageHeight} alt={imageTitle} /> */}
-            </div>
-          )}
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50, -50%)",
-            }}
-          ></div>
-
-          <div className="projectClass" ref={titleRef}>
-            <div>
-              <h1
-                style={{
-                  color: props.primaryColour,
-                }}
-              >
-                {props.title}
-              </h1>
-            </div>
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              bottom: "3%",
-              margin: "auto",
-              width: "100%",
-              zIndex: 1,
-            }}
-          >
-            <Button onClick={scrollDown} style={{ color: props.primaryColour }}>
-              scrollDown
-            </Button>
-          </div>
-        </div>
-      </div>
-
       <div
         className="information"
         ref={information}
         style={{ background: "white" }}
-      >
-        <div className="textContainer flex">
-          <div ref={addToRefs} className="textFadeIn textFadeIn-0"
+      > <div className="textContainer flex">
+        <div  className="textFadeIn textFadeIn-0"
           style={{padding:'20px'}}
           >
             <h3 className="large">{props.title}</h3>
+</div>
+        </div>
+        <div className="textContainer flex" style={{marginTop:'0'}}>
+       
+          <div  className="textFadeIn textFadeIn-0"
+          style={{padding:'20px'}}
+          >
+            {/* <h3 className="large">{props.title}</h3> */}
 
             <h4>About The Project</h4>
           <div style={{padding:'0'}}>{aboutProject}</div>
           </div>
 
-          <div ref={addToRefs} className="textFadeIn textFadeIn-1 flexSmall smallFlex"
+          <div className="textFadeIn textFadeIn-1 flexSmall smallFlex"
           style={{padding:'20px'}}
           >
             <div style={{ paddingLeft: '0'}}>

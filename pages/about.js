@@ -11,14 +11,15 @@ import { useRouter } from "next/router";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 export default function About(props) {
-  const { previousPageColour, animation, PreviousLocation } = useContext(
-    GlobalContext
-  );
+  const {
+    previousPageColour,
+    animation,
+    PreviousLocation,
+    setPreviousLocation,
+  } = useContext(GlobalContext);
   let aboutRef = useRef(null);
 
   const history = useRouter();
-
-  
 
   const boxRefs = useRef([]);
 
@@ -45,7 +46,7 @@ export default function About(props) {
         aboutRef.current,
         {
           position: "absolute",
-          autoAlpha: 0,
+          autoAlpha: 1,
           zIndex: 200,
           width: "100%",
           right: "-100vw",
@@ -74,16 +75,13 @@ export default function About(props) {
         {
           duration: 1,
           autoAlpha: 1,
-          onComplete() {
-            console.log("ran");
-          },
         }
       );
     }
-
+    const setLocation = setTimeout(() => setPreviousLocation("about"), 500);
     return () => {
-      // animation.current.about.pause();
       animation.current.about.clear();
+      clearTimeout(setLocation);
     };
   }, []);
 
@@ -103,24 +101,24 @@ export default function About(props) {
             margin: "7px auto 0",
           }}
         >
-          {PreviousLocation !== null ?(
+          {PreviousLocation !== null ? (
             <Tooltip title="Go back">
-            <Fab
-            onClick={goBack}
-              size="small"
-              style={{
-                position: "relative",
-                color: "white",
-                backgroundColor: "black",
-              }}
-            >
-              <ArrowBackIcon />
-            </Fab>
-        </Tooltip>
-          ):(
-            <div/>
+              <Fab
+                onClick={goBack}
+                size="small"
+                style={{
+                  position: "relative",
+                  color: "white",
+                  backgroundColor: "black",
+                }}
+              >
+                <ArrowBackIcon />
+              </Fab>
+            </Tooltip>
+          ) : (
+            <div />
           )}
-          
+
           <Link href="/">
             <Tooltip title="Home">
               <a

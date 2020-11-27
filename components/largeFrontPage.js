@@ -18,6 +18,7 @@ export function PortfolioCanvas({data}) {
   const {
     PreviousLocation,
     previousPageColour,
+    setPreviousLocation,
     setPreviousColour,
     animation,
     information
@@ -40,7 +41,7 @@ export function PortfolioCanvas({data}) {
   //loadin animations
   useEffect(() => {
     
-    if(PreviousLocation!=='home'){
+    if(PreviousLocation ===null){
       animation.current.canvas.to(screen, {
       duration: 0.8,
       width: "100%",
@@ -58,14 +59,13 @@ export function PortfolioCanvas({data}) {
       css: {
         opacity: "1",
         pointerEvents: "auto",
-      },
+      }
     },'-=0.2')
     }else{
       animation.current.canvas.to(body, {
         duration: 0.8,
         opacity: "1",
         pointerEvents: "auto",
-        // ease: Power3.easeInOut,
       });
     }
     return () => {

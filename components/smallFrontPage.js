@@ -18,10 +18,6 @@ import json2mq from 'json2mq';
 export default function SmallFrontPage({ data }) {
   // const { information } = useContext(HomeContext);
 
-  
-
-
-
   const history = useRouter();
 
   const V_THRESHOLD = 0.1;
@@ -58,13 +54,14 @@ export default function SmallFrontPage({ data }) {
   const [displayNumber, setDisplayNumber] = useState(0);
 
   useEffect(() => {
-    console.log('smallFrontPage mounted')
     let options = {
       root: carousel.current,
       rootMargin: "0px",
       threshold: 0.51,
     };
+
     const number = slider.current.firstElementChild.getAttribute("data-key");
+
     setDisplayNumber(number);
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(function (entry) {
@@ -74,6 +71,7 @@ export default function SmallFrontPage({ data }) {
         }
       });
     }, options);
+
     console.log(typeof slider.current.children);
     for (const [key, value] of Object.entries(slider.current.children)) {
       observer.observe(value);

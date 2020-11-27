@@ -63,7 +63,10 @@ export default function Picture(props) {
     //Load in animatations
     console.log(PreviousLocation);
     //  if(PreviousLocation!=='home' ||PreviousLocation!=='about'){
+      
     let tl = new TimelineMax();
+    console.log(PreviousLocation)
+    if(PreviousLocation === null){
     tl.to(group.current.rotation, {
       duration: 0,
       x: 0,
@@ -109,7 +112,39 @@ export default function Picture(props) {
       },
       "-=0.8"
     );
-    //  }
+      }else{
+        tl.add(
+          group.current.rotation,
+          {
+            duration: 0.8,
+            x: -0.3,
+            y: -0.35,
+            z: -0.12,
+            ease: Power4.easeInOut,
+          },
+          "-=0.8"
+        );
+        tl.to(
+          group.current.position,
+          {
+            duration: 0.8,
+            x: 0.8,
+            y: 0,
+            z: 0.1,
+            ease: Power4.easeInOut,
+          },
+          "-=0.8"
+        );
+        tl.from(
+          group.current,
+          {
+            duration: 2.8,
+            autoAlpha:0,
+            ease: Power4.easeInOut,
+          },
+          "-=0.8"
+        );
+      }
     rotationAnimatation.current = TweenMax.fromTo(
       group.current.rotation,
       1,
@@ -207,25 +242,6 @@ export default function Picture(props) {
   //Changes orientation of images on click before using the goTo props to navigate to selected page
   
   const goToPicture = () => {
-    if (props.displayNumber == props.index) {
-      // TweenMax.to(scaleMultiplier.current, {
-      //   value: 1,
-      //   duration: 1,
-      // });
-      // TweenMax.to(group.current.position, {
-      //   duration: 1,
-      //   x: -0,
-      //   y: 0,
-      //   z: 1,
-      // });
-      // TweenMax.to(group.current.rotation, {
-      //   duration: 1,
-      //   x: 0,
-      //   y: 0,
-      //   z: 0,
-      // });
-      // router.push(props.slug)
-    }
     props.goTo(props.index);
   };
 

@@ -2,16 +2,22 @@
 import { Tooltip } from "@material-ui/core";
 import { TimelineMax } from "gsap/dist/gsap";
 import { gsap } from "gsap/dist/gsap";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { GlobalContext } from "../src/contexts/GlobalContext";
 
 export default function SmallListVersion(props) {
   const goToNumber = useRef(props.number);
-
+  const {setPreviousLocation} = useContext(GlobalContext)
   const select = (number) => {
     goToNumber.current = number;
     props.goTo(goToNumber.current);
   };
-
+  useEffect(()=>{
+    const setLocation = setTimeout(()=>setPreviousLocation("home"),500)
+    return ()=>{
+      clearTimeout(setLocation)
+    }
+  })
   return (
     <div className="navVertical">
       {props.data.map((info, index) => (

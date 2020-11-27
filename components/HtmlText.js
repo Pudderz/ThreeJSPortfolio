@@ -57,8 +57,11 @@ export default function HtmlText(props) {
         paused: true,
       }
     );
+    const setLocation = setTimeout(()=>setPreviousLocation("home"),500)
+    return ()=>{
+      clearTimeout(setLocation)
+    }
 
-    setPreviousLocation("home");
   }, []);
 
   useEffect(() => {
@@ -109,8 +112,8 @@ export default function HtmlText(props) {
       textAnimationRef.current.reverse(0.1);
     }
   }, [props.attractMode]);
+
   const stopBubbling = (event) => {
-    console.log(event);
     event.preventDefault();
     event.stopPropagation();
     event.cancelBubble = true;

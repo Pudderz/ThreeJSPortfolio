@@ -6,19 +6,15 @@ import { GlobalContext } from "../src/contexts/GlobalContext";
 
 export default function Background(props) {
   const backgroundAnimationRef = useRef();
-  const sideBarAnimationRef = useRef();
   let backgroundRef = useRef();
-  let sideBarRef = useRef();
   const firstCount = useRef(0);
-  const [colours, setColours] = useState({
-    primaryColor: "black",
-  });
-  const { setPreviousLocation, setPreviousColour, PreviousLocation} = useContext(GlobalContext);
+  const {setPreviousColour, PreviousLocation} = useContext(GlobalContext);
 
   useEffect(() => {
+
     //LoadIn animation
     const tl = new TimelineMax();
-      if(props.loadIn !== true){
+      if(props.loadIn !== true || (PreviousLocation!==null && PreviousLocation!=='home') ){
         tl.fromTo(backgroundRef.current, {
             width:'100%',
           opacity:'0',
@@ -53,15 +49,12 @@ export default function Background(props) {
       }
     );
 
-    setPreviousLocation("home");
-
     return()=>{
-
+      backgroundAnimationRef.current.kill();
+      tl.clear();
     }
-
-
-
   }, []);
+
 
   useEffect(() => {
     if (!props.attractMode) {
@@ -99,7 +92,6 @@ export default function Background(props) {
       id="background"
       className="sideBar background"
       style={{
-        // backgroundColor: colours.secondaryColor,
         position: "absolute",
         bottom: 0,
         zIndex: "-1",

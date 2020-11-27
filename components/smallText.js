@@ -54,7 +54,7 @@ export default function SmallText(props) {
       }
     );
 
-    setPreviousLocation("home");
+
     return()=>{
       textAnimationRef.current.kill();
 
