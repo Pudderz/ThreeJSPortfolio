@@ -61,6 +61,24 @@ const useStyle = makeStyles({
     margin: "50px auto 0",
     width: "80%",
   },
+
+
+  slider:{
+    display: 'flex',
+    height: '100%',
+    width: 'fit-content',
+    flexShrink: '0',
+    transition: 'all 0.5s linear',
+    willChange: 'transform',
+    '-webkit-transition': 'all 0.5s linear',
+    '-moz-transition': 'all 0.5s linear',
+    '-ms-transition': 'all 0.5s linear',
+    '-o-transition': 'all 0.5s linear',
+    '& section img':{
+      margin: '50px auto auto auto',
+      cursor: 'grab',
+    }
+  },
 });
 
 export default function SmallFrontPage({ data }) {
@@ -240,13 +258,13 @@ export default function SmallFrontPage({ data }) {
           className="vertical"
         />
         <div className={classes.carousel} ref={carousel}>
-          <div className="slider" ref={slider} onTransitionEnd={transitionEnd}>
+          <div className={classes.slider} ref={slider} onTransitionEnd={transitionEnd}>
             {data.map((info, index) => {
               const multipleSizes = require(`../public/images/${info.slug}.png?resize&sizes[]=340&sizes[]=600&sizes[]=1000`);
               return (
                 <section
                   className={classes.section}
-                  key={index}
+                  key={info.mainImage.title}
                   data-key={index}
                   ref={addToRefs}
                 >

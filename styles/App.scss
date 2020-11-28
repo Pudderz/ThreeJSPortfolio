@@ -204,7 +204,11 @@ h1 {
     background-color: hsl(0, 0%, 98%);
     color: black;
     transition: 0.5s;
-  }
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -ms-transition: 0.5s;
+    -o-transition: 0.5s;
+}
 }
 
 .textContainer {
@@ -373,55 +377,18 @@ text {
   height: 100%;
   width: fit-content;
   flex-shrink: 0;
-  transition: all 0.5s;
-  section img {
+  transition: all 0.5s linear;
+  will-change: transform;
+  -webkit-transition: all 0.5s linear;
+  -moz-transition: all 0.5s linear;
+  -ms-transition: all 0.5s linear;
+  -o-transition: all 0.5s linear;
+  section img{
     margin: 50px auto auto auto;
     cursor: grab;
   }
 }
 
-// .carousel {
-//   width: 100vw;
-//   height: 100vh;
-//   display: flex;
-//   justify-content: flex-start;
-//   overflow-x: hidden;
-//   margin: auto;
-//   position: relative;
-//   .slider section {
-//     font-size: 20px;
-//     width: 100vw;
-//     position: relative;
-//     text-align: center;
-//   }
-//   .slider section .details {
-//     position: relative !important;
-//     top: auto !important;
-//     left: auto !important;
-//   }
-// }
-
-// .controls button.next {
-//   right: 20px;
-// }
-// .controls button.prev {
-//   left: 20px;
-// }
-
-// .controls button.prev,
-// .controls button.next {
-//   position: absolute;
-//   top: 10px;
-//   border: none;
-//   cursor: pointer;
-//   outline: none;
-//   span svg {
-//     position: inherit;
-//   }
-// }
-// .controls button i {
-//   font-size: 50px;
-// }
 
 .smallProjectImage img {
   width: 100%;
@@ -472,6 +439,10 @@ a{
   opacity: 0;
   visibility: hidden;
   transform: translateX(200px);
+  -webkit-transform: translateX(200px);
+  -moz-transform: translateX(200px);
+  -ms-transform: translateX(200px);
+  -o-transform: translateX(200px);
 }
 
 .content {
