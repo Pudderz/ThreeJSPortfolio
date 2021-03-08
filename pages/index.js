@@ -35,8 +35,8 @@ export async function getStaticProps() {
 
   //creates pictures in public/images
   const allData = await getAllPostsWithImages();
-  allData?.map((data) => {
-    createImage(data?.slug, data?.mainImage?.url);
+  await allData?.map(async (data) => {
+   await createImage(data?.slug, data?.mainImage?.url);
   });
 
   return {
