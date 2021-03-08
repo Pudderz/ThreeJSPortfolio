@@ -8,7 +8,7 @@ import SmallText from "./smallText";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Button, makeStyles, Tooltip } from "@material-ui/core";
-
+import Image from 'next/image' 
 const useStyle = makeStyles({
   carousel: {
     width: "100vw",
@@ -260,7 +260,7 @@ export default function SmallFrontPage({ data }) {
         <div className={classes.carousel} ref={carousel}>
           <div className={classes.slider} ref={slider} onTransitionEnd={transitionEnd}>
             {data.map((info, index) => {
-              const multipleSizes = require(`../public/images/${info.slug}.png?resize&sizes[]=340&sizes[]=600&sizes[]=1000`);
+            
               return (
                 <section
                   className={classes.section}
@@ -282,9 +282,9 @@ export default function SmallFrontPage({ data }) {
                     {/* <picture>
                 <source srcSet={require(`../public/images/${info.slug}.png?resize&webp`)} type="image/webp" /> */}
                     {/* <source srcSet={require(`../public/images/${info.slug}.png?resize`)} type="image/png" /> */}
-                    <img
-                      width={multipleSizes.width}
-                      height={multipleSizes.height}
+                    <Image
+                      width={info.mainImage.width}
+                      height={info.mainImage.height}
                       loading="lazy"
                       //  height="100%"
                       alt={info.mainImage.title}
@@ -294,8 +294,7 @@ export default function SmallFrontPage({ data }) {
                         maxWidth: "100%",
                         width: "100%",
                       }}
-                      srcSet={multipleSizes.srcSet}
-                      src={multipleSizes.src}
+                      src={info.mainImage.url}
                       // sizes = "(min-width: 600px) 1000px,(min-width: 350px) 350px,(min-width: 180px)  300px"
                     />
                     {/* </picture> */}

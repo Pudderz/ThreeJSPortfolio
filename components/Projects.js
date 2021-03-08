@@ -2,6 +2,7 @@ import React, {useRef, useEffect } from "react";
 import { useFrame } from "react-three-fiber";
 import Picture from "./Picture";
 import normalizeWheel from 'normalize-wheel';
+
 export default function Projects(props) {
 
   const speed = useRef(0);
