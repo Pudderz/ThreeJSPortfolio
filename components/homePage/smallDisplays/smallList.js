@@ -1,6 +1,6 @@
 import { makeStyles, Tooltip } from "@material-ui/core";
 import React, { useContext, useEffect, useRef } from "react";
-import { GlobalContext } from "../src/contexts/GlobalContext";
+import { GlobalContext } from "../../../src/contexts/GlobalContext";
 
 const useStyles = makeStyles({
   root: {
@@ -38,8 +38,9 @@ const useStyles = makeStyles({
 
 
 
-export default function SmallListVersion(props) {
-  const classes= useStyles(props);
+export default function SmallList(props) {
+
+  const classes= useStyles();
   const goToNumber = useRef(props.number);
   const {setPreviousLocation} = useContext(GlobalContext)
   const select = (number) => {

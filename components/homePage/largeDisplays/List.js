@@ -1,19 +1,44 @@
-import { duration } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import gsap from "gsap/dist/gsap";
 import { TimelineMax } from "gsap/dist/gsap";
 import React, { useEffect, useRef } from "react";
-// import gsap from "gsap";
-// import { TimelineMax } from "gsap/gsap-core";
 import ListItem from "./ListItem";
+
+const useStyles= makeStyles({
+  list:{
+    opacity: '1',
+    height: 'fit-content',
+    cursor: 'pointer',
+    position: 'fixed',
+    top: '30%',
+    right: '1%',
+    zIndex: '100',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    width: '35px',
+    listStyle: 'none',
+    margin: '0%',
+    padding: '0',
+    width:'fit-content',
+     display: 'flex',
+        flexDirection: 'column-reverse',
+         overflow:'hidden',
+          minWidth:'50px'
+  },
+
+})
 
 
 export default function List(props) {
+  const classes = useStyles();
   const openRef = useRef(false);
   const goToNumber = useRef(props.number);
   const animationRef = useRef();
   const nav = useRef(null);
   const markerRefs = useRef([]);
   const descriptionRefs = useRef([]);
+  
   useEffect(()=>{
     animationRef.current = new TimelineMax({
       onComplete: () => {
@@ -86,12 +111,10 @@ export default function List(props) {
   return (
     <div>
       <div
-        className="nav"
+        className={classes.list}
         ref={nav}
         onPointerEnter={pointerOver}
         onPointerLeave={pointerLeave}
-        style={{width:'fit-content', display: 'flex',
-        flexDirection: 'column-reverse', overflow:'hidden', minWidth:'50px'}}
       >
         {props.data.map((information, index)=>(
           <ListItem

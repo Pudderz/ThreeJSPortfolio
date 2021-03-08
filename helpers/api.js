@@ -18,7 +18,7 @@ mainImage{
   width
   height
 }
-`
+`;
 const POST_GRAPHQL_HOMEPAGE_FIELDS = `
 title
 snippet
@@ -35,12 +35,11 @@ mainImage{
   width
   height
 }
-`
+`;
 
 const POST_GRAPHQL_SLUG_FIELDS = `
 slug
-`
-
+`;
 
 const POST_GRAPHQL_SLUG_IMAGE_FIELDS = `
 slug
@@ -50,27 +49,27 @@ mainImage{
   width
   height
 }
-`
+`;
 async function fetchGraphQL(query) {
   return fetch(
     `https://graphql.contentful.com/content/v1/spaces/${process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID}`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN}`,
       },
       body: JSON.stringify({ query }),
     }
-  ).then((response) => response.json())
+  ).then((response) => response.json());
 }
 
 function extractPost(fetchResponse) {
-  return fetchResponse?.data?.contentCollection?.items?.[0]
+  return fetchResponse?.data?.contentCollection?.items?.[0];
 }
 
 function extractPostEntries(fetchResponse) {
-  return fetchResponse?.data?.contentCollection?.items
+  return fetchResponse?.data?.contentCollection?.items;
 }
 
 export async function getPreviewPostBySlug(slug) {
@@ -82,8 +81,8 @@ export async function getPreviewPostBySlug(slug) {
         }
       }
     }`
-  )
-  return extractPost(entry)
+  );
+  return extractPost(entry);
 }
 
 export async function getAllPostsWithImages() {
@@ -95,8 +94,8 @@ export async function getAllPostsWithImages() {
         }
       }
     }`
-  )
-  return extractPostEntries(entries)
+  );
+  return extractPostEntries(entries);
 }
 
 export async function getAllPostsWithSlug() {
@@ -108,14 +107,12 @@ export async function getAllPostsWithSlug() {
         }
       }
     }`
-  )
-  return extractPostEntries(entries)
+  );
+  return extractPostEntries(entries);
 }
 
-
-
 export async function getAllPostsForHome() {
-  console.log('running allposts')
+  console.log("running allposts");
   const entries = await fetchGraphQL(
     `query {
       contentCollection(where: { slug_exists: true },order: createdAt_DESC){
@@ -124,12 +121,12 @@ export async function getAllPostsForHome() {
         }
       }
     }`
-  )
-  return extractPostEntries(entries)
+  );
+  return extractPostEntries(entries);
 }
 
 export async function getPost(slug) {
-  console.log(`slug - ${slug}`)
+  console.log(`slug - ${slug}`);
   const entry = await fetchGraphQL(
     `query {
       contentCollection(where: { slug: "${slug}" }, limit: 1){
@@ -138,8 +135,8 @@ export async function getPost(slug) {
         }
       }
     }`
-  )
+  );
   return {
     post: extractPost(entry),
-  }
+  };
 }

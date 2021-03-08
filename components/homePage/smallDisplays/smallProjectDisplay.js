@@ -1,13 +1,23 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
-import { GlobalContext } from "../src/contexts/GlobalContext";
-import Background from "./Background";
-import SideBar from "./sideBar";
-import { TweenMax } from "gsap/dist/gsap";
-import { TimelineMax } from "gsap/dist/gsap";
-import Buttons from "./Buttons";
+import React, { useState, } from "react";
+import { GlobalContext } from "../../../src/contexts/GlobalContext";
+import Background from "../../Background";
+import SideBar from "../../sideBar";
+import Buttons from "../../ButtonComponent";
 import { ButtonGroup, makeStyles } from "@material-ui/core";
 
-export function SmallText(props) {
+
+const useStyles = makeStyles({
+  details:{
+    position: "absolute",
+          top: "25%",
+          left: "10%",
+          margin: "auto",
+          // color: `${props.data[props.number].whiteOrBlackText}`,
+  },
+
+})
+
+export function SmallProjectDisplay(props) {
   const [sideBarWidth, setSideBarSize] = useState("10px");
 
   const linkToContacts = (e) => {
@@ -116,4 +126,4 @@ export function SmallText(props) {
 }
 
 
-export default React.memo(SmallText)
+export default React.memo(SmallProjectDisplay)

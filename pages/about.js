@@ -5,7 +5,7 @@ import { Power4 } from "gsap/dist/gsap";
 import { Fab, makeStyles, Tooltip } from "@material-ui/core";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
-import ContactForm from "../components/form";
+import ContactForm from "../components/ContactForm";
 import { useDrag } from "react-use-gesture";
 import { useRouter } from "next/router";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -23,6 +23,25 @@ const useStyles = makeStyles({
       margin: "20px 0",
     },
   },
+  section:{
+    backgroundColor: '#191c1d',
+    color: 'white',
+    overflow: 'hidden',
+    '& h2,h3,h4':{
+      margin:'0',
+    }
+  },
+  header:{
+    display:'flex',
+    gap:'1em',
+    justifyContent:'center',
+    padding:'0',
+    margin:'20px 0',
+    '& h2':{
+      fontSize:'3em',
+      margin:'0',
+    }
+  }
 });
 
 export default function About(props) {
@@ -136,7 +155,7 @@ export default function About(props) {
           </Link>
         </div>
 
-        <div className="about">
+        <div className={classes.section}>
           <div>
             <div className="textContainer" style={{ marginTop: "20px" }}>
               <header id="flexHeader">
@@ -200,7 +219,7 @@ export default function About(props) {
           </div>
         </div>
 
-        <div className="about">
+        <div className={classes.section}>
           <div
             className={`textContainer ${classes.contactInfo}`}
             id="contactInfo"

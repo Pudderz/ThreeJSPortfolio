@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import ErrorPage from "next/error";
 import { getAllPostsWithSlug, getPost } from "../../helpers/api";
 import renderToString from 'next-mdx-remote/render-to-string'
-import ProjectTemplate from "../../components/projectTemplate";
+import ProjectTemplate from "../../components/projectsPage/projectTemplate";
 
 export default function CreatePost({ post, mdx, aboutProjectMdx }) {
   const router = useRouter();
@@ -12,7 +12,6 @@ export default function CreatePost({ post, mdx, aboutProjectMdx }) {
   return (
     <div>
       {router.isFallback ? (
-        // add loader animation
         <h1>Loading…</h1>
       ) : (
         <>
@@ -40,13 +39,10 @@ export default function CreatePost({ post, mdx, aboutProjectMdx }) {
 }
 
 export async function getStaticProps({ params }) {
-  console.log('testing')
-  console.log(params)
   const data = await getPost(params.slug);
-
-
   const mdxSource = await renderToString(data?.post?.markdownDescription);
   const aboutProjectMdx = await renderToString(data?.post?.aboutProject);
+
   return {
     props: {
       post: data?.post ?? null,
@@ -58,7 +54,6 @@ export async function getStaticProps({ params }) {
 
 export async function getStaticPaths() {
   const allPosts = await getAllPostsWithSlug();
-  console.log(allPosts)
   return {
     paths: allPosts?.map(({ slug }) =>{
       console.log('slug - ',slug)

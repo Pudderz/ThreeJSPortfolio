@@ -36,12 +36,12 @@ canvas {
   z-index: 0;
   position: absolute;
 }
-#block {
-  height: 100px;
-  width: 100px;
-  position: absolute;
-  background: red;
-}
+// #block {
+//   height: 100px;
+//   width: 100px;
+//   position: absolute;
+//   background: red;
+// }
 
 // * {
 //   margin: 0;
@@ -77,9 +77,9 @@ canvas {
 //   z-index: 10;
 //   pointer-events: none;
 // }
-.noOpacity {
-  opacity: 0;
-}
+// .noOpacity {
+//   opacity: 0;
+// }
 
 // .Home,
 // .Contact {
@@ -127,32 +127,28 @@ h1 {
   }
 }
 
-.nav {
-  opacity: 1;
-  height: fit-content;
-  cursor: pointer;
-  position: fixed;
-  top: 30%;
-  right: 1%;
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  width: 35px;
-  list-style: none;
-  margin: 0%;
-  padding: 0;
-}
+// .nav {
+//   opacity: 1;
+//   height: fit-content;
+//   cursor: pointer;
+//   position: fixed;
+//   top: 30%;
+//   right: 1%;
+//   z-index: 100;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-end;
+//   width: 35px;
+//   list-style: none;
+//   margin: 0%;
+//   padding: 0;
+// }
 
 .sideBar {
   width: 10px;
   height: 100%;
 }
 
-#background {
-  width: 10px;
-  z-index: -1;
-}
 
 .marker {
   background-color: white;
@@ -163,6 +159,8 @@ h1 {
   margin: 20px;
 }
 
+
+// 
 .visHide {
   visibility: hidden;
   color: white;
@@ -185,31 +183,31 @@ h1 {
 //   z-index: 100;
 // }
 
-.button {
-  background: none;
-  color: hsl(0, 0%, 98%);
-  border: 2px solid hsl(0, 0%, 98%);
-  font-family: "Karla", sans-serif;
-  text-decoration: none;
-  outline: none;
-  font-size: 1em;
-  font-weight: 700;
-  cursor: pointer;
-  padding: 8px 8px;
-  height: fit-content;
-  display: inline-block;
-  margin-top: 30px;
+// .button {
+//   background: none;
+//   color: hsl(0, 0%, 98%);
+//   border: 2px solid hsl(0, 0%, 98%);
+//   font-family: "Karla", sans-serif;
+//   text-decoration: none;
+//   outline: none;
+//   font-size: 1em;
+//   font-weight: 700;
+//   cursor: pointer;
+//   padding: 8px 8px;
+//   height: fit-content;
+//   display: inline-block;
+//   margin-top: 30px;
 
-  &:hover {
-    background-color: hsl(0, 0%, 98%);
-    color: black;
-    transition: 0.5s;
-    -webkit-transition: 0.5s;
-    -moz-transition: 0.5s;
-    -ms-transition: 0.5s;
-    -o-transition: 0.5s;
-}
-}
+//   &:hover {
+//     background-color: hsl(0, 0%, 98%);
+//     color: black;
+//     transition: 0.5s;
+//     -webkit-transition: 0.5s;
+//     -moz-transition: 0.5s;
+//     -ms-transition: 0.5s;
+//     -o-transition: 0.5s;
+// }
+// }
 
 .textContainer {
   margin: 50px auto 0 auto;
@@ -255,30 +253,30 @@ h1 {
   justify-content: space-between;
 }
 
-.projectClass {
-  position: absolute;
-  top: 33%;
-  left: 10%;
-  margin: 20px;
-  color: white;
-}
+// .projectClass {
+//   position: absolute;
+//   top: 33%;
+//   left: 10%;
+//   margin: 20px;
+//   color: white;
+// }
 
-.imageDescription {
-  color: #484b4c;
-  font-size: 15px;
-  padding: 0;
-  margin: auto;
-  width: fit-content;
-}
+// .imageDescription {
+//   color: #484b4c;
+//   font-size: 15px;
+//   padding: 0;
+//   margin: auto;
+//   width: fit-content;
+// }
 
-.about {
-  background-color: #191c1d;
-  color: white;
-  overflow: hidden;
-  h2,h3,h4{
-    margin:0;
-  }
-}
+// .about {
+//   background-color: #191c1d;
+//   color: white;
+//   overflow: hidden;
+//   h2,h3,h4{
+//     margin:0;
+//   }
+// }
 
 // .textFadeIn {
 //   opacity: 0;
@@ -319,36 +317,36 @@ text {
   display: block;
 }
 
-.wrapper {
-  position: relative;
-  overflow: hidden;
-  width: 70%;
-  top: 100px;
-  left: 50%;
-  position: absolute;
-}
+// .wrapper {
+//   position: relative;
+//   overflow: hidden;
+//   width: 70%;
+//   top: 100px;
+//   left: 50%;
+//   position: absolute;
+// }
 
-.viewport {
-  position: absolute;
-  pointer-events: none;
-  width: 90%;
-  width: calc(70% + 8px);
-  top: 100px;
-  left: 50%;
-  border: 2px solid #ddd;
-}
+// .viewport {
+//   position: absolute;
+//   pointer-events: none;
+//   width: 90%;
+//   width: calc(70% + 8px);
+//   top: 100px;
+//   left: 50%;
+//   border: 2px solid #ddd;
+// }
 
-.num {
-  position: absolute;
-  color: #555;
-  color: #fafafa;
-  font-size: 18px;
-  line-height: 1;
-  top: 14px;
-  left: 8px;
-  text-shadow: 1px 1px 0px #555, -1px -1px 0px #555, 1px -1px 0px #555,
-    -1px 1px 0px #555;
-}
+// .num {
+//   position: absolute;
+//   color: #555;
+//   color: #fafafa;
+//   font-size: 18px;
+//   line-height: 1;
+//   top: 14px;
+//   left: 8px;
+//   text-shadow: 1px 1px 0px #555, -1px -1px 0px #555, 1px -1px 0px #555,
+//     -1px 1px 0px #555;
+// }
 
 .box {
   position: absolute;
@@ -390,13 +388,13 @@ text {
 }
 
 
-.smallProjectImage img {
-  width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-  max-width: 800px;
-  margin-top: 50px;
-}
+// .smallProjectImage img {
+//   width: 100%;
+//   padding: 20px;
+//   box-sizing: border-box;
+//   max-width: 800px;
+//   margin-top: 50px;
+// }
 
 .navVertical {
   position: absolute;
@@ -530,6 +528,9 @@ a{
     font-size: 0.7em;
   }
 }
+
+
+//Move to About section
 #flexHeader{
     display: flex;
     gap: 1em;
@@ -557,13 +558,6 @@ a{
       margin: 0;
       padding: 0;
     }
-  }
-}
-
-@media (max-width: 600px) {
-  .buttonParent button {
-    height: fit-content !important;
-    width: fit-content !important;
   }
 }
 

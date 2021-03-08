@@ -1,7 +1,7 @@
 import React, { useContext} from "react";
 import {Power3 } from "gsap";
 import { useRef, useEffect } from "react";
-import { GlobalContext } from "../src/contexts/GlobalContext";
+import { GlobalContext } from "../../src/contexts/GlobalContext";
 import hydrate from "next-mdx-remote/hydrate";
 import { makeStyles } from "@material-ui/core";
 
@@ -17,28 +17,31 @@ const useStyles = makeStyles(theme => ({
     }
   },
   markdownContent: {
-  margin: '50px auto 0 auto',
-  width: '100%',
-  maxWidth: '1200px',
-  fontSize: '20px',
-  lineHeight: '1.6em',
-  boxSizing: 'border-box',
-  padding: '20px',
-    '& *': {
-      padding: '0px',
-      color: '#191c1d',
-      maxWidth: '100%',
-      fontSize: 'inherit',
-      margin: 'initial',
-    },
-    [theme.breakpoints.down('sm')]:{
-      fontSize:'16px',
-    }
+    margin: '50px auto 0 auto',
+    width: '100%',
+    maxWidth: '1200px',
+    fontSize: '20px',
+    lineHeight: '1.6em',
+    boxSizing: 'border-box',
+    padding: '20px',
+      '& *': {
+        padding: '0px',
+        color: '#191c1d',
+        maxWidth: '100%',
+        fontSize: 'inherit',
+        margin: 'initial',
+      },
+      [theme.breakpoints.down('sm')]:{
+        fontSize:'16px',
+      }
   },
   information: {
     width: '100%',
     zIndex: 1,
     position:'absolute'
+  },
+  block:{
+    display:'block'
   }
 
 }))
@@ -131,21 +134,19 @@ export default function ProjectTemplate(props) {
           </div>
         </div>
         <div
-          className={"textContainer"}
+          className="textContainer"
           style={{ display: "block", marginTop: "0" }}
         >
           <div>
-            <a className="block" href={props.liveDemo}>
+            <a className={classes.block} href={props.liveDemo}>
               Live Demo
             </a>
-            <a className="block" href={props.sourceLink}>
+            <a className={classes.block} href={props.sourceLink}>
               Learn more at Github repo
             </a>
           </div>
         </div>
-        {/* <div className={classes.textContainer}> */}
           <div className={classes.markdownContent}>{content}</div>
-        {/* </div> */}
       </div>
     </>
   );

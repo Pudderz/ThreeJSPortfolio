@@ -1,24 +1,19 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import * as THREE from "three";
 import { useFrame } from "react-three-fiber";
-import { fragmentShader } from "../src/Shaders/fragmentShader";
-import { vertexShader } from "../src/Shaders/vertexShader";
+import { fragmentShader } from "../../src/Shaders/fragmentShader";
+import { vertexShader } from "../../src/Shaders/vertexShader";
 import { TimelineMax, Power4, TweenMax } from "gsap/dist/gsap";
-import { useRouter } from "next/router";
-import { HomeContext } from "../src/contexts/HomeContext";
-import { GlobalContext } from "../src/contexts/GlobalContext";
+import { GlobalContext } from "../../src/contexts/GlobalContext";
 
 export default function Picture(props) {
   // const {position} = useContext(GlobalContext);
 
   const distance = useRef(0);
-
   const firstTime = useRef(1);
 
   const { PreviousLocation } = useContext(GlobalContext);
-  const size = useRef(
-    window.innerWidth / 1900 > 1 ? 1 : window.innerWidth / 1900
-  );
+  const size = useRef(window.innerWidth / 1900 > 1 ? 1 : window.innerWidth / 1900);
 
   const rotationAnimatation = useRef();
   const positionAnimatation = useRef();
@@ -55,7 +50,7 @@ export default function Picture(props) {
     });
 
     let tl = new TimelineMax();
-    //Animations for if no PreviousLocation
+    //Load in Animations for if no PreviousLocation
     if (PreviousLocation === null) {
       tl.to(group.current.rotation, {
         duration: 0,
@@ -170,6 +165,9 @@ export default function Picture(props) {
     );
     return () => {
       tl.clear();
+      positionAnimatation.current.kill();
+      rotationAnimatation.current.kill();
+
       window.removeEventListener("resize", () => {
         const value = window.innerWidth / 700;
         size.current = value > 1 ? 1 : value;
@@ -192,12 +190,6 @@ export default function Picture(props) {
     }
   }, [props.positioning]);
 
-  // useEffect(()=>{
-  //   if(!props.isVisible){
-  //     uniforms.current.visibility.value += 0.01;
-  //   }
-
-  // },[props.isVisible])
 
   useFrame(() => {
     uniforms.current.uTime.value += 0.01;
@@ -206,10 +198,9 @@ export default function Picture(props) {
 
     mesh.current.position.y = props.index * 1.2 - props.position.current * 1.2;
 
-    const sizing = props.attractMode ? size.current : size.current;
     const fromCenter = props.attractMode ? 1 : distance.current;
     let scale =
-      (1 + 0.08 * fromCenter) * sizing * 1.3 * scaleMultiplier.current.value;
+      (1 + 0.08 * fromCenter) * size.current  * 1.3 * scaleMultiplier.current.value;
 
     group.current.scale.set(scale, scale, scale);
 

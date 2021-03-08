@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDrag } from "react-use-gesture";
-import { useRouter } from "next/router";
-import SmallListVersion from "./smallListVersion";
-import Background from "./Background";
+import SmallListVersion from "./smallList";
+import Background from "../../Background";
 import Link from "next/link";
-import SmallText from "./smallText";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Button, makeStyles, Tooltip } from "@material-ui/core";
+import SmallProjectDisplay from "./smallProjectDisplay";
 
 const useStyle = makeStyles({
   carousel: {
@@ -81,7 +80,8 @@ const useStyle = makeStyles({
   },
 });
 
-export default function SmallFrontPage({ data }) {
+export default function SmallFrontPage(props) {
+  const {data, images} = props;
   const classes = useStyle();
 
   const V_THRESHOLD = 0.1;
@@ -133,6 +133,12 @@ export default function SmallFrontPage({ data }) {
 
     for (const [key, value] of Object.entries(slider.current.children)) {
       observer.observe(value);
+    }
+
+    return()=>{
+      for (const [key, value] of Object.entries(slider.current.children)) {
+        observer.unobserve(value);
+      }
     }
   }, []);
 
@@ -223,6 +229,7 @@ export default function SmallFrontPage({ data }) {
       shouldJump: true,
     });
   };
+  
 
   return (
     <>
@@ -260,7 +267,6 @@ export default function SmallFrontPage({ data }) {
         <div className={classes.carousel} ref={carousel}>
           <div className={classes.slider} ref={slider} onTransitionEnd={transitionEnd}>
             {data.map((info, index) => {
-              const multipleSizes = require(`../public/images/${info.slug}.png?resize&sizes[]=340&sizes[]=600&sizes[]=1000`);
               return (
                 <section
                   className={classes.section}
@@ -278,13 +284,13 @@ export default function SmallFrontPage({ data }) {
                     src={require(`../public/images/${info.slug}.png`)}
                     loading="lazy"
                   /> */}
-
-                    {/* <picture>
-                <source srcSet={require(`../public/images/${info.slug}.png?resize&webp`)} type="image/webp" /> */}
-                    {/* <source srcSet={require(`../public/images/${info.slug}.png?resize`)} type="image/png" /> */}
-                    <img
-                      width={multipleSizes.width}
-                      height={multipleSizes.height}
+                  <picture>
+                    {/* <source media="(min-width: 1000px)" srcset="img_food.jpg"/>
+                    <source media="(min-width: 600px)" srcset="img_food.jpg"/>
+                    <source media="(min-width: 60px)" srcset="img_food.jpg"/> */}
+                  <img
+                      width={images[info.slug].width}
+                      height={images[info.slug].height}
                       loading="lazy"
                       //  height="100%"
                       alt={info.mainImage.title}
@@ -294,14 +300,33 @@ export default function SmallFrontPage({ data }) {
                         maxWidth: "100%",
                         width: "100%",
                       }}
-                      srcSet={multipleSizes.srcSet}
-                      src={multipleSizes.src}
+                      srcSet={images[info.slug].srcSet}
+                      src={images[info.slug].src}
+                      />
+                  </picture>
+                    {/* <picture>
+                <source srcSet={require(`../public/images/${info.slug}.png?resize&webp`)} type="image/webp" /> */}
+                    {/* <source srcSet={require(`../public/images/${info.slug}.png?resize`)} type="image/png" /> */}
+                    {/* <img
+                      width={images[info.slug].width}
+                      height={images[info.slug].height}
+                      loading="lazy"
+                      //  height="100%"
+                      alt={info.mainImage.title}
+                      style={{
+                        maxHeight: "100%",
+                        height: "100%",
+                        maxWidth: "100%",
+                        width: "100%",
+                      }}
+                      srcSet={images[info.slug].srcSet}
+                      src={images[info.slug].src}
                       // sizes = "(min-width: 600px) 1000px,(min-width: 350px) 350px,(min-width: 180px)  300px"
-                    />
+                    /> */}
                     {/* </picture> */}
                   </div>
 
-                  <SmallText data={data} number={index} linkTo={() => {}} />
+                  <SmallProjectDisplay data={data} number={index} linkTo={() => {}} />
                 </section>
               );
             })}

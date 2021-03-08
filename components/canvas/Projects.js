@@ -47,7 +47,7 @@ export default function Projects(props) {
     //Changes current display number that is being displayed to change
     // the title and text for the project
     if ( startRound !== rounded.current) {
-      props.displayDom(rounded.current);
+      props.changeDisplayNumber(rounded.current);
     }
 
     let diff = rounded.current - newPosition;
@@ -75,11 +75,9 @@ export default function Projects(props) {
   });
 
   const jumpComplete = (number) => props.jumpComplete(number);
-  const displayDom = (number) => props.displayDom(number);
-
+  const changeDisplayNumber = (number) => props.changeDisplayNumber(number);
 
   const goTo = (number) => props.goTo(number);
-  const linkTo = (number) => props.linkTo(number);
 
   return (
     <group>
@@ -88,14 +86,14 @@ export default function Projects(props) {
           position={position}
           key={index}
           index={index}
-          displayDom={displayDom}
+          displayDom={changeDisplayNumber}
           positioning={props.positioning}
           attractMode={props.attractMode}
           attractTo={props.attractTo}
           jumpComplete={jumpComplete}
           displayNumber={props.displayNumber}
           goTo={goTo}
-          linkTo={linkTo}
+          linkTo={()=>{}}
           image={project.mainImage.url}
           maxNumber={props.data.length - 1}
           slug={project.slug}

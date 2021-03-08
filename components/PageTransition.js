@@ -37,13 +37,7 @@ let location = (path =='/')? 'canvas': (path=='/about')? 'about':'project';
             onExiting={(node) => {
                node.classList.add("relative");
                node.classList.add("behind");
-
-              // gsap.to(node, {
-              //   duration: 1,
-              //   autoAlpha: 1,
-              //   onComplete() {
-              //   }
-              // });
+               
               if(!animation.current[location].isActive() && location!=='canvas'){
                  animation.current[location].reverse()
               }

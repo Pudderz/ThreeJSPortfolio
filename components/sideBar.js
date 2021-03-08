@@ -1,7 +1,5 @@
-// import { TweenMax } from 'gsap/gsap-core';
 import { TweenMax } from "gsap/dist/gsap";
-import React, { useContext, useRef, useState, useEffect } from "react";
-import { GlobalContext } from "../src/contexts/GlobalContext";
+import React, { useRef, useState, useEffect } from "react";
 
 export default function SideBar(props) {
   const sideBarAnimationRef = useRef();
@@ -11,7 +9,7 @@ export default function SideBar(props) {
   const [colours, setColours] = useState({
     primaryColor: props.information[props.number].primaryColour,
   });
-  const { setPreviousColour } = useContext(GlobalContext);
+  
 
   useEffect(() => {
     sideBarAnimationRef.current = TweenMax.fromTo(
@@ -39,6 +37,8 @@ export default function SideBar(props) {
     };
   }, []);
 
+
+
   useEffect(() => {
     TweenMax.to(sideBarRef.current, {
       duration: 0.3,
@@ -46,11 +46,15 @@ export default function SideBar(props) {
     });
   }, [props.sideBarRef]);
 
+
+
   const stopBubbling = (event) => {
     event.preventDefault();
     event.stopPropagation();
     event.cancelBubble = true;
   };
+
+
 
   useEffect(() => {
     TweenMax.to(sideBarRef.current, {
@@ -59,7 +63,6 @@ export default function SideBar(props) {
     });
     //sets the colour for the next page so we can have the correct colour transition.
     if (firstCount.current > 1) {
-      setPreviousColour(props.information[props.number].primaryColour);
       setColours({
         primaryColor: props.information[props.number].primaryColour,
       });
@@ -67,6 +70,8 @@ export default function SideBar(props) {
       firstCount.current++;
     }
   }, [props.number]);
+
+
 
   useEffect(() => {
     if (!props.attractMode) {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { useEffect, useRef, useContext } from "react";
-import Buttons from "./Buttons";
+// import ButtonComponent from "./ButtonComponent";
 import { Button, colors, duration, Fab, Tooltip } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { TweenMax } from "gsap/dist/gsap";
@@ -8,7 +8,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { GlobalContext } from "../src/contexts/GlobalContext";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
   wrapper: {
     margin: theme.spacing(1),
     position: "relative",
@@ -73,23 +72,12 @@ export default function Title(props) {
       }
     };
   }, []);
-  const pointerOver = (e) => {
-    //  arrow.current.style.transform= "rotateZ(-45deg)"
-    animation.current.play();
-  };
-  const pointerLeave = (e) => {
-    //  arrow.current.style.transform= "rotateZ(0deg)"
-    animation.current.reverse();
-  };
+  const pointerOver = (e) => animation.current.play();
+  const pointerLeave = (e) => animation.current.reverse();
 
-  const hoverAbout = () => {
-    sidebarAnimation.current.play();
-  };
-  const leaveAbout = () => {
-    sidebarAnimation.current.reverse();
-  };
+  const hoverAbout = () => sidebarAnimation.current.play();
+  const leaveAbout = () => sidebarAnimation.current.reverse();
 
-  // if (props.path !== "/" && props.path !== "/about") {
   return (
     <>
       <nav
@@ -143,7 +131,4 @@ export default function Title(props) {
       </Link>
     </>
   );
-  // } else {
-  //   return <div className="top"></div>;
-  // }
 }

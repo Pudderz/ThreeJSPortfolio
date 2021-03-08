@@ -1,11 +1,11 @@
 import fetch from "isomorphic-unfetch";
-// import sharp from "sharp";
-// import sizeOf from "image-size";
 import fs from "fs";
 
 const storeImage = (slug, resp) =>
   new Promise((resolve, reject) => {
-    const fileStream = fs.createWriteStream(`${process.cwd()}/public/images/${slug}.png`);
+    const fileStream = fs.createWriteStream(
+      `${process.cwd()}/public/images/${slug}.png`
+    );
     if (!resp || !resp.body) {
       reject("no body on fetch response");
     } else {
@@ -13,13 +13,13 @@ const storeImage = (slug, resp) =>
       fileStream.on("finish", () => {
         resolve();
       });
-      fileStream.on("error", err => {
+      fileStream.on("error", (err) => {
         reject(err);
       });
     }
   });
 
-const convertImageToWebP = slug =>
+const convertImageToWebP = (slug) =>
   new Promise((resolve, reject) => {
     sharp(`${process.cwd()}/public/images/${slug}.png`).toFile(
       `${process.cwd()}/public/images/${slug}.webp`,
@@ -28,25 +28,25 @@ const convertImageToWebP = slug =>
           reject(error);
         } else {
           resolve(info);
-          console.log(`Processed - ${slug}, ${info}`)
+          console.log(`Processed - ${slug}, ${info}`);
         }
       }
     );
   });
 
- export const createImage = async (slug, url) => {
-  const resp = await fetch(
-    url
-  );
+export const createImage = async (slug, url) => {
+  if (!fs.existsSync(`../public/images/${slug}.png`)) {
+    const resp = await fetch(url);
 
-  await storeImage(slug, resp);
-  // await convertImageToWebP(slug);
+    await storeImage(slug, resp);
+    // await convertImageToWebP(slug);
 
-  return {
-    // svg,
-    webp: slug,
-    // dimensions
-  };
+    return {
+      // svg,
+      webp: slug,
+      // dimensions
+    };
+  }
 };
 
 export default createImage;
