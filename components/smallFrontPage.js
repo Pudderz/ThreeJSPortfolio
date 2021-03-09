@@ -60,6 +60,9 @@ const useStyle = makeStyles({
   div: {
     margin: "50px auto 0",
     width: "80%",
+    "& img":{
+      objectFit:'cover'
+    }
   },
 
 
@@ -269,35 +272,15 @@ export default function SmallFrontPage({ data }) {
                   ref={addToRefs}
                 >
                   <div className={classes.div}>
-                    {/* <img
-                   style={{maxHeight:'100%', height:'100%', maxWidth:'100%', width:'100%'}}
-                    alt={info.mainImage.title}
-                    width={info.mainImage.width}
-                    height={info.mainImage.height}
-                    
-                    src={require(`../public/images/${info.slug}.png`)}
-                    loading="lazy"
-                  /> */}
-
-                    {/* <picture>
-                <source srcSet={require(`../public/images/${info.slug}.png?resize&webp`)} type="image/webp" /> */}
-                    {/* <source srcSet={require(`../public/images/${info.slug}.png?resize`)} type="image/png" /> */}
                     <Image
-                      width={info.mainImage.width}
-                      height={info.mainImage.height}
+                      width={640}
+                      height={323}
                       loading="lazy"
                       //  height="100%"
                       alt={info.mainImage.title}
-                      style={{
-                        maxHeight: "100%",
-                        height: "100%",
-                        maxWidth: "100%",
-                        width: "100%",
-                      }}
+                      
                       src={info.mainImage.url}
-                      // sizes = "(min-width: 600px) 1000px,(min-width: 350px) 350px,(min-width: 180px)  300px"
                     />
-                    {/* </picture> */}
                   </div>
 
                   <SmallText data={data} number={index} linkTo={() => {}} />
