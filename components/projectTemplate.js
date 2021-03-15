@@ -135,7 +135,7 @@ export default function ProjectTemplate(props) {
           className={"textContainer"}
           style={{ display: "block", marginTop: "0" }}
         >
-          <div>
+          <div style={{padding:'20px'}}>
             <a className="block" href={props.liveDemo}>
               Live Demo
             </a>
@@ -144,9 +144,7 @@ export default function ProjectTemplate(props) {
             </a>
           </div>
         </div>
-        {/* <div className={classes.textContainer}> */}
           <div className={classes.markdownContent}>{content}</div>
-        {/* </div> */}
       </div>
     </>
   );

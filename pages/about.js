@@ -33,8 +33,10 @@ export default function About(props) {
   let aboutRef = useRef(null);
 
   const router = useRouter();
-  const goBack = () => router.back();
 
+
+  // adds swipe to go back to previous page
+  const goBack = () => router.back();
   const bind = useDrag(({ last, vxvy: [vx, vy] }) => {
     if (last) {
       // getting the swipe direction

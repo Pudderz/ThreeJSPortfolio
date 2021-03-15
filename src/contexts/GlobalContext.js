@@ -4,18 +4,22 @@ export const GlobalContext = React.createContext();
 
 export const GlobalProvider = ({ children }) => {
   const [active, setActive] = useState(true);
+  
   const [PreviousLocation, setPreviousLocation] = useState(null);
   const [previousPageColour, setPreviousColour] = useState(null);
+
   const [colours, setColours] = useState({
     primaryColour: null,
     secondaryColour: null,
   });
+
   const animation = useRef({
     about: new TimelineMax({ paused: true }),
     canvas: new TimelineMax({ paused: true }),
     project: new TimelineMax({ paused: true }),
   });
   const position = useRef({ y: 0 });
+
   useEffect(() => {
     return () => {
       animation.current.about.kill();
@@ -23,6 +27,7 @@ export const GlobalProvider = ({ children }) => {
       animation.current.project.kill();
     };
   }, []);
+
   return (
     <GlobalContext.Provider
       value={{
