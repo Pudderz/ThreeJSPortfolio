@@ -175,7 +175,7 @@ export default function About(props) {
               </header>
 
               <p style={{ textAlign: "center" }}>
-                I'm a front-end web developer based in UK, looking for a
+                I'm a front-end web developer based in the UK, looking for a
                 full-time role.
               </p>
             </div>
