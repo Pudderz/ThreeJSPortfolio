@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 // import SmallFrontPage from "../components/smallFrontPage";
 import { HomeProvider } from "../src/contexts/HomeContext";
 import { getAllPostsForHome, getAllPostsWithImages } from "../helpers/api";
-import { createImage } from "../helpers/getImage";
+// import { createImage } from "../helpers/getImage";
 import { useMediaQuery } from "@material-ui/core";
 import json2mq from "json2mq";
 import dynamic from 'next/dynamic'
@@ -34,12 +34,6 @@ export default function FrontPage(props) {
 
 export async function getStaticProps() {
   const data = await getAllPostsForHome();
-
-  //creates pictures in public/images
-  const allData = await getAllPostsWithImages();
-  await allData?.map(async (data) => {
-   await createImage(data?.slug, data?.mainImage?.url);
-  });
 
   return {
     props: {
