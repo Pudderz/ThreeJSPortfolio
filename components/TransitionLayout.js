@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { GlobalContext } from "../src/contexts/GlobalContext";
 // import Test from "./canvas";
 
-const Layout = ({ path, children }) => {
+const TransitionLayout = ({ path, children }) => {
 const {animation} = useContext(GlobalContext)
 let location = (path =='/')? 'canvas': (path=='/about')? 'about':'project';
   return (
@@ -65,4 +65,4 @@ let location = (path =='/')? 'canvas': (path=='/about')? 'about':'project';
   );
 };
 
-export default Layout;
+export default TransitionLayout;

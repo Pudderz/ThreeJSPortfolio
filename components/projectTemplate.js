@@ -43,12 +43,13 @@ const useStyles = makeStyles(theme => ({
 
 }))
 export default function ProjectTemplate(props) {
+  const information = useRef(null);
   const classes= useStyles();
   const { PreviousLocation, setPreviousLocation, animation } = useContext(
     GlobalContext
   );
 
-  const information = useRef(null);
+  
 
   // Markdown data
   const aboutProject = hydrate(props.aboutProject);

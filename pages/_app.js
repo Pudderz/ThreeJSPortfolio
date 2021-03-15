@@ -1,17 +1,17 @@
-import React, { useRef } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../src/theme";
 import { GlobalProvider } from "../src/contexts/GlobalContext";
-import Layout from '../components/Layout'
+import TransitionLayout from '../components/TransitionLayout'
 import Title from "../components/Title";
 import "../styles/App.scss"
 
-export default function MyApp(props) {
+export default function App(props) {
   const { Component, pageProps, router } = props;
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
@@ -31,19 +31,19 @@ export default function MyApp(props) {
       <ThemeProvider theme={theme}>
         <GlobalProvider>
         {router.pathname !== "/" && router.pathname !== "/about" && <Title path={router.pathname}/>}
-          <Layout path={router.pathname}>
+          <TransitionLayout path={router.pathname}>
                 <Component
                   {...pageProps}
                   key={router.route}
                 />
-          </Layout>
+          </TransitionLayout>
         </GlobalProvider>
       </ThemeProvider>
     </React.Fragment>
   );
 }
 
-MyApp.propTypes = {
+App.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired,
 };
