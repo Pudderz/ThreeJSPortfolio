@@ -19,7 +19,14 @@ let location = (path =='/')? 'canvas': (path=='/about')? 'about':'project';
               gsap.killTweensOf(node);
               
               gsap.set(node, { clearProps: "all" });
-              node.classList.add("absolute");
+              // node.classList.add("absolute");
+              node.style.position = "fixed";
+              if(location =="about" || location =="project"){
+                node.style.zindex = "100";
+              }else{
+                node.style.zindex = "0";
+              }
+              console.log('entering', node, location);
               animation.current[location].play()
               gsap.fromTo(node,{
                 autoAlpha: 1,
@@ -30,13 +37,26 @@ let location = (path =='/')? 'canvas': (path=='/about')? 'about':'project';
                 autoAlpha: 1,
                 onComplete(e) {
                   node.classList.remove("absolute");
+                  node.style.position = "";
                 }
               });
               
             }}
+            onExit={node => {
+             
+            }}
             onExiting={(node) => {
-               node.classList.add("relative");
+              console.log('exiting', node, location);
+              if(location=="canvas"){
+                 node.classList.add("relative");
                node.classList.add("behind");
+              }else{
+              //    console.log(node)
+              // console.log(window.scrollY);
+              node.style.position = "fixed";
+              node.style.top = -1 * window.scrollY + "px";
+              }
+              
 
               // gsap.to(node, {
               //   duration: 1,
