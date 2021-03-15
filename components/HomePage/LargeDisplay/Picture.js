@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useContext } from "react";
 import * as THREE from "three";
 import { useFrame } from "react-three-fiber";
-import { fragmentShader } from "../src/Shaders/fragmentShader";
-import { vertexShader } from "../src/Shaders/vertexShader";
+import { fragmentShader } from "../../../src/Shaders/fragmentShader";
+import { vertexShader } from "../../../src/Shaders/vertexShader";
 import { TimelineMax, Power4, TweenMax } from "gsap/dist/gsap";
-import { GlobalContext } from "../src/contexts/GlobalContext";
+import { GlobalContext } from "../../../src/contexts/GlobalContext";
 
 export default function Picture(props) {
   // const {position} = useContext(GlobalContext);

@@ -1,10 +1,7 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
-import { GlobalContext } from "../src/contexts/GlobalContext";
-import Background from "./Background";
-import SideBar from "./sideBar";
-import { TweenMax } from "gsap/dist/gsap";
-import { TimelineMax } from "gsap/dist/gsap";
-import Buttons from "./Buttons";
+import React, { useState } from "react";
+import Background from "../Background";
+import SideBar from "../../Common/sideBar";
+import Buttons from "../../Common/Buttons";
 import { ButtonGroup, makeStyles } from "@material-ui/core";
 
 export function SmallText(props) {
@@ -16,13 +13,8 @@ export function SmallText(props) {
   };
 
   const sideBarLarge = (event, boolean) => {
-    event.stopPropagation() ;
-    if (boolean) {
-      setSideBarSize("15px");
-    } else {
-      setSideBarSize("10px");
-      
-    }
+    event.stopPropagation();
+    setSideBarSize( boolean ? "15px": "10px");
   };
 
   return (

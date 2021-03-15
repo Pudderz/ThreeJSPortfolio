@@ -5,7 +5,7 @@ import { Power4 } from "gsap/dist/gsap";
 import { Fab, makeStyles, Tooltip } from "@material-ui/core";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
-import ContactForm from "../components/form";
+import ContactForm from "../components/AboutPage/ContactForm";
 import { useDrag } from "react-use-gesture";
 import { useRouter } from "next/router";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";

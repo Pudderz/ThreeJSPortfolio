@@ -11,6 +11,7 @@ export default function List(props) {
   const nav = useRef(null);
   const markerRefs = useRef([]);
   const descriptionRefs = useRef([]);
+
   useEffect(()=>{
     animationRef.current = new TimelineMax({
       onComplete: () => {

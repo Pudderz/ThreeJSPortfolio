@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
-import { GlobalContext } from "../src/contexts/GlobalContext";
-import Background from "./Background";
-import SideBar from "./sideBar";
+import { GlobalContext } from "../../../src/contexts/GlobalContext";
+import Background from "../Background";
+import SideBar from "../../Common/sideBar";
 import { TweenMax } from "gsap/dist/gsap";
 import { TimelineMax } from "gsap/dist/gsap";
-import Buttons from "./Buttons";
+import Buttons from "../../Common/Buttons";
 
 export default function HtmlText(props) {
   const { setPreviousLocation, setPreviousColour } = useContext(GlobalContext);
   const backgroundAnimationRef = useRef();
   const textAnimationRef = useRef();
   const [sideBarWidth, setSideBarSize] = useState("10px");
-  
+
   //ref for making sure certain useEffects do not fire on mount
   const firstCount = useRef(0);
 

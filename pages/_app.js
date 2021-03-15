@@ -4,8 +4,8 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../src/theme";
 import { GlobalProvider } from "../src/contexts/GlobalContext";
-import TransitionLayout from '../components/TransitionLayout'
-import Title from "../components/Title";
+import TransitionLayout from '../components/Common/TransitionLayout'
+import Title from "../components/HomePage/SmallDisplay/Title";
 import "../styles/App.scss"
 
 export default function App(props) {

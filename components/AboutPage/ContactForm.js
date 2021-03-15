@@ -62,9 +62,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ContactForm() {
   const classes = useStyles();
-  const [loading, setLoading] = React.useState(false);
-  const [success, setSuccess] = React.useState(false);
-  const [form, setForm] = React.useState({
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [form, setForm] = useState({
     formUsername: "",
     formEmail: "",
     formMessage: "",

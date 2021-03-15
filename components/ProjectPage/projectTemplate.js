@@ -1,7 +1,7 @@
 import React, { useContext} from "react";
 import {Power3 } from "gsap";
 import { useRef, useEffect } from "react";
-import { GlobalContext } from "../src/contexts/GlobalContext";
+import { GlobalContext } from "../../src/contexts/GlobalContext";
 import hydrate from "next-mdx-remote/hydrate";
 import { makeStyles } from "@material-ui/core";
 

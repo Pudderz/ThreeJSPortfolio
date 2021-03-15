@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import ErrorPage from "next/error";
 import { getAllPostsWithSlug, getPost } from "../../helpers/api";
 import renderToString from 'next-mdx-remote/render-to-string'
-import ProjectTemplate from "../../components/projectTemplate";
+import ProjectTemplate from "../../components/ProjectPage/projectTemplate";
 
 export default function CreatePost({ post, mdx, aboutProjectMdx }) {
   const router = useRouter();

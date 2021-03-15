@@ -1,6 +1,6 @@
 import { makeStyles, Tooltip } from "@material-ui/core";
 import React, { useContext, useEffect, useRef } from "react";
-import { GlobalContext } from "../src/contexts/GlobalContext";
+import { GlobalContext } from "../../../src/contexts/GlobalContext";
 
 const useStyles = makeStyles({
   root: {

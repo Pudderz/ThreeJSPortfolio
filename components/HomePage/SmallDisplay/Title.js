@@ -4,7 +4,7 @@ import { Fab, Tooltip } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { TweenMax } from "gsap/dist/gsap";
 import { makeStyles } from "@material-ui/core/styles";
-import { GlobalContext } from "../src/contexts/GlobalContext";
+import { GlobalContext } from "../../../src/contexts/GlobalContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {},

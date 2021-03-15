@@ -1,7 +1,7 @@
 // import { TweenMax } from 'gsap/gsap-core';
 import { TweenMax } from "gsap/dist/gsap";
 import React, { useContext, useRef, useState, useEffect } from "react";
-import { GlobalContext } from "../src/contexts/GlobalContext";
+import { GlobalContext } from "../../src/contexts/GlobalContext";
 
 export default function SideBar(props) {
   const sideBarAnimationRef = useRef();

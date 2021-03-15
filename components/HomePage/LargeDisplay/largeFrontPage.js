@@ -2,11 +2,11 @@ import React, { useRef, useState, useEffect, useContext } from "react";
 import { Canvas } from "react-three-fiber";
 import HtmlText from "./HtmlText";
 import List from "./List";
-import { GlobalContext } from "../src/contexts/GlobalContext";
+import { GlobalContext } from "../../../src/contexts/GlobalContext";
 import Link from "next/link";
 import { makeStyles, Tooltip } from "@material-ui/core";
 import Projects from './Projects'
-import { HomeContext } from "../src/contexts/HomeContext";
+import { HomeContext } from "../../../src/contexts/HomeContext";
 
 
 // Styling

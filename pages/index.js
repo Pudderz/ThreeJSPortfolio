@@ -5,8 +5,8 @@ import { useMediaQuery } from "@material-ui/core";
 import json2mq from "json2mq";
 import dynamic from 'next/dynamic';
 
-const PortfolioCanvas = dynamic(() => import("../components/largeFrontPage"));
-const SmallFrontPage = dynamic(() => import("../components/smallFrontPage"));
+const PortfolioCanvas = dynamic(() => import("../components/HomePage/LargeDisplay/largeFrontPage"));
+const SmallFrontPage = dynamic(() => import("../components/HomePage/SmallDisplay/SmallFrontPage"));
 
 
 export default function FrontPage(props) {
