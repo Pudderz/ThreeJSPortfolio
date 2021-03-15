@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef, useState } from "react";
+import React, { useEffect, useContext, useRef} from "react";
 import Link from "next/link";
 import { GlobalContext } from "../src/contexts/GlobalContext";
 import { Power4 } from "gsap/dist/gsap";

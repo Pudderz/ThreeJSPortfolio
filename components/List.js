@@ -1,9 +1,6 @@
-import { duration } from "@material-ui/core";
 import gsap from "gsap/dist/gsap";
 import { TimelineMax } from "gsap/dist/gsap";
 import React, { useEffect, useRef } from "react";
-// import gsap from "gsap";
-// import { TimelineMax } from "gsap/gsap-core";
 import ListItem from "./ListItem";
 
 

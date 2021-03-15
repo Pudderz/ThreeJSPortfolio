@@ -1,11 +1,9 @@
-import React, { useRef, useEffect, useState, useContext } from "react";
+import React, { useRef, useEffect, useContext } from "react";
 import * as THREE from "three";
 import { useFrame } from "react-three-fiber";
 import { fragmentShader } from "../src/Shaders/fragmentShader";
 import { vertexShader } from "../src/Shaders/vertexShader";
 import { TimelineMax, Power4, TweenMax } from "gsap/dist/gsap";
-import { useRouter } from "next/router";
-import { HomeContext } from "../src/contexts/HomeContext";
 import { GlobalContext } from "../src/contexts/GlobalContext";
 
 export default function Picture(props) {

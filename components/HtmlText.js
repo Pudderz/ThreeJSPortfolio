@@ -1,22 +1,17 @@
-// import { TimelineMax } from "gsap/gsap-core";
-// import { TweenMax } from "gsap/gsap-core";
-
 import React, { useEffect, useRef, useState, useContext } from "react";
-// import Link from '../src/Link';
-import Link from "next/link";
-// import { Link } from "react-router-dom";
 import { GlobalContext } from "../src/contexts/GlobalContext";
 import Background from "./Background";
 import SideBar from "./sideBar";
 import { TweenMax } from "gsap/dist/gsap";
 import { TimelineMax } from "gsap/dist/gsap";
 import Buttons from "./Buttons";
-import { ButtonGroup } from "@material-ui/core";
+
 export default function HtmlText(props) {
   const { setPreviousLocation, setPreviousColour } = useContext(GlobalContext);
   const backgroundAnimationRef = useRef();
   const textAnimationRef = useRef();
   const [sideBarWidth, setSideBarSize] = useState("10px");
+  
   //ref for making sure certain useEffects do not fire on mount
   const firstCount = useRef(0);
 

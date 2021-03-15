@@ -1,10 +1,9 @@
-// import { TimelineMax } from "gsap/all";
-// import { TweenMax } from "gsap/gsap-core";
 import { TweenMax, TimelineMax } from "gsap/dist/gsap";
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { GlobalContext } from "../src/contexts/GlobalContext";
 
 export default function Background(props) {
+  
   const backgroundAnimationRef = useRef();
   let backgroundRef = useRef();
   const firstCount = useRef(0);

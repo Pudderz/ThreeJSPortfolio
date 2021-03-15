@@ -3,7 +3,6 @@ import { Canvas } from "react-three-fiber";
 import HtmlText from "./HtmlText";
 import List from "./List";
 import { GlobalContext } from "../src/contexts/GlobalContext";
-import {TweenMax} from "gsap/dist/gsap";
 import Link from "next/link";
 import { makeStyles, Tooltip } from "@material-ui/core";
 import Projects from './Projects'

@@ -1,10 +1,8 @@
 import { Transition, TransitionGroup } from "react-transition-group";
-import Link from "next/link";
 import gsap from "gsap";
-import { GlobalProvider } from "../src/contexts/GlobalContext";
 import { useContext, useEffect, useRef } from "react";
 import { GlobalContext } from "../src/contexts/GlobalContext";
-// import Test from "./canvas";
+
 
 const TransitionLayout = ({ path, children }) => {
   const { animation } = useContext(GlobalContext);

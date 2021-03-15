@@ -55,7 +55,7 @@ export default function SmallListVersion(props) {
     return ()=>{
       clearTimeout(setLocation)
     }
-  })
+  },[])
   return (
     <div className={classes.root}>
       {props.data.map((info, index) => (

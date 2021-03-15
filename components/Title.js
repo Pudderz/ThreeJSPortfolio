@@ -1,7 +1,6 @@
 import Link from "next/link";
 import React, { useEffect, useRef, useContext } from "react";
-import Buttons from "./Buttons";
-import { Button, colors, duration, Fab, Tooltip } from "@material-ui/core";
+import { Fab, Tooltip } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { TweenMax } from "gsap/dist/gsap";
 import { makeStyles } from "@material-ui/core/styles";

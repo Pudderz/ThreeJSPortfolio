@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDrag } from "react-use-gesture";
-import { useRouter } from "next/router";
 import SmallListVersion from "./smallListVersion";
 import Background from "./Background";
 import Link from "next/link";
@@ -8,7 +7,9 @@ import SmallText from "./smallText";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Button, makeStyles, Tooltip } from "@material-ui/core";
-import Image from 'next/image' 
+import Image from 'next/image'; 
+
+
 const useStyle = makeStyles({
   carousel: {
     width: "100vw",

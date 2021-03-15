@@ -1,14 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
-// import { PortfolioCanvas } from "../components/largeFrontPage";
-// import SmallFrontPage from "../components/smallFrontPage";
 import { HomeProvider } from "../src/contexts/HomeContext";
-import { getAllPostsForHome, getAllPostsWithImages } from "../helpers/api";
-// import { createImage } from "../helpers/getImage";
+import { getAllPostsForHome } from "../helpers/api";
 import { useMediaQuery } from "@material-ui/core";
 import json2mq from "json2mq";
-import dynamic from 'next/dynamic'
-const PortfolioCanvas = dynamic(() => import("../components/largeFrontPage"))
-const SmallFrontPage = dynamic(() => import("../components/smallFrontPage"))
+import dynamic from 'next/dynamic';
+
+const PortfolioCanvas = dynamic(() => import("../components/largeFrontPage"));
+const SmallFrontPage = dynamic(() => import("../components/smallFrontPage"));
+
+
 export default function FrontPage(props) {
   const [firstRun, setFirstRun] = useState(false);
 

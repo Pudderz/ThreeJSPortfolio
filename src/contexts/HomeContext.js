@@ -4,7 +4,7 @@ export const HomeContext = React.createContext();
 
 
 export const HomeProvider = ({ children }) => {
-//   const [attractTo, setAttractTo] = useState({ goTo: 0, shouldJump: false });
+
   const [attractMode, setAttractMode] = useState(false);
   const [displayNumber, setDisplayNumber] = useState(0);
   const position = useRef(0)
