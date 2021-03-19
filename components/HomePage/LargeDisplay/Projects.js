@@ -1,14 +1,31 @@
-import React, {useRef, useEffect } from "react";
+import React, { useRef, useEffect, useContext } from "react";
 import { useFrame } from "react-three-fiber";
 import Picture from "./Picture";
-import normalizeWheel from 'normalize-wheel';
+import normalizeWheel from "normalize-wheel";
+import { connect } from "react-redux";
 
-export default function Projects(props) {
+import HomeContext from "../../../src/contexts/HomeContext";
+
+export function Projects(props) {
+  const {
+    setJumpMode,
+    jumpMode,
+    targetProjectNumber,
+    fastTravelMode,
+    setTargetProjectNumber,
+    setProjectInViewNumber,
+  } = useContext(HomeContext);
+
 
   const speed = useRef(0);
   const rounded = useRef(0);
   const position = useRef(0);
   const distance = useRef(0);
+
+
+  const size = useRef(
+    window.innerWidth / 1900 > 1 ? 1 : window.innerWidth / 1900
+  );
 
   useEffect(() => {
     window.addEventListener("wheel", (e) => {
@@ -16,9 +33,19 @@ export default function Projects(props) {
       speed.current += normalized.pixelY * 0.0003;
     });
 
+    window.addEventListener("resize", () => {
+      const value = window.innerWidth / 700;
+      size.current = value > 1 ? 1 : value;
+    });
     return () => {
       window.removeEventListener("wheel", (e) => {
-        speed.current += e.deltaY * 0.0003;
+        const normalized = normalizeWheel(e);
+        speed.current += normalized.pixelY * 0.0003;
+      });
+
+      window.removeEventListener("resize", () => {
+        const value = window.innerWidth / 700;
+        size.current = value > 1 ? 1 : value;
       });
     };
   }, []);
@@ -35,7 +62,7 @@ export default function Projects(props) {
       }
     }
 
-    if (speed.current !== 0 || props.attractTo.shouldJump) {
+    if (speed.current !== 0 || jumpMode) {
       newPosition = speed.current + position.current;
       speed.current = speed.current * 0.8;
       rounded.current = Math.round(newPosition);
@@ -44,28 +71,26 @@ export default function Projects(props) {
     distance.current =
       1 - Math.min(Math.abs(newPosition - props.index), 1) ** 2;
 
-
     //Changes current display number that is being displayed to change
     // the title and text for the project
-    if ( startRound !== rounded.current) {
-      props.displayDom(rounded.current);
+    if (startRound !== rounded.current) {
+      setProjectInViewNumber(rounded.current);
     }
 
     let diff = rounded.current - newPosition;
 
-    if (props.attractMode || props.attractTo.shouldJump) {
-
+    if (fastTravelMode || jumpMode) {
       // Speeds up selection with attractmode is true (when right markers are hovered)
-      newPosition -= props.attractMode
-        ? (newPosition - props.attractTo.goTo) * 0.1
-        : (newPosition - props.attractTo.goTo) * 0.05;
+      newPosition -= fastTravelMode
+        ? (newPosition - targetProjectNumber) * 0.1
+        : (newPosition - targetProjectNumber) * 0.05;
 
       // Cancels jump once picture is mostly at the center
       if (
-        props.attractTo.shouldJump &&
-        Math.round(newPosition * 2) / 2 == props.attractTo.goTo
+        jumpMode &&
+        Math.round(newPosition * 2) / 2 == targetProjectNumber
       ) {
-        props.jumpComplete();
+        setJumpMode(false);
       }
     } else {
       newPosition =
@@ -75,11 +100,11 @@ export default function Projects(props) {
     position.current = newPosition;
   });
 
-  const jumpComplete = (number) => props.jumpComplete(number);
-  const displayDom = (number) => props.displayDom(number);
 
-
-  const goTo = (number) => props.goTo(number);
+  const goTo = (number) => {
+    props.goTo(number);
+    setTargetProjectNumber(number);
+  };
   const linkTo = (number) => props.linkTo(number);
 
   return (
@@ -87,14 +112,9 @@ export default function Projects(props) {
       {props.data.map((project, index) => (
         <Picture
           position={position}
+          size={size}
           key={index}
           index={index}
-          displayDom={displayDom}
-          positioning={props.positioning}
-          attractMode={props.attractMode}
-          attractTo={props.attractTo}
-          jumpComplete={jumpComplete}
-          displayNumber={props.displayNumber}
           goTo={goTo}
           linkTo={linkTo}
           image={project.mainImage.url}
@@ -105,3 +125,5 @@ export default function Projects(props) {
     </group>
   );
 }
+
+export default Projects;

@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
-import React from "react";
+import React, {useContext} from "react";
+import HomeContext from "../../../src/contexts/HomeContext";
 
 
 const useStyles = makeStyles({
@@ -25,6 +26,9 @@ const useStyles = makeStyles({
 })
 export default function ListItem(props) {
   const classes = useStyles();
+  const { projectInViewNumber } = useContext(HomeContext);
+
+
   const select = () => {
     props.select(props.number);
   };
@@ -33,7 +37,7 @@ export default function ListItem(props) {
       onPointerOver={select}
       className={classes.flexItems}
       style={{
-        opacity: props.number === props.display ? "1" : "0.4",
+        opacity: props.number === projectInViewNumber? "1" : "0.4",
         flex: "0 0 auto",
       }}
     >
@@ -48,7 +52,7 @@ export default function ListItem(props) {
         ref={props.addToMarkerRefs}
         style={{
           background:
-            props.number === props.display
+            props.number === projectInViewNumber
               ? props.color
               : props.whiteOrBlack === "White" || props.attractMode
               ? "white"
