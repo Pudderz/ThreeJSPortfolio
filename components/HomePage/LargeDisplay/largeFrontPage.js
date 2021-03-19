@@ -79,60 +79,42 @@ const {
 
   //Loadin animations
   useEffect(() => {
-    
-    if(PreviousLocation ===null){
-      animation.current.canvas.to(screen, {
-      duration: 0.8,
-      width: "100%",
-      left: "0%",
-    });
+    console.log(PreviousLocation);
+    if (PreviousLocation === null) {
+      homePageLoadInStart(animation.current.canvas, screen, body)
+      // animation.current.canvas.to(screen, {
+      //   duration: 0.8,
+      //   width: "100%",
+      //   left: "0%",
+      // });
 
-    animation.current.canvas.to(screen, {
-      duration: 0.4,
-      left: "100%",
-      delay: 0.3,
-    });
-    animation.current.canvas.to(body,{
-      css: {
-        opacity: "1",
-        pointerEvents: "auto",
-      }
-    },'-=0.2')
-    }else{
-      animation.current.canvas.to(body, {
-        duration: 0.8,
-        opacity: "1",
-        pointerEvents: "auto",
-      });
+      // animation.current.canvas.to(screen, {
+      //   duration: 0.4,
+      //   left: "100%",
+      //   delay: 0.3,
+      // });
+      // animation.current.canvas.to(
+      //   body,
+      //   {
+      //     css: {
+      //       opacity: "1",
+      //       pointerEvents: "auto",
+      //     },
+      //   },
+      //   "-=0.2"
+      // );
+    } else {
+      homePageLoadInDefault(animation.current.canvas, screen, body);
+      // animation.current.canvas.to(body, {
+      //   duration: 0.8,
+      //   opacity: "1",
+      //   pointerEvents: "auto",
+      // });
     }
     return () => {
-      animation.current.canvas.clear()
-      // TweenMax.to(body, 4, {
-      //   css: {
-      //     opacity: "0",
-      //     pointerEvents: "none",
-      //   },
-      // });
+      animation.current.canvas.clear();
     };
   }, []);
-
-
-  const changeAttractMode = (boolean) => {
-    setAttractMode(boolean);
-    if (boolean) {
-      setPosition("middle");
-      setPositioning("middle");
-    } else {
-      setAttractTo({
-        ...attractTo,
-        shouldJump: false,
-      });
-      setPosition("right");
-      setPositioning("right");
-    }
-  };
-
-  const [displayNumber, setDisplayNumber] = useState(0);
 
 
   const goTo = (number) => {

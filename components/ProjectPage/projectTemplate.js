@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import { GlobalContext } from "../../src/contexts/GlobalContext";
 import hydrate from "next-mdx-remote/hydrate";
 import { makeStyles } from "@material-ui/core";
+import { projectPageLoadInDefault, projectPageLoadInStart } from "../../animations/loadinAnimations";
 
 const useStyles = makeStyles(theme => ({
   flex:{
@@ -43,6 +44,17 @@ const useStyles = makeStyles(theme => ({
 
 }))
 export default function ProjectTemplate(props) {
+
+
+  const {
+    createdAt,
+    title,
+    technologiesUsed,
+    sourceCode,
+    liveDemo,
+  } = props.post;
+
+
   const information = useRef(null);
   const classes= useStyles();
   const { PreviousLocation, setPreviousLocation, animation } = useContext(
@@ -58,29 +70,13 @@ export default function ProjectTemplate(props) {
   useEffect(() => {
     //Loadin animation
     if (PreviousLocation !== "project" && PreviousLocation !== null) {
-      animation.current.project.fromTo(
-        information.current,
-        {
-          left: "-100%",
-        },
-        {
-          duration: 1,
-          left: "0%",
-          ease: Power3.easeInOut,
-        }
-      );
+
+      projectPageLoadInDefault(animation.current.project, information.current);
+
     } else {
-      animation.current.project.fromTo(
-        information.current,
-        {
-          opacity: 0,
-        },
-        {
-          duration: 1,
-          opacity: 1,
-          ease: Power3.easeInOut,
-        }
-      );
+
+      projectPageLoadInStart(animation.current.project, information.current);
+      
     }
 
     const setLocation = setTimeout(() => setPreviousLocation("project"), 500);
@@ -88,6 +84,7 @@ export default function ProjectTemplate(props) {
     return () => {
       clearTimeout(setLocation);
       animation.current.project.clear();
+      setPreviousLocation("project")
     };
   }, []);
 
@@ -102,7 +99,7 @@ export default function ProjectTemplate(props) {
         style={{margin:'0 auto'}}
         >
           <div style={{ padding: "20px" }}>
-            <h3 className="large">{props.title}</h3>
+            <h3 className="large">{title}</h3>
           </div>
         </div>
         <div className={`textContainer ${classes.flex}`} style={{ marginTop: "0" }}>
@@ -118,7 +115,7 @@ export default function ProjectTemplate(props) {
             <div style={{ paddingLeft: "0" }}>
               <h4>What's used in this project:</h4>
               <ul>
-                {props.techUsed.map((tech, index) => (
+                {technologiesUsed.map((tech, index) => (
                   <li key={index}>
                     <p>{tech}</p>
                   </li>
@@ -127,7 +124,7 @@ export default function ProjectTemplate(props) {
             </div>
             <div style={{padding:'0 20px'}}>
               <h4>Date:</h4>
-              <time>{props.date.match(/^[\d-]{10}/i)[0]}</time>
+              <time>{createdAt.match(/^[\d-]{10}/i)[0]}</time>
             </div>
           </div>
         </div>
@@ -136,10 +133,10 @@ export default function ProjectTemplate(props) {
           style={{ display: "block", marginTop: "0" }}
         >
           <div style={{padding:'20px'}}>
-            <a className="block" href={props.liveDemo}>
+            <a className="block" href={liveDemo}>
               Live Demo
             </a>
-            <a className="block" href={props.sourceLink}>
+            <a className="block" href={sourceCode}>
               Learn more at Github repo
             </a>
           </div>

@@ -1,6 +1,4 @@
-import gsap from "gsap/dist/gsap";
 import { TimelineMax } from "gsap/dist/gsap";
-import React, { useEffect, useRef } from "react";
 import React, { useEffect, useRef, useContext } from "react";
 import HomeContext from "../../../src/contexts/HomeContext";
 import ListItem from "./ListItem";
@@ -29,36 +27,20 @@ export default function List(props) {
         //Start scolling once animation is complete
         openRef.current = true;
       },
-      paused:true
-    });
-    animationRef.current.fromTo(descriptionRefs.current,{
-      display:'none'
-    },{
-      display:'block',
-      duration:0,
-    })
-    animationRef.current.fromTo(nav.current,{
-      width: '50px'
-    },{
-      width:'fit-content',
-      duration:0,
-    })
-    animationRef.current.fromTo(markerRefs.current,{
-      width: "fit-content",
-    }, {
-      duration: 0.3,
-      width: "100px",
-    });
-    animationRef.current.to( descriptionRefs.current, {
-      duration: 0,
-      visibility: "visible",
-    });
-    animationRef.current.to(markerRefs.current, {
-      duration: 0.3,
-      width: "0%",
+      paused: true,
     });
 
-  },[])
+    canvasListAnimation(
+      animationRef.current,
+      descriptionRefs.current,
+      nav.current,
+      markerRefs.current
+    );
+    return ()=>{
+      animationRef.current.clear();
+      animationRef.current = null;
+    }
+  }, []);
 
   const pointerOver = () => {
     if (!fastTravelMode) {
