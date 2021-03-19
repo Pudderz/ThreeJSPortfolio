@@ -19,17 +19,8 @@ export default function CreatePost({ post, mdx, aboutProjectMdx }) {
           <article>
             <ProjectTemplate
               key={post.slug}
-              slug={post.slug}
-              date={post.createdAt}
-              image={post.mainImage}
-              title={post.title}
-              techUsed={post.technologiesUsed}
+              post={post}
               content = {mdx}
-              sourceLink = {post.sourceCode}
-              liveDemo = {post.liveDemo}
-              whiteOrBlackText= {post.whiteOrBlackText}
-              primaryColour={post.primaryColour}
-              secondaryColour={post.secondaryColour}
               aboutProject={aboutProjectMdx}
             />
           </article>
@@ -40,7 +31,7 @@ export default function CreatePost({ post, mdx, aboutProjectMdx }) {
 }
 
 export async function getStaticProps({ params }) {
-  console.log('testing')
+  console.log('Getting static props')
   console.log(params)
   const data = await getPost(params.slug);
 
@@ -58,7 +49,7 @@ export async function getStaticProps({ params }) {
 
 export async function getStaticPaths() {
   const allPosts = await getAllPostsWithSlug();
-  console.log(allPosts)
+  console.log(allPosts);
   return {
     paths: allPosts?.map(({ slug }) =>{
       console.log('slug - ',slug)
