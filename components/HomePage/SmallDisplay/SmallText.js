@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Background from "../Background";
 import SideBar from "../../Common/sideBar";
 import Buttons from "../../Common/Buttons";
-import { ButtonGroup, makeStyles } from "@material-ui/core";
+import { ButtonGroup} from "@material-ui/core";
 
 export function SmallText(props) {
   const [sideBarWidth, setSideBarSize] = useState("10px");
@@ -59,7 +59,6 @@ export function SmallText(props) {
           onClick={linkToContacts}
         >
           <a
-            // href={`/posts/${props.data[props.number].slug}`}
             onPointerOver={e => sideBarLarge(e, true)}
             onPointerLeave={(e) => sideBarLarge(e, false)}
           >

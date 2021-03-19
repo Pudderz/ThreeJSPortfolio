@@ -63,12 +63,6 @@ export default function ProjectInfo(props) {
   }, []);
 
 
-  
-  useEffect(() => {
-    console.log('jumpMode')
-  }, [jumpMode]);
-
-
   useEffect(() => {
     if (!fastTravelMode) {
       let tl = new TimelineMax();

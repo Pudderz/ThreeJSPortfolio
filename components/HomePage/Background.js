@@ -3,39 +3,44 @@ import React, { useEffect, useRef, useContext } from "react";
 import { GlobalContext } from "../../src/contexts/GlobalContext";
 
 export default function Background(props) {
-
   const backgroundAnimationRef = useRef();
   let backgroundRef = useRef();
   const firstCount = useRef(0);
-  const {setPreviousColour, PreviousLocation} = useContext(GlobalContext);
+  const { setPreviousColour, PreviousLocation } = useContext(GlobalContext);
 
   useEffect(() => {
-
     //LoadIn animation
     const tl = new TimelineMax();
-      if(props.loadIn !== true || (PreviousLocation!==null && PreviousLocation!=='home') ){
-        tl.fromTo(backgroundRef.current, {
-            width:'100%',
-          opacity:'0',
-          height: "100%",
-        },{
-            opacity:1,
-            width:'100%',
-            height:'100%',
-            duration: 1,
-        });
-      }else{
-        tl.to(backgroundRef.current, {
-          duration: 1,
-          height: "100%",
-        }).delay(1.5);
-        tl.to(backgroundRef.current, {
-          duration: 0.5,
+    if (
+      props.loadIn !== true ||
+      (PreviousLocation !== null && PreviousLocation !== "home")
+    ) {
+      tl.fromTo(
+        backgroundRef.current,
+        {
           width: "100%",
-        });
-      }
+          opacity: "0",
+          height: "100%",
+        },
+        {
+          opacity: 1,
+          width: "100%",
+          height: "100%",
+          duration: 1,
+        }
+      );
+    } else {
+      tl.to(backgroundRef.current, {
+        duration: 1,
+        height: "100%",
+      }).delay(1.5);
+      tl.to(backgroundRef.current, {
+        duration: 0.5,
+        width: "100%",
+      });
+    }
 
-      //Background animations 
+    //Background animations
     backgroundAnimationRef.current = TweenMax.fromTo(
       backgroundRef.current,
       {
@@ -48,12 +53,11 @@ export default function Background(props) {
       }
     );
 
-    return()=>{
+    return () => {
       backgroundAnimationRef.current.kill();
       tl.clear();
-    }
+    };
   }, []);
-
 
   useEffect(() => {
     if (!props.attractMode) {
@@ -83,7 +87,6 @@ export default function Background(props) {
       backgroundAnimationRef.current.reverse();
     }
   }, [props.attractMode]);
-
 
   return (
     <div
