@@ -5,9 +5,11 @@ import SideBar from "../../Common/sideBar";
 import { TweenMax } from "gsap/dist/gsap";
 import { TimelineMax } from "gsap/dist/gsap";
 import Buttons from "../../Common/Buttons";
+import HomeContext from "../../../src/contexts/HomeContext";
 
-export default function HtmlText(props) {
+export default function ProjectInfo(props) {
   const { setPreviousLocation, setPreviousColour } = useContext(GlobalContext);
+  const { jumpMode, fastTravelMode } = useContext(HomeContext);
   const backgroundAnimationRef = useRef();
   const textAnimationRef = useRef();
   const [sideBarWidth, setSideBarSize] = useState("10px");
@@ -54,13 +56,21 @@ export default function HtmlText(props) {
     );
     const setLocation = setTimeout(()=>setPreviousLocation("home"),500)
     return ()=>{
-      clearTimeout(setLocation)
+      setPreviousLocation("home");
+      clearTimeout(setLocation);
     }
 
   }, []);
 
+
+  
   useEffect(() => {
-    if (!props.attractMode) {
+    console.log('jumpMode')
+  }, [jumpMode]);
+
+
+  useEffect(() => {
+    if (!fastTravelMode) {
       let tl = new TimelineMax();
       tl.to(textRef, {
         duration: 0.2,
@@ -101,12 +111,12 @@ export default function HtmlText(props) {
   }, [props.number]);
 
   useEffect(() => {
-    if (!props.attractMode) {
+    if (!fastTravelMode) {
       textAnimationRef.current.play(0.1);
     } else {
       textAnimationRef.current.reverse(0.1);
     }
-  }, [props.attractMode]);
+  }, [ fastTravelMode]);
 
   const stopBubbling = (event) => {
     event.preventDefault();
@@ -117,13 +127,13 @@ export default function HtmlText(props) {
     <>
       <SideBar
         information={props.data}
-        attractMode={props.attractMode}
+        attractMode={ fastTravelMode}
         number={props.number}
         sideBarRef={sideBarWidth}
       />
       <Background
         information={props.data}
-        attractMode={props.attractMode}
+        attractMode={ fastTravelMode}
         number={props.number}
         loadIn ={true}
       />
@@ -186,7 +196,7 @@ export default function HtmlText(props) {
           position: "absolute",
           bottom: "0",
           left: "20px",
-          display: props.attractMode ? "none" : "block",
+          display:  fastTravelMode ? "none" : "block",
         }}
       >
         <Buttons
@@ -203,7 +213,6 @@ export default function HtmlText(props) {
               console.log(props.data[props.number]);
             }}
             href={props.data[props.number].sourceCode}
-            //  className="button"
           >
             Source Code
           </a>
@@ -217,7 +226,6 @@ export default function HtmlText(props) {
           <a
             style={{ color: "inherit", textDecoration: "none" }}
             href={props.data[props.number].liveDemo}
-            //  className="button"
             target="_blank"
             rel="noopener noreferrer"
           >
