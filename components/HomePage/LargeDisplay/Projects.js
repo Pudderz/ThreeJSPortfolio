@@ -27,26 +27,25 @@ export function Projects(props) {
     window.innerWidth / 1900 > 1 ? 1 : window.innerWidth / 1900
   );
 
+
+
+  const wheel = (e)=>{
+    const normalized = normalizeWheel(e);
+    speed.current += normalized.pixelY * 0.0003;
+  }
+
+  const resize = (e)=>{
+    const value = window.innerWidth / 1900 > 1 ? 1 : window.innerWidth / 1900;
+    size.current = value > 1 ? 1 : value;
+  }
+
   useEffect(() => {
-    window.addEventListener("wheel", (e) => {
-      const normalized = normalizeWheel(e);
-      speed.current += normalized.pixelY * 0.0003;
-    });
+    window.addEventListener("wheel", (e) => wheel(e));
+    window.addEventListener("resize", (e) => resize(e));
 
-    window.addEventListener("resize", () => {
-      const value = window.innerWidth / 700;
-      size.current = value > 1 ? 1 : value;
-    });
     return () => {
-      window.removeEventListener("wheel", (e) => {
-        const normalized = normalizeWheel(e);
-        speed.current += normalized.pixelY * 0.0003;
-      });
-
-      window.removeEventListener("resize", () => {
-        const value = window.innerWidth / 700;
-        size.current = value > 1 ? 1 : value;
-      });
+      window.removeEventListener("wheel", (e) => wheel(e));
+      window.removeEventListener("resize", (e) => resize(e));
     };
   }, []);
 
@@ -102,8 +101,8 @@ export function Projects(props) {
 
 
   const goTo = (number) => {
-    props.goTo(number);
     setTargetProjectNumber(number);
+    setJumpMode(true);
   };
   const linkTo = (number) => props.linkTo(number);
 
