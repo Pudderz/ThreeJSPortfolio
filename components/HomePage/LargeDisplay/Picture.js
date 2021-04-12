@@ -48,7 +48,7 @@ export function ProjectCanvasPicture(props) {
 
     //Animations for if no PreviousLocation
     if (PreviousLocation === null) {
-      canvasPictureLoadInStart(tl, group.current, 0)
+      canvasPictureLoadInStart(tl, group.current, 0);
     } else {
       canvasPictureLoadInDefault(tl, group.current, 0);
     }

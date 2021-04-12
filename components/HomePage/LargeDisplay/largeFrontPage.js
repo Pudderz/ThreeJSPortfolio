@@ -7,13 +7,10 @@ import Link from "next/link";
 import { makeStyles, Tooltip } from "@material-ui/core";
 import Projects from "./Projects";
 import { HomeContext } from "../../../src/contexts/HomeContext";
-import { connect } from "react-redux";
-import {homePageLoadInDefault, homePageLoadInStart} from '../../../animations/loadinAnimations'
-// import {
-//   setTargetProjectNumber,
-//   setProjectInViewNumber,
-//   setFastTravelMode,
-// } from "../../../Redux/actions/actions";
+import {
+  homePageLoadInDefault,
+  homePageLoadInStart,
+} from "../../../animations/loadinAnimations";
 
 // Styling
 const useStyles = makeStyles({
@@ -52,76 +49,32 @@ const useStyles = makeStyles({
 });
 
 export function PortfolioCanvas(props) {
-  const { data } = props;
+  let screen = useRef(null);
+  let body = useRef(null);
 
-  // console.log(props.targetProjectNumber);
-  // console.log('canvas render');
-  
+  const { data } = props;
 
   const classes = useStyles();
 
   const GlobalContextValue = useContext(GlobalContext);
   const HomeContextValue = useContext(HomeContext);
 
-const {
-    projectInViewNumber,
-    setTargetProjectNumber,
-    setJumpMode,
-    fastTravelMode
-  } = HomeContextValue; 
+  const { projectInViewNumber, fastTravelMode } = HomeContextValue;
 
   const { PreviousLocation, animation, information } = GlobalContextValue;
-  
-
-  let screen = useRef(null);
-  let body = useRef(null);
-
 
   //Loadin animations
   useEffect(() => {
     console.log(PreviousLocation);
     if (PreviousLocation === null) {
-      homePageLoadInStart(animation.current.canvas, screen, body)
-      // animation.current.canvas.to(screen, {
-      //   duration: 0.8,
-      //   width: "100%",
-      //   left: "0%",
-      // });
-
-      // animation.current.canvas.to(screen, {
-      //   duration: 0.4,
-      //   left: "100%",
-      //   delay: 0.3,
-      // });
-      // animation.current.canvas.to(
-      //   body,
-      //   {
-      //     css: {
-      //       opacity: "1",
-      //       pointerEvents: "auto",
-      //     },
-      //   },
-      //   "-=0.2"
-      // );
+      homePageLoadInStart(animation.current.canvas, screen, body);
     } else {
       homePageLoadInDefault(animation.current.canvas, screen, body);
-      // animation.current.canvas.to(body, {
-      //   duration: 0.8,
-      //   opacity: "1",
-      //   pointerEvents: "auto",
-      // });
     }
     return () => {
       animation.current.canvas.clear();
     };
   }, []);
-
-
-  const goTo = (number) => {
-    setJumpMode(true);
-    setTargetProjectNumber(number);
-  };
-
 
   return (
     <div className={classes.home}>
@@ -163,26 +116,24 @@ const {
       <div className="noOpacity" ref={(el) => (body = el)}>
         <Canvas
           className={classes.canvasContainer}
-          gl={{ antialias: true, preserveDrawingBuffer: true }}
+          gl={{ antialias: true, preserveDrawingBuffer: true,powerPreference: "high-performance", }}
           camera={{ fov: 45, position: [0, 0, 4] }}
-          resize={{ scroll: false}}
+          resize={{ scroll: false }}
+          
         >
           {/* Work around to make context work in the canvas */}
           <GlobalContext.Provider value={GlobalContextValue}>
             <HomeContext.Provider value={HomeContextValue}>
               <Projects
                 data={data}
-                goTo={goTo}
                 linkTo={() => {}}
                 maxNumber={data.length - 1}
               ></Projects>
             </HomeContext.Provider>
           </GlobalContext.Provider>
-
         </Canvas>
 
         <List
-          goTo={goTo}
           information={information}
           data={data}
           whiteOrBlack={data[projectInViewNumber].whiteOrBlackText}
@@ -198,9 +149,6 @@ const {
     </div>
   );
 }
-
-
-
 
 
 export default PortfolioCanvas;

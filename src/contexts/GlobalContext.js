@@ -18,7 +18,6 @@ export const GlobalProvider = ({ children }) => {
     canvas: new TimelineMax({ paused: true }),
     project: new TimelineMax({ paused: true }),
   });
-  const position = useRef({ y: 0 });
 
   useEffect(() => {
     return () => {
@@ -36,7 +35,6 @@ export const GlobalProvider = ({ children }) => {
         PreviousLocation,
         animation,
         colours,
-        position,
         setColours: (primaryColor, secondaryColor) => {
           setColours({
             primaryColour: primaryColor,

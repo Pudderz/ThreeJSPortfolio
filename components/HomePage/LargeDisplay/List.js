@@ -2,11 +2,9 @@ import { TimelineMax } from "gsap/dist/gsap";
 import React, { useEffect, useRef, useContext } from "react";
 import HomeContext from "../../../src/contexts/HomeContext";
 import ListItem from "./ListItem";
-import { connect } from "react-redux";
 import { canvasListAnimation } from "../../../animations/ProjectAnimations";
 
-
-export default function List(props) {
+export function List(props) {
   const openRef = useRef(false);
   const animationRef = useRef();
   const nav = useRef(null);
@@ -110,3 +108,6 @@ export default function List(props) {
     </div>
   );
 }
+
+
+export default List;

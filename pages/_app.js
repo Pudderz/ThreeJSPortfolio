@@ -4,13 +4,14 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../src/theme";
 import { GlobalProvider } from "../src/contexts/GlobalContext";
-import TransitionLayout from '../components/Common/TransitionLayout'
+import TransitionLayout from "../components/Common/TransitionLayout";
 import Title from "../components/HomePage/SmallDisplay/Title";
-import "../styles/App.scss"
+import "../styles/App.scss";
 
 export default function App(props) {
   const { Component, pageProps, router } = props;
 
+  
   useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
@@ -30,13 +31,12 @@ export default function App(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalProvider>
-        {router.pathname !== "/" && router.pathname !== "/about" && <Title path={router.pathname}/>}
-          <TransitionLayout path={router.pathname}>
-                <Component
-                  {...pageProps}
-                  key={router.route}
-                />
-          </TransitionLayout>
+            {router.pathname !== "/" && router.pathname !== "/about" && (
+              <Title path={router.pathname} />
+            )}
+            <TransitionLayout path={router.pathname}>
+              <Component {...pageProps} key={router.route} />
+            </TransitionLayout>
         </GlobalProvider>
       </ThemeProvider>
     </React.Fragment>

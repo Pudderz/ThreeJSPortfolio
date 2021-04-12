@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useContext } from "react";
 import { useFrame } from "react-three-fiber";
 import Picture from "./Picture";
 import normalizeWheel from "normalize-wheel";
-import { connect } from "react-redux";
 
 import HomeContext from "../../../src/contexts/HomeContext";
 

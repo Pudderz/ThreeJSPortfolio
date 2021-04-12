@@ -88,7 +88,6 @@ export default function Title(props) {
     sidebarAnimation.current.reverse();
   };
 
-  // if (props.path !== "/" && props.path !== "/about") {
   return (
     <>
       <nav

@@ -5,7 +5,6 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "@react-three/drei": "^3.11.1",
     "@zeit/next-sass": "^1.0.1",
     "gsap": "^3.0.1",
     "json2mq": "^0.2.0",
@@ -16,11 +15,9 @@
     "prop-types": "latest",
     "react": "^17.0.1",
     "react-dom": "^16.14.0",
-    "react-redux": "^7.2.2",
     "react-three-fiber": "^5.3.0",
     "react-transition-group": "^4.3.0",
     "react-use-gesture": "^8.0.1",
-    "redux": "^4.0.5",
     "sass": "^1.26.10",
     "three": "^0.126.1"
   },
