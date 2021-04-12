@@ -56,7 +56,7 @@ export function canvasListAnimation(animation,description, nav, markers){
         width: "50px",
       },
       {
-        width: "fit-content",
+        width: "auto",
         duration: 0,
       }
     );
@@ -80,3 +80,4 @@ export function canvasListAnimation(animation,description, nav, markers){
     });
 
 }
+
