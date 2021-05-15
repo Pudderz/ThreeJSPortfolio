@@ -1,25 +1,31 @@
-import { TimelineMax } from "gsap/dist/gsap";
 import { Power3, Power4 } from "gsap";
 
 export function homePageLoadInStart(animation, screen, body) {
-  animation.to(screen, {
-    duration: 0.8,
-    width: "100%",
-    left: "0%",
-  });
+  screen.style.width = "100%";
+  screen.style.left = "0";
+
+  animation.fromTo(
+    screen,
+    {
+      opacity: 0,
+    },
+    {
+      duration: 0.6,
+      opacity: 1,
+    }
+  );
 
   animation.to(screen, {
-    duration: 0.4,
+    duration: 0.8,
     left: "100%",
-    delay: 0.3,
   });
+
   animation.to(
     body,
     {
-      css: {
-        opacity: "1",
-        pointerEvents: "auto",
-      },
+      opacity: "1",
+      pointerEvents: "auto",
+      duration: 0.5
     },
     "-=0.2"
   );
@@ -34,12 +40,9 @@ export function homePageLoadInDefault(animation, screen, body) {
 }
 
 export function canvasPictureLoadInStart(timeline, picture, endPoint) {
-  timeline.to(picture.rotation, {
-    duration: 0,
-    x: 0,
-    z: 0,
-    y: 0,
-  });
+  picture.rotation.x = 0;
+  picture.rotation.z = 0;
+  picture.rotation.y = 0;
 
   timeline.fromTo(
     picture.position,
@@ -47,7 +50,6 @@ export function canvasPictureLoadInStart(timeline, picture, endPoint) {
       x: 0,
       z: 2,
       y: -10,
-      ease: Power4.easeInOut,
     },
     {
       duration: 3,
@@ -193,19 +195,16 @@ export function backgroundLoadInStart(timeline, background) {
 }
 
 export function backgroundLoadInDefault(timeline, background) {
-    timeline.fromTo(
-        background,
-        {
-          width: "100%",
-          opacity: "0",
-          height: "100%",
-        },
-        {
-          opacity: 1,
-          width: "100%",
-          height: "100%",
-          duration: 1,
-        }
-      );
-
+  timeline.fromTo(
+    background,
+    {
+      width: "100%",
+      opacity: 0,
+    },
+    {
+      opacity: 1,
+      width: "100%",
+      duration: 1,
+    }
+  );
 }
