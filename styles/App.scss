@@ -152,6 +152,10 @@ h1 {
 #background {
   width: 10px;
   z-index: -1;
+  position: absolute;
+  z-index: -1;
+  height: 100%;
+  bottom: 0;
 }
 
 .marker {

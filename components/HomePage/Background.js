@@ -5,46 +5,38 @@ import { GlobalContext } from "../../src/contexts/GlobalContext";
 export default function Background(props) {
   const backgroundAnimationRef = useRef();
   let backgroundRef = useRef();
-  const firstCount = useRef(0);
-  const { setPreviousColour, PreviousLocation } = useContext(GlobalContext);
+  const { PreviousLocation } = useContext(GlobalContext);
 
   useEffect(() => {
     //LoadIn animation
     const tl = new TimelineMax();
-    if (
-      props.loadIn !== true ||
-      (PreviousLocation !== null && PreviousLocation !== "home")
-    ) {
-      tl.fromTo(
-        backgroundRef.current,
-        {
-          width: "100%",
-          opacity: "0",
-          height: "100%",
-        },
-        {
-          opacity: 1,
-          width: "100%",
-          height: "100%",
-          duration: 1,
-        }
-      );
+    if ( !props.loadIn || PreviousLocation !== null) {
+      backgroundRef.current.style.width = "100%";
     } else {
-      tl.to(backgroundRef.current, {
-        duration: 1,
-        height: "100%",
-      }).delay(1.5);
       tl.to(backgroundRef.current, {
         duration: 0.5,
         width: "100%",
-      });
+      }).delay(2.8);
     }
 
-    //Background animations
+
+    // backgroundAnimationRef.current = new TimelineMax({paused: true});
+    
+    // backgroundAnimationRef.current.to(backgroundRef.current, {
+    //   opacity: 0,
+    //   duration: 0.2,
+    // })
+    // backgroundAnimationRef.current.to(backgroundRef.current, {
+    //   opacity: 1,
+    //   duration: 0.2,
+    // })
+
+    // //Background animations
     backgroundAnimationRef.current = TweenMax.fromTo(
       backgroundRef.current,
       {
         opacity: "0",
+        paused: true,
       },
       {
         duration: 0.4,
@@ -72,12 +64,6 @@ export default function Background(props) {
       });
     }
 
-    //sets the colour for the next page so we can have the correct colour transition.
-    if (firstCount.current > 1) {
-      setPreviousColour(props.information[props.number].primaryColour);
-    } else {
-      firstCount.current++;
-    }
   }, [props.number]);
 
   useEffect(() => {
@@ -93,12 +79,6 @@ export default function Background(props) {
       ref={backgroundRef}
       id="background"
       className="sideBar background"
-      style={{
-        position: "absolute",
-        bottom: 0,
-        zIndex: "-1",
-        height: 0,
-      }}
     ></div>
   );
 }
