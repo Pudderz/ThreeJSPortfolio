@@ -50,7 +50,7 @@ export default function About(props) {
 
   useEffect(() => {
     //LoadIn animations
-    if (PreviousLocation !== null && PreviousLocation !== "about") {
+    if (PreviousLocation !== null) {
       aboutLoadInDefaultAnimation(animation.current.about, aboutRef.current);
     } else {
       aboutLoadInStartAnimation(animation.current.about, aboutRef.current);

@@ -69,7 +69,7 @@ export default function ProjectTemplate(props) {
 
   useEffect(() => {
     //Loadin animation
-    if (PreviousLocation !== "project" && PreviousLocation !== null) {
+    if (PreviousLocation !== null) {
 
       projectPageLoadInDefault(animation.current.project, information.current);
 
