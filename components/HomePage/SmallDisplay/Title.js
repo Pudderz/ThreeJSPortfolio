@@ -4,7 +4,6 @@ import { Fab, Tooltip } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { TweenMax } from "gsap/dist/gsap";
 import { makeStyles } from "@material-ui/core/styles";
-import { GlobalContext } from "../../../src/contexts/GlobalContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -16,8 +15,6 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 0,
   },
   navigation: {
-    backgroundColor: (props) => props.backgroundColor,
-    color: (props) => props.color,
     backdropFilter: "blur(1em) opacity(60%)",
     position: "fixed",
     width: "100%",
@@ -30,16 +27,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Title(props) {
   
-  const { colours } = useContext(GlobalContext);
-  const classes = useStyles({
-    backgroundColor: colours.secondaryColour,
-    color: colours.primaryColour,
-  });
-
+  const classes = useStyles();
   const arrow = useRef();
   const aboutSideBarRef = useRef();
   const animation = useRef(null);
   const sidebarAnimation = useRef(null);
+
   useEffect(() => {
     if (arrow.current !== null) {
       animation.current = TweenMax.fromTo(
@@ -141,7 +134,4 @@ export default function Title(props) {
       </Link>
     </>
   );
-  // } else {
-  //   return <div className="top"></div>;
-  // }
 }

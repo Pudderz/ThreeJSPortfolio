@@ -8,8 +8,8 @@ import Buttons from "../../Common/Buttons";
 import HomeContext from "../../../src/contexts/HomeContext";
 
 export default function ProjectInfo(props) {
-  const { setPreviousLocation, setPreviousColour } = useContext(GlobalContext);
-  const { jumpMode, fastTravelMode } = useContext(HomeContext);
+  const { setPreviousLocation } = useContext(GlobalContext);
+  const { fastTravelMode } = useContext(HomeContext);
   const backgroundAnimationRef = useRef();
   const textAnimationRef = useRef();
   const [sideBarWidth, setSideBarSize] = useState("10px");
@@ -96,12 +96,7 @@ export default function ProjectInfo(props) {
       });
     }
 
-    //sets the colour for the next page so we can have the correct colour transition.
-    if (firstCount.current > 1) {
-      setPreviousColour(props.data[props.number].primaryColour);
-    } else {
-      firstCount.current++;
-    }
+ 
   }, [props.number]);
 
   useEffect(() => {
