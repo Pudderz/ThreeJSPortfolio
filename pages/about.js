@@ -67,7 +67,7 @@ export default function About(props) {
     <div
       {...bind()}
       ref={aboutRef}
-      style={{ minHeight: "100vh", backgroundColor: "#191c1d" }}
+      style={{ minHeight: "100vh", backgroundColor: "#191c1d", position:'relative' }}
     >
       <div
         className="top"
@@ -76,9 +76,10 @@ export default function About(props) {
           justifyContent: "space-between",
           width: "90%",
           margin: "7px auto 0",
+          position: "sticky",
         }}
       >
-        {PreviousLocation !== null ? (
+        {PreviousLocation !== null && (
           <Tooltip title="Go back">
             <Fab
               onClick={goBack}
@@ -92,8 +93,6 @@ export default function About(props) {
               <ArrowBackIcon />
             </Fab>
           </Tooltip>
-        ) : (
-          <div />
         )}
 
         <Link href="/">

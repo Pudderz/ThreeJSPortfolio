@@ -5,6 +5,7 @@ import { GlobalContext } from "../../src/contexts/GlobalContext";
 import hydrate from "next-mdx-remote/hydrate";
 import { makeStyles } from "@material-ui/core";
 import { projectPageLoadInDefault, projectPageLoadInStart } from "../../animations/loadinAnimations";
+import Title from "../HomePage/SmallDisplay/Title";
 
 const useStyles = makeStyles(theme => ({
   flex:{
@@ -95,6 +96,7 @@ export default function ProjectTemplate(props) {
         ref={information}
         style={{ background: "white" }}
       >
+       
         <div className={`textContainer ${classes.flex}`}
         style={{margin:'0 auto'}}
         >

@@ -45,7 +45,7 @@ const TransitionLayout = ({ path, children }) => {
         duration: 1,
         x: 0,
         autoAlpha: 1,
-        onComplete(e) {
+        onComplete() {
           node.classList.remove("absolute");
           node.style.position = "";
           node.style.zindex = "";
